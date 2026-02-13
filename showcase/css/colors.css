@@ -13,16 +13,23 @@
        ═══════════════════════════════════════════════════════════════ */
 
     /* Base Backgrounds */
-    --bg-primary: #0a0a0a;           /* Main background */
-    --bg-secondary: #121212;         /* Elevated surfaces */
-    --bg-card: rgba(255, 255, 255, 0.03);  /* Card backgrounds */
+    --bg-primary: #0a0a0a;
+    /* Main background */
+    --bg-secondary: #121212;
+    /* Elevated surfaces */
+    --bg-card: rgba(255, 255, 255, 0.03);
+    /* Card backgrounds */
     --bg-card-hover: rgba(255, 255, 255, 0.06);
 
     /* Text Colors */
-    --text-primary: #ffffff;         /* Primary text */
-    --text-secondary: rgba(255, 255, 255, 0.7);  /* Secondary text */
-    --text-tertiary: rgba(255, 255, 255, 0.5);   /* Disabled/subtle text */
-    --text-accent: #00ff88;          /* Accent text (UV7 green) */
+    --text-primary: #ffffff;
+    /* Primary text */
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    /* Secondary text */
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+    /* Disabled/subtle text */
+    --text-accent: #00ff88;
+    /* Accent text (UV7 green) */
 
     /* Border & Dividers */
     --border-subtle: rgba(255, 255, 255, 0.08);
@@ -30,18 +37,33 @@
     --border-strong: rgba(255, 255, 255, 0.3);
 
     /* Accent Colors */
-    --accent-primary: #00ff88;       /* UV7 green - primary actions */
-    --accent-purple: #667eea;        /* Purple - transformation theme */
-    --accent-pink: #ff6b9d;          /* Pink - passion/chaos */
-    --accent-cyan: #00ccff;          /* Cyan - technical/clarity */
-    --accent-orange: #ff9d5c;        /* Orange - methodology */
+    --accent-primary: #00ff88;
+    /* UV7 green - primary actions */
+    --accent-purple: #667eea;
+    /* Purple - transformation theme */
+    --accent-pink: #ff6b9d;
+    /* Pink - passion/chaos */
+    --accent-cyan: #00ccff;
+    /* Cyan - technical/clarity */
+    --accent-orange: #ff9d5c;
+    /* Orange - methodology */
 
-    /* Gradient Backgrounds */
-    --gradient-purple: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
-    --gradient-purple-hover: linear-gradient(135deg, rgba(102, 126, 234, 0.18), rgba(118, 75, 162, 0.18));
-    --gradient-green: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 204, 255, 0.08));
-    --gradient-orange: linear-gradient(135deg, rgba(255, 157, 92, 0.08), rgba(255, 107, 107, 0.08));
-    --gradient-pink: linear-gradient(135deg, rgba(255, 107, 157, 0.08), rgba(102, 126, 234, 0.08));
+    /* Gradient Backgrounds - BOUGIE EDITION */
+    --gradient-purple: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    --gradient-purple-hover: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+
+    /* Section Specific Gradients */
+    --gradient-v1: linear-gradient(135deg, rgba(255, 60, 0, 0.15), rgba(255, 0, 128, 0.15));
+    /* Fiery/Chaos */
+    --gradient-v2: linear-gradient(135deg, rgba(0, 204, 255, 0.15), rgba(0, 80, 255, 0.15));
+    /* Electric/Order */
+    --gradient-uv7: linear-gradient(135deg, rgba(120, 0, 255, 0.15), rgba(255, 0, 200, 0.15));
+    /* Cosmic/Unified */
+
+    /* Legacy but boosted */
+    --gradient-green: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 255, 0.1));
+    --gradient-orange: linear-gradient(135deg, rgba(255, 157, 92, 0.1), rgba(255, 107, 107, 0.1));
+    --gradient-pink: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(102, 126, 234, 0.1));
 
     /* Context Boxes (for important callouts) */
     --context-bg: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
@@ -89,7 +111,8 @@ body[data-theme="light"] {
     --text-primary: #1a1a1a;
     --text-secondary: rgba(26, 26, 26, 0.7);
     --text-tertiary: rgba(26, 26, 26, 0.5);
-    --text-accent: #00b366;          /* Slightly darker green for contrast */
+    --text-accent: #00b366;
+    /* Slightly darker green for contrast */
 
     /* Border & Dividers */
     --border-subtle: rgba(26, 26, 26, 0.08);
@@ -104,11 +127,17 @@ body[data-theme="light"] {
     --accent-orange: #d97706;
 
     /* Gradient Backgrounds (more subtle in light mode) */
-    --gradient-purple: linear-gradient(135deg, rgba(102, 126, 234, 0.06), rgba(118, 75, 162, 0.06));
-    --gradient-purple-hover: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-    --gradient-green: linear-gradient(135deg, rgba(0, 179, 102, 0.06), rgba(0, 153, 204, 0.06));
-    --gradient-orange: linear-gradient(135deg, rgba(217, 119, 6, 0.06), rgba(230, 62, 109, 0.06));
-    --gradient-pink: linear-gradient(135deg, rgba(230, 62, 109, 0.06), rgba(90, 103, 216, 0.06));
+    --gradient-purple: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+    --gradient-purple-hover: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+
+    /* Section Specific Gradients (Light) */
+    --gradient-v1: linear-gradient(135deg, rgba(255, 60, 0, 0.08), rgba(255, 0, 128, 0.08));
+    --gradient-v2: linear-gradient(135deg, rgba(0, 204, 255, 0.08), rgba(0, 80, 255, 0.08));
+    --gradient-uv7: linear-gradient(135deg, rgba(120, 0, 255, 0.08), rgba(255, 0, 200, 0.08));
+
+    --gradient-green: linear-gradient(135deg, rgba(0, 179, 102, 0.08), rgba(0, 153, 204, 0.08));
+    --gradient-orange: linear-gradient(135deg, rgba(217, 119, 6, 0.08), rgba(230, 62, 109, 0.08));
+    --gradient-pink: linear-gradient(135deg, rgba(230, 62, 109, 0.08), rgba(90, 103, 216, 0.08));
 
     /* Context Boxes */
     --context-bg: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
@@ -168,7 +197,18 @@ body[data-theme="light"] {
 }
 
 /* Text Hierarchy */
-.unified-text-primary { color: var(--text-primary); }
-.unified-text-secondary { color: var(--text-secondary); }
-.unified-text-tertiary { color: var(--text-tertiary); }
-.unified-text-accent { color: var(--text-accent); }
+.unified-text-primary {
+    color: var(--text-primary);
+}
+
+.unified-text-secondary {
+    color: var(--text-secondary);
+}
+
+.unified-text-tertiary {
+    color: var(--text-tertiary);
+}
+
+.unified-text-accent {
+    color: var(--text-accent);
+}

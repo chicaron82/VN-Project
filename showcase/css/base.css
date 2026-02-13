@@ -6,23 +6,68 @@
 /* --- CORE VARIABLES --- */
 :root {
     /* TYPOGRAPHY SYSTEM (Hybrid Approach) */
-    --header-font: 'Outfit', 'Inter', system-ui, sans-serif; /* Headers: personality */
-    --body-font: 'Inter', system-ui, -apple-system, sans-serif; /* Body: readability */
-    --code-font: 'Courier New', 'Monaco', 'Consolas', monospace; /* Code: technical */
+    --header-font: 'Outfit', 'Inter', system-ui, sans-serif;
+    /* Headers: personality */
+    --body-font: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Body: readability */
+    --code-font: 'Courier New', 'Monaco', 'Consolas', monospace;
+    /* Code: technical */
+
+    /* Font Weights */
+    --weight-thin: 200;
+    --weight-light: 300;
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-bold: 700;
+    --weight-black: 900;
 
     /* CHAOS PALETTE (V1) */
     --chaos-bg: #050505;
     --chaos-text: #00ff41;
     --chaos-accent: #ff00ff;
-    --chaos-font: var(--code-font); /* Chaos uses code font for terminal vibe */
+    --chaos-font: var(--code-font);
+    /* Chaos uses code font for terminal vibe */
 
     /* ORDER PALETTE (V2) */
     --order-bg: #f8f9fa;
     --order-text: #2c3e50;
     --order-accent: #3498db;
-    --order-font: var(--body-font); /* Order uses body font for clean readability */
+    --order-font: var(--body-font);
+    /* Order uses body font for clean readability */
 
     --transition-speed: 0.1s;
+}
+
+/* Typography Utilities */
+.text-thin {
+    font-weight: var(--weight-thin);
+}
+
+.text-light {
+    font-weight: var(--weight-light);
+}
+
+.text-regular {
+    font-weight: var(--weight-regular);
+}
+
+.text-medium {
+    font-weight: var(--weight-medium);
+}
+
+.text-bold {
+    font-weight: var(--weight-bold);
+}
+
+.text-black {
+    font-weight: var(--weight-black);
+}
+
+.display-text {
+    font-family: var(--header-font);
+    font-weight: var(--weight-black);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
 }
 
 /* --- RESET & BASE --- */
@@ -146,17 +191,22 @@ html {
 }
 
 h1 {
-    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    /* BOUGIE: Much bigger */
     /* Responsive scaling */
     font-weight: 900;
     text-transform: uppercase;
     margin: 0;
     /* Removed margin in favor of gap */
-    line-height: 1.1;
+    line-height: 0.95;
+    /* Tighter line height for impact */
+    letter-spacing: -0.02em;
     /* Consistent line height */
 
     /* Force height alignment */
-    height: 3em;
+    height: auto;
+    /* Allow growth */
+    min-height: 3em;
     /* Fixed height for title block (2-3 lines) */
     display: flex;
     align-items: center;
@@ -170,9 +220,11 @@ h1 {
 }
 
 h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    margin-bottom: 2rem;
-    letter-spacing: 2px;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    /* BOUGIE: Prominent section headers */
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.01em;
+    font-weight: 800;
 }
 
 p {
@@ -2338,10 +2390,13 @@ body.light-mode .achievements li strong {
 }
 
 @keyframes trackerPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.7;
         transform: scale(1);
     }
+
     50% {
         opacity: 1;
         transform: scale(1.15);

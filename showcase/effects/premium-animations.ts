@@ -263,18 +263,23 @@ function initCardHovers(): void {
 // 7. SMOOTH SCROLL TO ANCHORS
 // ==========================================
 
+// ==========================================
+// 7. SMOOTH SCROLL TO ANCHORS (PREMIUM FEEL)
+// ==========================================
+
 function initSmoothScroll(): void {
     document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-            if (href === '#') return;
+            if (href === '#' || !href) return;
 
             e.preventDefault();
-            const target = document.querySelector(href || '');
+            const target = document.querySelector(href);
             if (target) {
                 const offset = 80; // Account for status bar
                 const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
 
+                // Native smooth scroll is good, but let's ensure it's enforced
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -283,7 +288,7 @@ function initSmoothScroll(): void {
         });
     });
 
-    Logger.effect('🎯 Smooth scroll initialized');
+    Logger.effect('🎯 Premium smooth scroll initialized');
 }
 
 // ==========================================

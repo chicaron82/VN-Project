@@ -23,15 +23,41 @@
 /* Home tab panel */
 .tab-panel[data-panel="home"] {
     background: var(--bg-primary);
+    background-image: var(--gradient-uv7);
+    /* UV7 Theme */
+    background-size: cover;
     color: var(--text-primary);
 }
 
-.journal-section,
-.workflow-section,
-.results-section,
-.spotlight-section,
+.journal-section {
+    background: var(--bg-primary);
+    background-image: var(--gradient-purple);
+    color: var(--text-primary);
+}
+
+.workflow-section {
+    background: var(--bg-primary);
+    background-image: var(--gradient-v2);
+    /* Methodology = Order */
+    color: var(--text-primary);
+}
+
+.results-section {
+    background: var(--bg-primary);
+    background-image: var(--gradient-green);
+    color: var(--text-primary);
+}
+
+.spotlight-section {
+    background: var(--bg-primary);
+    background-image: var(--gradient-uv7);
+    color: var(--text-primary);
+}
+
 .evolution-section {
     background: var(--bg-primary);
+    background-image: var(--gradient-v1);
+    /* Evolution starts with V1/Chaos */
     color: var(--text-primary);
 }
 

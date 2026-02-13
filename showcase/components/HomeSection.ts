@@ -165,7 +165,7 @@ export class HomeSection {
                     </div>
 
                     <div class="menu-divider">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
-                </div>
+                </div> <!-- End Entrees Menu -->
             </div>
 
             <!-- PHILOSOPHY ZONE: What-If Cascade -->
