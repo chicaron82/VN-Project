@@ -198,7 +198,7 @@
 }
 
 .code-block {
-    font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+    font-family: var(--code-font);
     font-size: 0.9rem;
     line-height: 1.6;
     color: #d4d4d4;

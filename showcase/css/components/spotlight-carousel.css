@@ -311,7 +311,7 @@
 
 .modal-code code {
     color: #a8dadc;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     font-size: 14px;
     line-height: 1.6;
 }

@@ -79,7 +79,7 @@
     color: #667eea;
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     font-size: 0.95em;
     font-weight: 600;
 }
@@ -227,7 +227,7 @@
 
 .code-snippet {
     margin: 0;
-    font-family: 'Courier New', Consolas, monospace;
+    font-family: var(--code-font);
     font-size: 0.95rem;
     line-height: 1.6;
     color: #e0e6f1;

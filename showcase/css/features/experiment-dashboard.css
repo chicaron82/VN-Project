@@ -92,7 +92,7 @@
 }
 
 .v3-value {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--code-font);
     font-size: 1.1rem;
     font-weight: 700;
     color: #fff;
@@ -170,7 +170,7 @@
 }
 
 .judge-stamp {
-    font-family: 'Black Ops One', sans-serif;
+    font-family: var(--header-font);
     font-size: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -214,7 +214,7 @@
     width: 100%;
     padding-top: 0.75rem;
     border-top: 1px dotted rgba(255, 255, 255, 0.2);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--code-font);
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.5;

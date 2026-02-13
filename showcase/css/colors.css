@@ -104,6 +104,7 @@
 body {
     background: var(--bg-primary);
     color: var(--text-primary);
+    font-family: var(--body-font);
 }
 
 /* ═══════════════════════════════════════════════════════════════

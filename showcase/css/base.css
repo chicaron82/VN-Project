@@ -10,8 +10,8 @@
     /* Headers: personality */
     --body-font: 'Inter', system-ui, -apple-system, sans-serif;
     /* Body: readability */
-    --code-font: 'Courier New', 'Monaco', 'Consolas', monospace;
-    /* Code: technical */
+    --code-font: 'Courier Prime', 'Courier New', 'Monaco', 'Consolas', monospace;
+    /* Code: technical (Courier Prime loaded from Google Fonts) */
 
     /* Font Weights */
     --weight-thin: 200;
@@ -188,6 +188,15 @@ html {
     justify-content: center;
     gap: 2rem;
     width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--header-font);
 }
 
 h1 {
@@ -838,13 +847,13 @@ section h2::after {
 .timeline-item.journal-entry .timeline-content {
     background: rgba(20, 20, 30, 0.95);
     border-left: 4px solid #888;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--code-font);
     color: #e0e0e0;
 }
 
 .timeline-item.journal-entry .timeline-content h3 {
     color: #00ff88;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--code-font);
 }
 
 .timeline-item.journal-entry .timeline-content p {
@@ -1720,7 +1729,7 @@ section h2::after {
 }
 
 .code-example code {
-    font-family: 'Courier New', Monaco, monospace;
+    font-family: var(--code-font);
     font-size: 0.85rem;
     color: #e2e8f0;
     white-space: pre;
@@ -2558,14 +2567,14 @@ body.light-mode .achievements li strong {
     color: #444;
     /* Darker for readability on white */
     border-color: #00ff41;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
 }
 
 .col-order h3 {
     color: #3498db;
     /* Order blue */
     border-color: #3498db;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--body-font);
 }
 
 .comparison-item {
@@ -2587,7 +2596,7 @@ body.light-mode .achievements li strong {
     border-left-color: #00ff41;
     background: #111;
     color: #00ff41;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
 }
 
 .col-order .comparison-item {
@@ -2778,7 +2787,7 @@ body.light-mode .achievements li strong {
 }
 
 .tech-header h3 {
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--code-font);
     font-size: 1.4rem;
     color: #58a6ff;
     margin: 0;
@@ -2897,7 +2906,7 @@ body.light-mode .achievements li strong {
     border: 1px solid #30363d;
     border-radius: 4px;
     padding: 0.75rem;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     font-size: 0.85rem;
     color: #ff7b72;
     margin-top: 1rem;
@@ -2970,7 +2979,7 @@ body.light-mode .achievements li strong {
 
 .code-content {
     padding: 20px;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     font-size: 0.85rem;
     line-height: 1.6;
     overflow-x: auto;
@@ -3058,7 +3067,7 @@ body.light-mode .achievements li strong {
 .metric-label {
     width: 45px;
     font-weight: bold;
-    font-family: monospace;
+    font-family: var(--code-font);
 }
 
 .metric-track {
@@ -3093,7 +3102,7 @@ body.light-mode .achievements li strong {
 .metric-value {
     min-width: 70px;
     text-align: right;
-    font-family: monospace;
+    font-family: var(--code-font);
     font-weight: 600;
     color: #333;
     white-space: nowrap;
@@ -3312,7 +3321,7 @@ body.light-mode .metric-value {
     background: rgba(52, 152, 219, 0.1);
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     font-size: 0.9em;
     color: #3498db;
 }
@@ -3528,7 +3537,7 @@ body.light-mode .metric-value {
 }
 
 .phase-nav-header {
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     font-size: 13px;
     font-weight: 700;
     color: #333;
@@ -3692,7 +3701,7 @@ body.light-mode .metric-value {
     font-size: 0.8rem;
     color: #888;
     border-top: 1px solid #333;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--body-font);
 }
 
 /* Timeline Carousel */
@@ -3871,7 +3880,7 @@ body[data-view-mode="story"] .technical-details {
     color: #fff;
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     font-size: 0.85rem;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);

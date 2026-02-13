@@ -106,7 +106,7 @@
 
 .phase-code-example code {
     color: #00ff88;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--code-font);
     font-size: 0.9rem;
 }
 

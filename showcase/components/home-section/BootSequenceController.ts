@@ -48,7 +48,7 @@ export class BootSequenceController {
                 display: flex;
                 flex-direction: column;
                 padding: 2rem;
-                font-family: 'Courier New', monospace;
+                font-family: var(--code-font, 'Courier New', monospace);
                 color: #00ff88;
                 overflow: hidden;
                 position: relative;

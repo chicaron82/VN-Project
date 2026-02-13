@@ -909,7 +909,7 @@ body {
 }
 
 .comparison-filename {
-    font-family: 'Courier New', monospace;
+    font-family: var(--code-font);
     color: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
 }

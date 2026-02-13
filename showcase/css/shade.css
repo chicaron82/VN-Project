@@ -182,7 +182,7 @@
 }
 
 .setting-value {
-    font-family: monospace;
+    font-family: var(--code-font);
     color: #00ff88;
 }
 
