@@ -160,7 +160,7 @@ export interface BlogEntry {
 
     // V3 Lab Specific
     isV3Entry?: boolean;
-    modelId?: 'belle' | 'dizee' | 'tori' | 'genzee';
+    modelId?: 'belle' | 'dizee' | 'tori' | 'genzee' | 'zee' | 'zeerah' | 'cozee' | 'perplexizee' | 'aaron';
     scorecard?: V3Scorecard;
     stats?: V3Stats;
     judgement?: V3Judgement;

@@ -1,4 +1,4 @@
-import type { TimelineEntry } from '../../types';
+import type { TimelineEntry } from '../../../types';
 
 export const entry: TimelineEntry = {
             "id": "uv7-system-architecture",

@@ -1,1 +1,1 @@
-export type { TimelineEntry, BlogEntry } from '../../types';
+export type { TimelineEntry, BlogEntry } from '../../../types';
