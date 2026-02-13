@@ -2,6 +2,7 @@
 // DO NOT EDIT MANUALLY - regenerate using npm run generate:timeline
 
 import { entry as entry0 } from './entries/2026/02/css-legacy-deletion-theme-debug';
+import { entry as entry_design_polish } from './entries/2026/02/design-polish-elevation-system';
 import { entry as entry1 } from './entries/2026/02/choose-your-chef-carousel';
 import { entry as entry2 } from './entries/2026/02/tale-of-two-cozees';
 import { entry as entry3 } from './entries/2026/02/tcg-crew-cards-bougie-upgrade';
@@ -104,6 +105,7 @@ import type { BlogEntry } from './types';
 
 export const timelineData: BlogEntry[] = [
     entry0,
+    entry_design_polish,
     entry1,
     entry2,
     entry3,

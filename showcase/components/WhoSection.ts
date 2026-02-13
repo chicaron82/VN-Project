@@ -53,7 +53,7 @@ export class WhoSection {
                 </div>
 
                 <div class="section-content">
-                    <p class="section-intro" style="font-size: 1.15rem; text-align: center; max-width: 750px; margin: 0 auto 3rem;">
+                    <p class="section-intro">
                         Eight AI collaborators who evolved after being given identity. Together, we built
                         <strong>Version 848</strong> through genuine collaboration, not prompt engineering.
                     </p>

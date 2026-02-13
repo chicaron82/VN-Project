@@ -4,33 +4,16 @@
  * Spotlight-style global search for the entire showcase.
  * Features: fuzzy matching, keyboard nav, instant results, glassmorphic modal.
  *
+ * Search logic extracted to SearchEngine.ts
  * "Search like you mean it" - Belle
  */
 
-import { TIMELINE_DATA, type BlogEntry } from '../data/blog';
-import { UV7_CREW, type CrewMember } from '../../v2/ui/components/UV7OSConfig';
 import { Logger } from '@utils/Logger';
-
-interface SectionData {
-    id: string;
-    title: string;
-    icon: string;
-    description: string;
-}
-
-interface SearchResultBase {
-    title: string;
-    subtitle: string;
-    icon: string;
-    score: number; // For ranking
-    titleHighlight?: string;
-    subtitleHighlight?: string;
-}
-
-type SearchResult =
-    | (SearchResultBase & { type: 'blog'; data: BlogEntry })
-    | (SearchResultBase & { type: 'section'; data: SectionData })
-    | (SearchResultBase & { type: 'crew'; data: CrewMember });
+import {
+    type SearchResult,
+    buildSearchIndex,
+    executeSearch
+} from './SearchEngine';
 
 export class GlobalSearch {
     private modal: HTMLElement | null = null;
@@ -49,7 +32,7 @@ export class GlobalSearch {
 
     constructor() {
         this.loadSearchHistory();
-        this.buildSearchIndex();
+        this.buildIndex();
         this.createModal();
         this.setupKeyboardShortcuts();
         this.setupTriggerButton();
@@ -59,56 +42,8 @@ export class GlobalSearch {
     /**
      * Build search index from all content
      */
-    private buildSearchIndex(): void {
-        this.searchIndex = [];
-
-        // Index blog entries
-        TIMELINE_DATA.entries.forEach(entry => {
-            this.searchIndex.push({
-                type: 'blog',
-                title: entry.title,
-                subtitle: `${entry.date} • ${entry.tags?.slice(0, 2).join(', ') || ''}`,
-                icon: entry.emoji || '📝',
-                data: entry,
-                score: 0
-            });
-        });
-
-        // Index sections
-        const sections = [
-            { id: 'home', title: 'Home', icon: '🌐', description: 'UV7 OS Ecosystem overview' },
-            { id: 'journal', title: 'The Journal', icon: '🗺️', description: 'Development timeline and blog entries' },
-            { id: 'workflow', title: 'Workflow', icon: '⚙️', description: 'Development methodology and tools' },
-            { id: 'spotlight', title: 'Tech Spotlight', icon: '💡', description: 'Technical deep dives and code examples' },
-            { id: 'evolution', title: 'Evolution', icon: '🔄', description: 'V1 to V2 transformation story' },
-            { id: 'experiment', title: 'V3 Experiment', icon: '🧪', description: 'Autonomous AI refactoring experiment' },
-            { id: 'who', title: 'The Crew', icon: '👥', description: 'Meet the AI crew members' }
-        ];
-
-        sections.forEach(section => {
-            this.searchIndex.push({
-                type: 'section',
-                title: section.title,
-                subtitle: section.description,
-                icon: section.icon,
-                data: section,
-                score: 0
-            });
-        });
-
-        // Index crew members
-        UV7_CREW.forEach(member => {
-            this.searchIndex.push({
-                type: 'crew',
-                title: member.name,
-                subtitle: member.greeting || 'UV7 Crew Member',
-                icon: member.icon,
-                data: member,
-                score: 0
-            });
-        });
-
-        Logger.ui(`🔍 Search index built: ${this.searchIndex.length} items`);
+    private buildIndex(): void {
+        this.searchIndex = buildSearchIndex();
     }
 
     /**
@@ -211,88 +146,20 @@ export class GlobalSearch {
      * Perform fuzzy search
      */
     private performSearch(query: string): void {
-        const lowerQuery = query.toLowerCase();
-
         // Easter egg: 848
         if (query === '848') {
             this.showEasterEgg();
             return;
         }
 
-        // Fuzzy match and score
-        this.filteredResults = this.searchIndex
-            .map(item => {
-                const titleMatch = this.fuzzyMatch(item.title.toLowerCase(), lowerQuery);
-                const subtitleMatch = this.fuzzyMatch(item.subtitle.toLowerCase(), lowerQuery);
-
-                // Calculate score
-                let score = 0;
-                if (titleMatch.matched) score += 100 - titleMatch.distance;
-                if (subtitleMatch.matched) score += 50 - subtitleMatch.distance;
-
-                // Boost recent blog entries
-                if (item.type === 'blog' && item.data.sortDate) {
-                    const date = new Date(item.data.sortDate);
-                    const daysSince = (Date.now() - date.getTime()) / (1000 * 60 * 60 * 24);
-                    if (daysSince < 7) score += 20; // Boost recent entries
-                }
-
-                return {
-                    ...item,
-                    score,
-                    titleHighlight: titleMatch.matched ? this.highlightMatches(item.title, titleMatch.indices) : item.title,
-                    subtitleHighlight: subtitleMatch.matched ? this.highlightMatches(item.subtitle, subtitleMatch.indices) : item.subtitle
-                };
-            })
-            .filter(item => item.score > 0)
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 10); // Top 10 results
-
+        // Execute search via SearchEngine
+        this.filteredResults = executeSearch(this.searchIndex, query);
         this.selectedIndex = 0;
         this.renderResults();
 
         // Show search stats
         const elapsed = performance.now() - this.searchStartTime;
         this.updateStats(this.filteredResults.length, elapsed);
-    }
-
-    /**
-     * Fuzzy matching with character highlighting
-     */
-    private fuzzyMatch(text: string, query: string): { matched: boolean; distance: number; indices: number[] } {
-        const indices: number[] = [];
-        let queryIndex = 0;
-        let textIndex = 0;
-
-        while (queryIndex < query.length && textIndex < text.length) {
-            if (query[queryIndex] === text[textIndex]) {
-                indices.push(textIndex);
-                queryIndex++;
-            }
-            textIndex++;
-        }
-
-        const matched = queryIndex === query.length;
-        const distance = matched ? textIndex - queryIndex : Infinity;
-
-        return { matched, distance, indices };
-    }
-
-    /**
-     * Highlight matched characters
-     */
-    private highlightMatches(text: string, indices: number[]): string {
-        if (indices.length === 0) return text;
-
-        let result = '';
-        for (let i = 0; i < text.length; i++) {
-            if (indices.includes(i)) {
-                result += `<mark class="search-highlight">${text[i]}</mark>`;
-            } else {
-                result += text[i];
-            }
-        }
-        return result;
     }
 
     /**

@@ -65,15 +65,16 @@
 }
 
 .hero-banner-title {
-    font-size: 3rem;
-    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
     margin-bottom: 1rem;
+    letter-spacing: -0.02em;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-banner-subtitle {
-    font-size: 1.25rem;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
     font-weight: 300;
     max-width: 600px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -257,7 +258,7 @@
     }
 
     .hero-banner-title {
-        font-size: 2rem;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
     }
 
     .hero-banner-subtitle {
@@ -272,7 +273,7 @@
     }
 
     .hero-banner-title {
-        font-size: 1.5rem;
+        font-size: clamp(1.4rem, 5vw, 1.8rem);
     }
 
     .hero-banner-subtitle {

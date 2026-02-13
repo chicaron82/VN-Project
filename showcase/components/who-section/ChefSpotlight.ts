@@ -252,9 +252,9 @@ export class ChefSpotlight {
 
     private countUp(el: HTMLElement, start: number, end: number, duration: number): void {
         const startTime = performance.now();
-        const format = end >= 1000 ? (n: number) => n.toLocaleString() : (n: number) => String(n);
+        const format = end >= 1000 ? (n: number): string => n.toLocaleString() : (n: number): string => String(n);
 
-        const step = (now: number) => {
+        const step = (now: number): void => {
             const elapsed = now - startTime;
             const progress = Math.min(elapsed / duration, 1);
             // Ease out cubic

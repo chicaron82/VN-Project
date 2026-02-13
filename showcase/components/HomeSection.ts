@@ -56,19 +56,19 @@ export class HomeSection {
                 </div>
                 <img src="media/banners/bg-landing-hero.png" alt="UV7 Header" class="hero-banner-image">
                 <div class="hero-banner-content">
-                    <h1 class="hero-banner-title" style="font-size: clamp(1.2rem, 3.5vw, 2.2rem); line-height: 1.6; max-width: 1000px; margin: 2rem auto 1rem;">
+                    <h1 class="hero-banner-title">
                         I Named a Bunch of AI While Letting My Curiosity Run Wild. I Feel Like I've Levelled Them Up. Wait, Did I Just Become a Demon Lord?
                     </h1>
 
-                    <p class="hero-banner-subtitle" style="font-size: 0.95rem; opacity: 0.7; margin: 0 0 2.5rem; font-style: italic;">
+                    <p class="hero-banner-subtitle hero-subtitle-attribution">
                         — Me, February 2026
                     </p>
 
-                    <p class="hero-banner-subtitle" style="font-size: clamp(1.1rem, 2.5vw, 1.35rem); margin: 0 auto 2.5rem; max-width: 700px;">
+                    <p class="hero-banner-subtitle hero-subtitle-tagline">
                         Days spent cooking things up with 8 AI collaborators
                     </p>
 
-                    <p class="hero-banner-subtitle" style="font-size: 1.1rem; color: rgba(0, 255, 136, 0.7); margin: 0; font-weight: 600;">
+                    <p class="hero-banner-subtitle hero-subtitle-cta">
                         choose your entree ↓
                     </p>
                 </div>
@@ -80,7 +80,7 @@ export class HomeSection {
                 <h2 class="entrees-header">New Entrees Served</h2>
 
                 <!-- Quick Scan Cards -->
-                <div class="card-grid" style="margin: 2rem auto; max-width: 1200px;">
+                <div class="card-grid">
                     <div class="card app-card" data-app="v1">
                         <div class="card-icon">🔥</div>
                         <span class="badge badge-legacy">The Speedrun</span>
@@ -123,7 +123,7 @@ export class HomeSection {
                                 Tori the AI), multiple endings, branching dialogue. 2-3 hour playthrough with custom visual novel
                                 mechanics. Built in 50 days of pure "yes and" energy—chaos, passion, and the council's first masterpiece.
                             </p>
-                            <a href="#" class="demon-lord-link" data-entry="2025-10-26-demon-lord" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; color: rgba(0, 255, 136, 0.9); text-decoration: none; margin: 1rem 0 0; padding: 0.65rem 1.25rem; border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 6px; transition: all 0.3s ease; width: fit-content;">
+                            <a href="#" class="demon-lord-link" data-entry="2025-10-26-demon-lord">
                                 <span class="link-icon">📖</span>
                                 <span>Read: The 30-Day Speedrun — Or, How I Accidentally Became a Demon Lord</span>
                                 <span class="link-arrow">→</span>
@@ -347,7 +347,7 @@ export class HomeSection {
             <!-- CREW ZONE: Council Transmission -->
             <div class="crew-reactions-section">
                 <h3>📬 Council Transmissions // The Named</h3>
-                <p style="text-align: center; max-width: 600px; margin: 0 auto 1.5rem; opacity: 0.7; font-size: 0.95rem;">
+                <p class="crew-section-intro">
                     Each evolved after being named. Each found their own voice.
                 </p>
                 <div class="card-grid" id="crew-reactions-grid">

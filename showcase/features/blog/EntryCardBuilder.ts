@@ -3,6 +3,7 @@
  * Pure DOM generation for timeline entry cards.
  * Extracted from BlogRenderer — zero dependency on renderer state.
  *
+ * Utility functions extracted to EntryCardUtils.ts
  * All functions take data in and return DOM elements out.
  */
 
@@ -10,77 +11,10 @@ import type { BlogEntry, CodeSnippet, Lesson, MetricGroup, QuoteDetail } from '.
 import { markdownToHtml } from './MarkdownParser';
 import { Logger } from '@utils/Logger';
 import { type CodeComparison as UICodeComparison } from '../../types/types';
+import { estimateWordCount, getVibeIndicator, getStatIcon, getContributorSignature } from './EntryCardUtils';
 
-// --- Utility Lookups (Pure Functions) ---
-
-/**
- * Estimate word count for reading time calculation
- */
-export function estimateWordCount(entry: BlogEntry): number {
-    let text = entry.title + ' ' + (entry.summary || '');
-    if (entry.features) text += ' ' + entry.features.join(' ');
-    if (entry.theTimeline) text += ' ' + entry.theTimeline.join(' ');
-    if (entry.quote) text += ' ' + entry.quote;
-    return text.split(/\s+/).length;
-}
-
-/**
- * Determine vibe indicator based on entry tags/type
- */
-export function getVibeIndicator(entry: BlogEntry): { emoji: string; label: string } {
-    const tags = entry.tags || [];
-    const type = entry.type || '';
-
-    // Check for specific keywords in title/summary
-    const content = `${entry.title} ${entry.summary || ''}`.toLowerCase();
-
-    if (content.includes('milestone') || content.includes('achievement') || content.includes('complete')) {
-        return { emoji: '🎯', label: 'Milestone' };
-    }
-    if (content.includes('bug') || content.includes('fix') || content.includes('debug')) {
-        return { emoji: '💀', label: 'Debug Hell' };
-    }
-    if (content.includes('refactor') || content.includes('clean')) {
-        return { emoji: '✨', label: 'Clean Refactor' };
-    }
-    if (content.includes('experiment') || content.includes('trying') || tags.includes('v3-lab')) {
-        return { emoji: '🤔', label: 'Experiment' };
-    }
-    if (type === 'breakthrough' || content.includes('breakthrough')) {
-        return { emoji: '🔥', label: 'Breakthrough' };
-    }
-
-    // Default: Having fun
-    return { emoji: '🎮', label: 'Having Fun' };
-}
-
-/**
- * Get icon for stat type
- */
-export function getStatIcon(statKey: string): string {
-    const icons: Record<string, string> = {
-        linesAdded: '📊',
-        linesChanged: '📝',
-        filesChanged: '📁',
-        testsAdded: '🧪',
-        commits: '💾',
-        duration: '⏱️'
-    };
-    return icons[statKey] || '📊';
-}
-
-/**
- * Get contributor signature/catchphrase
- */
-export function getContributorSignature(modelId: string): string {
-    const signatures: Record<string, string> = {
-        dizee: '<em>Built with precision.</em> — DiZee',
-        belle: '<em>Chef\'s kiss.</em> 💋 — Belle',
-        tori: '<em>Zero regressions.</em> — Tori',
-        genzee: '<em>Vibes are immaculate.</em> — Genzee'
-    };
-    return signatures[modelId] || '';
-}
+// Re-export utilities for backward compatibility
+export { estimateWordCount, getVibeIndicator, getStatIcon, getContributorSignature } from './EntryCardUtils';
 
 // --- DOM Generators ---
 

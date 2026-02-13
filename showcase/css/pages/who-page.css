@@ -18,6 +18,14 @@
     overflow: hidden;
 }
 
+/* Who section intro — slightly wider than base .section-intro */
+.who-section .section-intro {
+    font-size: 1.15rem;
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 3rem;
+}
+
 /* Background Texture/Accents */
 .who-section::before {
     content: '';
@@ -1009,21 +1017,7 @@
     animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* fadeIn and slideUp keyframes: defined in base.css */
 
 .modal-close {
     position: absolute;

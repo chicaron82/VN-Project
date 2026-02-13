@@ -240,23 +240,11 @@ function initTimelineMarkers(): void {
 // 6. CARD HOVER ENHANCEMENTS
 // ==========================================
 
+// Card hovers now handled entirely by CSS (.unified-card:hover, .premium-hover:hover)
+// using the elevation system in colors.css. No more JS inline style conflicts.
+// See: showcase/css/colors.css (--shadow-hover, --ease-bounce, --duration-hover)
 function initCardHovers(): void {
-    if (config.reducedMotion) return;
-
-    const cards = document.querySelectorAll<HTMLElement>('.card, .technical-card, .crew-card');
-
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-8px)';
-            card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = '';
-        });
-    });
-
-    Logger.effect('🎴 Card hovers enhanced');
+    // No-op: card hovers are now CSS-only via the elevation system
 }
 
 // ==========================================
@@ -317,7 +305,7 @@ function init(): void {
     initAnimatedCounters();
     initRippleEffects();
     initTimelineMarkers();
-    initCardHovers();
+    // initCardHovers() — card hovers now CSS-only (elevation system)
     initSmoothScroll();
 
     Logger.effect('✨ Premium animations ready!');

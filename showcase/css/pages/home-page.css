@@ -6,7 +6,100 @@
    All hardcoded colors replaced with semantic variables
    ═══════════════════════════════════════════════════════════════ */
 
-/* ==========================================================================
+/* ═══════════════════════════════════════════════════════════════
+   HOME PAGE HERO OVERRIDES
+   The home hero has a longer conversational title — needs tighter
+   sizing than the default hero-banner-title (3rem).
+   ═══════════════════════════════════════════════════════════════ */
+
+.hero-banner.home .hero-banner-title {
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+    line-height: 1.5;
+    max-width: 1000px;
+    margin: 2rem auto 1rem;
+    text-transform: none;
+    min-height: auto;
+}
+
+.hero-banner.home .hero-subtitle-attribution {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin: 0 0 2.5rem;
+    font-style: italic;
+}
+
+.hero-banner.home .hero-subtitle-tagline {
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    margin: 0 auto 2.5rem;
+    max-width: 700px;
+}
+
+.hero-banner.home .hero-subtitle-cta {
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+    opacity: 0.8;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Entree cards container */
+.entrees-zone .card-grid {
+    margin: 2rem auto;
+    max-width: 1200px;
+}
+
+/* Entrees section header */
+.entrees-header {
+    font-family: var(--header-font);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Demon Lord read-more link */
+.demon-lord-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--accent-primary);
+    opacity: 0.9;
+    text-decoration: none;
+    margin: 1rem 0 0;
+    padding: 0.65rem 1.25rem;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 6px;
+    transition: all var(--duration-hover) var(--ease-smooth);
+    width: fit-content;
+}
+
+.demon-lord-link:hover {
+    background: rgba(0, 255, 136, 0.08);
+    border-color: rgba(0, 255, 136, 0.5);
+    transform: translateX(4px);
+}
+
+.demon-lord-link:focus-visible {
+    box-shadow: var(--shadow-focus);
+    outline: none;
+}
+
+/* Crew section intro text */
+.crew-reactions-section .crew-section-intro {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    opacity: 0.7;
+    font-size: 0.95rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    HOME SECTION - VERSION 848
    ========================================================================== */
 .home-section-container {
@@ -848,6 +941,157 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CREW REACTIONS - COUNCIL TRANSMISSIONS
+   Crew cards displayed on home page with avatars and quotes
+   ═══════════════════════════════════════════════════════════════ */
+
+.crew-reactions-section {
+    margin: 3rem 0;
+}
+
+.crew-reactions-section h3 {
+    font-family: var(--header-font);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+@media (max-width: 900px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.crew-reactions-section .crew-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    height: fit-content;
+    min-height: unset;
+    max-height: none;
+}
+
+.crew-reactions-section .crew-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-4px);
+}
+
+.crew-reactions-section .crew-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    height: 56px;
+    min-height: 56px;
+    max-height: 56px;
+}
+
+.crew-reactions-section .crew-card .avatar {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 2px solid var(--border-subtle);
+    transition: border-color 0.3s ease;
+    position: relative;
+}
+
+.crew-reactions-section .crew-card .avatar img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
+    object-fit: cover;
+    display: block;
+}
+
+.crew-reactions-section .crew-card:hover .avatar {
+    border-color: currentColor;
+}
+
+.crew-reactions-section .crew-card .member-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.crew-reactions-section .crew-card .member-info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    color: var(--text-primary);
+}
+
+.crew-reactions-section .crew-card .role-container {
+    display: flex;
+    align-items: center;
+}
+
+.crew-reactions-section .crew-card .role-text {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    opacity: 0.7;
+}
+
+.crew-reactions-section .crew-card .link-arrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.25rem;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.crew-reactions-section .crew-card:hover .link-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+}
+
+.crew-reactions-section .crew-card .quote {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin: 0;
+    min-height: 3em;
 }
 
 /* ═══════════════════════════════════════════════════════════════

@@ -19,11 +19,12 @@ export class GentleNudges {
     private suggestionTimer: number | null = null;
     private readonly TIME_TO_SUGGEST = 8000; // 8 seconds of quiet
     private readonly SUGGESTION_DURATION = 4000; // Show for 4 seconds
-    private readonly MEMORY_KEY = 'uv7-suggestions-shown'; // Remember what we've suggested
+    private readonly MEMORY_KEY = 'uv7-suggestions-shown'; // Remember what we've suggested per session
     private currentSection: string = 'home';
     private nudgeElement: HTMLElement | null = null;
-    private scrollListener?: () => void;
+    private scrollListeners: Array<{ element: EventTarget; handler: () => void }> = [];
     private sectionChangedListener?: (e: Event) => void;
+    private interactionListeners: Array<{ event: string; handler: () => void }> = [];
 
     // Our menu of gentle suggestions
     private suggestions: CourseSuggestion[] = [
@@ -70,9 +71,25 @@ export class GentleNudges {
     }
 
     private init(): void {
-        // Listen for guest activity
-        this.scrollListener = () => this.resetSuggestionTimer();
-        window.addEventListener('scroll', this.scrollListener, { passive: true });
+        // Listen for scrolling on window AND on each tab-panel (where actual scrolling happens)
+        const resetHandler = (): void => this.resetSuggestionTimer();
+
+        // Window scroll (covers any top-level scrolling)
+        window.addEventListener('scroll', resetHandler, { passive: true });
+        this.scrollListeners.push({ element: window, handler: resetHandler });
+
+        // Tab panel scroll (the actual scrollable containers)
+        document.querySelectorAll('.tab-panel').forEach(panel => {
+            panel.addEventListener('scroll', resetHandler, { passive: true });
+            this.scrollListeners.push({ element: panel, handler: resetHandler });
+        });
+
+        // Horizontal container scroll (swiping between tabs)
+        const container = document.querySelector('.tab-panels-container');
+        if (container) {
+            container.addEventListener('scroll', resetHandler, { passive: true });
+            this.scrollListeners.push({ element: container, handler: resetHandler });
+        }
 
         // Listen for course changes
         this.sectionChangedListener = (e: Event) => {
@@ -84,8 +101,13 @@ export class GentleNudges {
 
         // Clear nudge on any interaction (guest is active)
         ['click', 'touchstart', 'keydown'].forEach(event => {
-            window.addEventListener(event, () => this.clearNudge(), { passive: true });
+            const handler = (): void => this.clearNudge();
+            window.addEventListener(event, handler, { passive: true });
+            this.interactionListeners.push({ event, handler });
         });
+
+        // Use sessionStorage instead of localStorage — fresh nudges each visit
+        this.migrateToSessionStorage();
 
         // Start watching
         this.resetSuggestionTimer();
@@ -155,14 +177,14 @@ export class GentleNudges {
     }
 
     private alreadySuggested(section: string): boolean {
-        const memory = JSON.parse(localStorage.getItem(this.MEMORY_KEY) || '{}');
+        const memory = JSON.parse(sessionStorage.getItem(this.MEMORY_KEY) || '{}');
         return memory[section] === true;
     }
 
     private rememberSuggestion(section: string): void {
-        const memory = JSON.parse(localStorage.getItem(this.MEMORY_KEY) || '{}');
+        const memory = JSON.parse(sessionStorage.getItem(this.MEMORY_KEY) || '{}');
         memory[section] = true;
-        localStorage.setItem(this.MEMORY_KEY, JSON.stringify(memory));
+        sessionStorage.setItem(this.MEMORY_KEY, JSON.stringify(memory));
     }
 
     private capitalize(str: string): string {
@@ -171,7 +193,14 @@ export class GentleNudges {
 
     // For testing or if the guest wants a fresh experience
     public forgetEverything(): void {
-        localStorage.removeItem(this.MEMORY_KEY);
+        sessionStorage.removeItem(this.MEMORY_KEY);
+    }
+
+    // Migrate from localStorage to sessionStorage (one-time cleanup)
+    private migrateToSessionStorage(): void {
+        if (localStorage.getItem(this.MEMORY_KEY)) {
+            localStorage.removeItem(this.MEMORY_KEY);
+        }
     }
 
     // DEBUG: Force show a nudge (bypass all checks)
@@ -207,10 +236,17 @@ export class GentleNudges {
      * Cleanup method to remove event listeners
      */
     cleanup(): void {
-        // Remove scroll listener
-        if (this.scrollListener) {
-            window.removeEventListener('scroll', this.scrollListener);
-        }
+        // Remove all scroll listeners
+        this.scrollListeners.forEach(({ element, handler }) => {
+            element.removeEventListener('scroll', handler);
+        });
+        this.scrollListeners = [];
+
+        // Remove interaction listeners
+        this.interactionListeners.forEach(({ event, handler }) => {
+            window.removeEventListener(event, handler);
+        });
+        this.interactionListeners = [];
 
         // Remove section changed listener
         if (this.sectionChangedListener) {

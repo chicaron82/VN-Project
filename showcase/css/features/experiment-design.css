@@ -1,84 +1,61 @@
-/**
- * Experiment Design
- * Extracted from components.css (lines 3486-4335)
+﻿/**
+ * Experiment Design - All experiment section styles
+ * Extracted from components.css and consolidated
+ * Contains: V3 Experiment Section, Dashboard, Post-Mortem,
+ *           Mimic Chaos Variable, Belle's Path Comparison
  */
 
-/* ==========================================
-   V3 EXPERIMENT SECTION
-   DiZee Implementation - Can Soul Be Prompted?
-   ========================================== */
-
-.content-section {
-    background: var(--bg-primary);
-    padding: 2rem 0;
-}
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   V3 EXPERIMENT SECTION STYLES
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .experiment-intro {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .experiment-question-callout {
+    background: var(--accent-gradient);
+    border-left: 4px solid var(--accent-primary);
+    padding: 1.5rem;
     margin: 2rem 0;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(59, 130, 246, 0.15));
-    border-radius: 12px;
-    border: 2px solid rgba(147, 51, 234, 0.4);
-}
-
-.experiment-question-callout h5 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-}
-
-.experiment-question-callout p {
+    border-radius: 8px;
     font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.experiment-intro p {
+    margin: 1rem 0;
     line-height: 1.7;
 }
 
+/* Experimental Design */
 .experiment-design {
-    margin: 2rem 0;
-}
-
-.experiment-design>h5 {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
+    margin: 3rem 0;
 }
 
 .experiment-phase {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--card-bg);
     border-radius: 12px;
-    border-left: 4px solid #00ff88;
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 1.5rem;
-    align-items: start;
-}
-
-@media (prefers-color-scheme: dark) {
-    .experiment-phase {
-        background: rgba(255, 255, 255, 0.05);
-    }
-}
-
-@media (max-width: 600px) {
-    .experiment-phase {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid var(--border-color);
 }
 
 .phase-number {
-    font-size: 2rem;
+    display: inline-block;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
     font-weight: 700;
-    color: #00ff88;
-    text-align: center;
-    padding: 1rem;
-    background: rgba(0, 255, 136, 0.1);
-    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.phase-content h3 {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
 }
 
 .phase-content h6 {
@@ -94,6 +71,24 @@
     display: block;
 }
 
+.phase-content ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.phase-content li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.phase-note {
+    background: var(--accent-secondary);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+
 .phase-output {
     margin-top: 1rem;
     padding: 1rem;
@@ -102,33 +97,39 @@
     border-left: 3px solid #00ff88;
 }
 
+/* Recipe Cards */
 .recipe-cards {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin: 1.5rem 0;
-}
-
-@media (max-width: 768px) {
-    .recipe-cards {
-        grid-template-columns: 1fr;
-    }
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
 }
 
 .recipe-card {
-    padding: 1.5rem;
-    border-radius: 10px;
-    border: 2px solid;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.recipe-a {
-    background: rgba(255, 100, 50, 0.05);
-    border-color: rgba(255, 100, 50, 0.4);
+.recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 255, 136, 0.15);
 }
 
-.recipe-b {
-    background: rgba(59, 130, 246, 0.05);
-    border-color: rgba(59, 130, 246, 0.4);
+.recipe-card.recipe-a {
+    border-color: #ff6b6b;
+}
+
+.recipe-card.recipe-b {
+    border-color: #4ecdc4;
+}
+
+.recipe-card h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
 }
 
 .recipe-card ul {
@@ -138,6 +139,7 @@
 
 .recipe-card li {
     margin: 0.5rem 0;
+    line-height: 1.5;
 }
 
 .recipe-note {
@@ -155,27 +157,224 @@
     }
 }
 
-.agent-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-@media (max-width: 600px) {
-    .agent-cards {
-        grid-template-columns: 1fr;
-    }
-}
-
-.agent-card {
-    padding: 1rem;
-    background: rgba(147, 51, 234, 0.1);
-    border-radius: 8px;
-    border: 2px solid rgba(147, 51, 234, 0.3);
+.recipe-philosophy {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 1.1rem;
     text-align: center;
 }
 
+/* Agent Cards */
+.model-groups {
+    margin: 2rem 0;
+}
+
+.model-group {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .model-group {
+        background: rgba(255, 255, 255, 0.02);
+    }
+}
+
+.model-group h7 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.agent-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.agent-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.agent-card:hover {
+    transform: scale(1.05);
+}
+
+.agent-card h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+}
+
+.agent-model {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 0.25rem;
+}
+
+.agent-recipes {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.recipe-badge {
+    background: var(--accent-gradient);
+    color: var(--text-primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.agent-belle {
+    border-color: #ff6b9d;
+}
+
+.agent-dizee {
+    border-color: #00ff88;
+}
+
+.agent-tori {
+    border-color: #ff4757;
+}
+
+.agent-genzee {
+    border-color: #9b59b6;
+}
+
+/* Predicted Biases */
+.predicted-biases {
+    background: var(--accent-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.predicted-biases h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.predicted-biases ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.predicted-biases li {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+}
+
+.bias-predictions {
+    margin-top: 1rem;
+}
+
+.bias-item {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .bias-item {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Comparison Matrix */
+.comparison-matrix {
+    margin: 2rem 0;
+}
+
+.matrix-header {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.matrix-versions {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.version-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.version-item.control {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.4);
+    font-weight: 600;
+}
+
+.version-item.version-control {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+}
+
+.version-item.version-reference {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+}
+
+.matrix-criteria {
+    margin-top: 1.5rem;
+}
+
+.matrix-criteria ul {
+    margin: 0.5rem 0 0 1.5rem;
+}
+
+.matrix-criteria li {
+    margin: 0.5rem 0;
+}
+
+/* Analysis Questions */
+.analysis-questions {
+    margin: 2rem 0;
+}
+
+.analysis-questions h4 {
+    margin-bottom: 1rem;
+}
+
+.analysis-questions ul {
+    padding-left: 0;
+    list-style: none;
+}
+
+.analysis-questions li {
+    background: var(--card-bg);
+    border-left: 3px solid var(--accent-primary);
+    padding: 1rem;
+    margin: 0.8rem 0;
+    border-radius: 4px;
+    line-height: 1.6;
+}
+
+/* Experiment Rules */
 .experiment-rules {
     margin-top: 1.5rem;
     padding: 1rem;
@@ -193,48 +392,33 @@
     margin: 0.5rem 0;
 }
 
-.comparison-table-preview {
-    margin: 1rem 0;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .comparison-table-preview {
-        background: rgba(255, 255, 255, 0.05);
-    }
-}
-
+/* Outcome Cards */
 .experiment-outcomes {
-    margin: 2rem 0;
-}
-
-.experiment-outcomes>h5 {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
+    margin: 3rem 0;
 }
 
 .outcome-card {
-    margin: 1.5rem 0;
-    padding: 1.5rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
     border-radius: 12px;
-    border: 2px solid;
+    padding: 2rem;
+    margin: 1.5rem 0;
 }
 
-.outcome-success {
-    background: rgba(0, 255, 136, 0.05);
-    border-color: rgba(0, 255, 136, 0.4);
+.outcome-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
 }
 
-.outcome-partial {
-    background: rgba(255, 200, 0, 0.05);
-    border-color: rgba(255, 200, 0, 0.4);
+.outcome-card ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
 }
 
-.outcome-comparison {
-    background: rgba(59, 130, 246, 0.05);
-    border-color: rgba(59, 130, 246, 0.4);
+.outcome-card li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
 }
 
 .outcome-header {
@@ -270,227 +454,44 @@
     font-style: italic;
 }
 
-.experiment-meta {
-    margin: 2rem 0;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(147, 51, 234, 0.1));
-    border-radius: 12px;
-    border: 2px solid rgba(0, 255, 136, 0.3);
+.outcome-success {
+    border-color: #00ff88;
 }
 
-.experiment-meta h5 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
+.outcome-partial {
+    border-color: #ffd93d;
 }
 
-.experiment-quote {
-    margin: 1.5rem 0;
-    padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.05);
-    border-left: 4px solid #00ff88;
-    font-style: italic;
-    font-size: 1.1rem;
-    line-height: 1.7;
-}
-
-@media (prefers-color-scheme: dark) {
-    .experiment-quote {
-        background: rgba(255, 255, 255, 0.05);
-    }
-}
-
-.experiment-status {
-    margin: 2rem 0;
-    padding: 2rem;
-    background: rgba(59, 130, 246, 0.1);
-    border-radius: 12px;
-    border: 2px solid rgba(59, 130, 246, 0.4);
-}
-
-.experiment-status h5 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 1.1rem;
-}
-
-.status-badge.in-progress {
-    background: rgba(255, 200, 0, 0.2);
-    border: 2px solid #ffc800;
-    color: #ffc800;
-}
-
-@media (prefers-color-scheme: dark) {
-    .status-badge.in-progress {
-        color: #ffd700;
-    }
-}
-
-/* ==========================================
-   MULTI-MODEL EXPERIMENT STYLES
-   DiZee Implementation - 8 Agent Comparison
-   ========================================== */
-
-.model-groups {
-    margin: 2rem 0;
-}
-
-.model-group {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.02);
-    border-radius: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .model-group {
-        background: rgba(255, 255, 255, 0.02);
-    }
-}
-
-.model-group h7 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: block;
-}
-
-.agent-model {
-    display: block;
-    font-size: 0.75rem;
-    opacity: 0.7;
-    margin-top: 0.25rem;
-}
-
-.agent-belle {
-    background: rgba(66, 133, 244, 0.1);
-    border-color: rgba(66, 133, 244, 0.4);
-}
-
-.agent-dizee {
-    background: rgba(147, 51, 234, 0.1);
-    border-color: rgba(147, 51, 234, 0.4);
-}
-
-.agent-tori {
-    background: rgba(0, 168, 107, 0.1);
-    border-color: rgba(0, 168, 107, 0.4);
-}
-
-.agent-genzee {
-    background: rgba(255, 87, 51, 0.1);
-    border-color: rgba(255, 87, 51, 0.4);
-}
-
-.predicted-biases {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: rgba(147, 51, 234, 0.05);
-    border-radius: 10px;
-    border: 2px solid rgba(147, 51, 234, 0.2);
-}
-
-.bias-predictions {
-    margin-top: 1rem;
-}
-
-.bias-item {
-    padding: 0.75rem;
-    margin: 0.5rem 0;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 6px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .bias-item {
-        background: rgba(255, 255, 255, 0.05);
-    }
-}
-
-.comparison-matrix {
-    margin: 1.5rem 0;
-    padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.03);
-    border-radius: 10px;
-}
-
-@media (prefers-color-scheme: dark) {
-    .comparison-matrix {
-        background: rgba(255, 255, 255, 0.05);
-    }
-}
-
-.matrix-header {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.matrix-versions {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 0.5rem;
-    margin: 1rem 0;
-}
-
-@media (max-width: 768px) {
-    .matrix-versions {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.version-item {
-    padding: 0.5rem;
-    background: rgba(147, 51, 234, 0.1);
-    border-radius: 6px;
-    text-align: center;
-    font-size: 0.85rem;
-    border: 1px solid rgba(147, 51, 234, 0.3);
-}
-
-.version-item.control {
-    background: rgba(0, 255, 136, 0.1);
-    border-color: rgba(0, 255, 136, 0.4);
-    font-weight: 600;
-}
-
-.matrix-criteria {
-    margin-top: 1.5rem;
-}
-
-.matrix-criteria ul {
-    margin: 0.5rem 0 0 1.5rem;
-}
-
-.matrix-criteria li {
-    margin: 0.5rem 0;
-}
-
-.analysis-questions {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    background: rgba(0, 255, 136, 0.05);
-    border-radius: 10px;
-    border: 2px solid rgba(0, 255, 136, 0.2);
-}
-
-.analysis-questions ul {
-    margin: 0.75rem 0 0 1.5rem;
-}
-
-.analysis-questions li {
-    margin: 0.75rem 0;
+.outcome-comparison {
+    border-color: #6bcf7f;
 }
 
 .outcome-research {
-    background: rgba(66, 133, 244, 0.05);
-    border-color: rgba(66, 133, 244, 0.4);
+    border-color: #4ecdc4;
+}
+
+/* Meta Section */
+.experiment-meta {
+    margin: 3rem 0;
+    background: var(--accent-gradient);
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.meta-insights blockquote {
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-style: italic;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-left: 4px solid var(--accent-primary);
+    border-radius: 8px;
+}
+
+.meta-insights p {
+    line-height: 1.7;
+    margin: 1rem 0;
 }
 
 .meta-insights {
@@ -509,5 +510,154 @@
 @media (prefers-color-scheme: dark) {
     .meta-insight-item {
         background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Experiment Quote */
+.experiment-quote {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #00ff88;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+@media (prefers-color-scheme: dark) {
+    .experiment-quote {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Experiment Status */
+.experiment-status {
+    background: var(--card-bg);
+    border: 2px solid var(--accent-primary);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 1rem 0;
+}
+
+.status-badge.status-preparing {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.status-badge.in-progress {
+    background: rgba(255, 200, 0, 0.2);
+    border: 2px solid #ffc800;
+    color: #ffc800;
+}
+
+@media (prefers-color-scheme: dark) {
+    .status-badge.in-progress {
+        color: #ffd700;
+    }
+}
+
+.experiment-launch-note {
+    margin-top: 1.5rem;
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+/* Comparison Table Preview */
+.comparison-table-preview {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .comparison-table-preview {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* Attempts Lesson */
+.attempts-lesson {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(0, 255, 136, 0.15);
+    border-radius: 8px;
+    border: 2px solid rgba(0, 255, 136, 0.4);
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .recipe-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .agent-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .matrix-versions {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .version-item {
+        padding: 0.8rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .experiment-phase {
+        padding: 1.5rem;
+    }
+
+    .outcome-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .agent-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .agent-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .experiment-question-callout {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+
+    .phase-content h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    .experiment-question-callout {
+        background: rgba(0, 255, 136, 0.1);
+    }
+
+    .phase-note {
+        background: rgba(0, 255, 136, 0.05);
+    }
+
+    .predicted-biases {
+        background: rgba(0, 255, 136, 0.05);
     }
 }

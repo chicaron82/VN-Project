@@ -192,13 +192,24 @@ export class TabController {
         });
 
         // Scroll to the active panel
+        // Use 'instant' to prevent scroll-snap from catching intermediate panels
         if (this.container) {
             const panelWidth = this.container.clientWidth || window.innerWidth;
             const scrollPosition = currentIndex * panelWidth;
-            
+
+            // Temporarily disable scroll-snap to prevent it fighting the scroll
+            this.container.style.scrollSnapType = 'none';
+
             this.container.scrollTo({
                 left: Math.round(scrollPosition),
-                behavior: 'smooth'
+                behavior: 'instant'
+            });
+
+            // Re-enable scroll-snap after navigation completes
+            requestAnimationFrame(() => {
+                if (this.container) {
+                    this.container.style.scrollSnapType = '';
+                }
             });
         }
     }

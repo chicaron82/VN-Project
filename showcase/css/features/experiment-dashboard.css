@@ -153,11 +153,7 @@
     color: #9ca3af;
 }
 
-@keyframes pulse-rogue {
-    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-    70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
+/* pulse-rogue keyframes: defined in experiment-design.css */
 
 /* Judgement (Director's Cut) */
 .v3-judgement-container {
