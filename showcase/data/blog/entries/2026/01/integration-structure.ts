@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🧩",
             "title": "Integration - Structure",
             "type": "order-entry",
+            "modelId": "belle",
             "summary": "Core systems migrated. EventBus and StateManager stabilizing the timeline. Code reviews glowing. The skeleton was complete, but it lacked a soul.",
             "metrics": {
                 "linesAdded": 2400,

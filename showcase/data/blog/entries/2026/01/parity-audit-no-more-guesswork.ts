@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🕵️",
             "title": "The Parity Audit - No More Guesswork",
             "type": "order-entry",
+            "modelId": "tori",
             "summary": "We stopped guessing and started scanning. Initiated a comprehensive automated audit of the V1 legacy codebase against V2, scanning 77 system files and extracting 589 classes and 58 storage keys.",
             "metrics": {
                 "filesScanned": 77,

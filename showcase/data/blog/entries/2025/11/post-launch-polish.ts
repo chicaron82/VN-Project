@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "✨",
             "title": "Post-Launch Polish Session",
             "type": "polish",
+            "modelId": "zee",
             "summary": "Game complete and functional, but Aaron returns for the details. A 6-hour session tackling 8 features: settings finally wired up, standalone notes viewer, despair's save blocking enhanced, mobile scrolling fixed. Velocity over pedagogy - ship fast, polish thoroughly.",
             "features": [
                 "⚙️ <strong>Settings System Integration:</strong> Text speed (instant/fast/normal/slow) finally functional after finding hardcoded values in TWO locations",

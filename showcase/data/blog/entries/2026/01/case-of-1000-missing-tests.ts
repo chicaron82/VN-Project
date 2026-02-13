@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "💥",
             "title": "The Case of 1000 Missing Tests (They're Not Missing)",
             "type": "chaos",
+            "modelId": "tori",
             "summary": "Stats said '590 tests passing'. Then they all disappeared. Panic ensued. Investigation revealed: tests didn't disappear - TWO test suites were fighting each other. V1 + V2 = Civil War.",
             "features": [
                 "📊 <strong>The Stats:</strong> showcase/stats.json claimed 590 tests passing on Jan 19",

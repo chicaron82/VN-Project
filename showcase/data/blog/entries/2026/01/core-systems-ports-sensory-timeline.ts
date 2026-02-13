@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🧠",
             "title": "Core Systems Ports - Sensory & Timeline",
             "type": "highlight",
+            "modelId": "tori",
             "summary": "Complete faithful port of four critical V1 systems to V2: CollectiblesSystem enhancement, SceneProgressionController, VisualCueSystem, and TimeMachineSystem. Full V1 parity with 75 new tests.",
             "callout": {
                 "icon": "💡",

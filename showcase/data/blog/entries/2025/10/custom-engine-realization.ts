@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🛠️",
             "title": "The Custom Engine Realization",
             "type": "highlight",
+            "modelId": "zee",
             "summary": "No existing VN engine could tell this story. Ren'Py couldn't do real-time tether decay. Twine couldn't handle dual-route bridges. So we built our own engine from scratch, asking 'what does the story NEED?' and implementing it through pure conversation.",
             "features": [
                 "⚡ <strong>Real-Time Tether Decay:</strong> Connection strength tracking with player agency through 'Hold On' button",

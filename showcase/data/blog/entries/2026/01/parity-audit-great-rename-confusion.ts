@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🔄",
             "title": "Parity Audit Chaos: The Great Rename Confusion",
             "type": "chaos",
+            "modelId": "tori",
             "summary": "V1→V2 parity audits kept reporting 47 missing features. Reality: 80% were just renamed. AIs searched for notification-shade-controller.js, found NotificationShade.ts, and concluded it was missing. Explained the same rename 19+ times.",
             "features": [
                 "🚨 <strong>The Report:</strong> 'V1: 150 features, V2: 89 features, Missing: 61 (59% parity)' 🔴",

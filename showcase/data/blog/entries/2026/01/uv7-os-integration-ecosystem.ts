@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🚀",
             "title": "UV7 OS Integration - The Ecosystem",
             "type": "highlight",
+            "modelId": "belle",
             "summary": "Transformed UV7 from a website into a complete operating system. Universal app switcher lets players navigate between Landing, Showcase, V1, and V2 mid-game. iOS-style visual cards with live state tracking.",
             "callout": {
                 "icon": "💡",

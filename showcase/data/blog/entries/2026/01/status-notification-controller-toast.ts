@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "📢",
             "title": "StatusNotificationController - Toast System",
             "type": "order-entry",
+            "modelId": "dizee",
             "summary": "Faithful V1→V2 port of the unified toast notification system. Queue management, priority interruption, and 9 convenience methods for user feedback.",
             "metrics": {
                 "linesAdded": 694,

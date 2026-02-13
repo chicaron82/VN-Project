@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "💎",
             "title": "UV7 OS App Switcher - BOUGIE EDITION",
             "type": "highlight",
+            "modelId": "dizee",
             "summary": "Transformed the UV7 App Switcher from a simple navigation tool into an iOS/Android-style multitasking experience. Cross-app instant resume, swipe-to-clear gestures, Quick Resume badges, live state tracking, ToriGatchi mood integration, and premium UX polish. Unapologetically bougie.",
             "problem": {
                 "description": "The app switcher was functional but basic. No save state visibility, no instant resume, no gesture support. Users had to manually navigate through menus every time they switched apps.",

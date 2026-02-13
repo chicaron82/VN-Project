@@ -8,7 +8,6 @@
  */
 
 import { TIMELINE_DATA, type BlogEntry } from '../../data/blog';
-import { FunMetricsDashboard } from './FunMetricsDashboard';
 import { createEntryElement } from './EntryCardBuilder';
 import { Logger } from '@utils/Logger';
 
@@ -23,11 +22,7 @@ export class BlogRenderer {
     private paginationEnabled: boolean;
 
     // Cache DOM elements
-    private statsContainer: HTMLElement | null;
     private entriesContainer: HTMLElement | null;
-
-    // Phase 2: Stats dashboard
-    private funMetricsDashboard: FunMetricsDashboard | null;
 
     // Signal Animation
     private signalPulse: HTMLElement | null;
@@ -46,11 +41,7 @@ export class BlogRenderer {
         this.paginationEnabled = true; // Enabled by default
 
         // Cache DOM elements
-        this.statsContainer = null;
         this.entriesContainer = null;
-
-        // Phase 2: Stats dashboard
-        this.funMetricsDashboard = null;
 
         // Signal Animation
         this.signalPulse = null;
@@ -72,9 +63,6 @@ export class BlogRenderer {
         // Load Data
         await this.loadTimelineData();
         Logger.ui('[BlogRenderer] Loaded', this.currentEntries.length, 'entries');
-
-        // Phase 2: Render Stats Dashboard
-        this.renderStatsContainer();
 
         this.renderTimeline();
         Logger.ui('[BlogRenderer] Rendered timeline');
@@ -135,29 +123,8 @@ export class BlogRenderer {
         Logger.ui('🍽️ Timeline interactions initialized');
     }
 
-    private renderStatsContainer(): void {
-        // Remove existing stats if any
-        if (this.statsContainer) this.statsContainer.remove();
 
-        // New Fun Metrics Dashboard
-        this.funMetricsDashboard = new FunMetricsDashboard(this.originalEntries);
-        const dashboardEl = this.funMetricsDashboard.render();
 
-        // Create container and inject HTML
-        this.statsContainer = document.createElement('div');
-        this.statsContainer.className = 'timeline-stats-wrapper';
-        this.statsContainer.appendChild(dashboardEl);
-
-        // Insert BEFORE the timeline container
-        if (this.container && this.container.parentNode) {
-            this.container.parentNode.insertBefore(this.statsContainer, this.container);
-        } else {
-            // Fallback
-            this.container?.insertBefore(this.statsContainer, this.container.firstChild);
-        }
-
-        Logger.ui('📊 [Phase 2] Fun Stats dashboard rendered');
-    }
 
 
 
@@ -177,13 +144,61 @@ export class BlogRenderer {
 
     // --- CORE LOGIC ---
 
-    private applyLogic(): void {
-        // Filter out V3 lab entries (project history only)
-        const filtered = this.originalEntries
-            .filter(p => !p.isV3Entry)
-            .sort((a, b) => (b.sortDate || '').localeCompare(a.sortDate || ''));
+    /** Active filter — null means "show all" */
+    private activeFilter: string | null = null;
 
+    private applyLogic(): void {
+        let filtered = this.originalEntries.slice();
+
+        // Apply category/crew filter
+        if (this.activeFilter) {
+            filtered = this.applyFilter(filtered, this.activeFilter);
+        }
+
+        filtered.sort((a, b) => (b.sortDate || '').localeCompare(a.sortDate || ''));
         this.currentEntries = filtered;
+    }
+
+    private applyFilter(entries: BlogEntry[], filter: string): BlogEntry[] {
+        switch (filter) {
+            case 'milestones':
+                return entries.filter(e => {
+                    const content = `${e.title} ${e.summary || ''} ${e.type || ''}`.toLowerCase();
+                    return content.includes('milestone') || content.includes('achievement') || content.includes('complete');
+                });
+            case 'debug':
+                return entries.filter(e => {
+                    const content = `${e.title} ${e.summary || ''} ${e.type || ''}`.toLowerCase();
+                    return content.includes('bug') || content.includes('fix') || content.includes('debug') || content.includes('chaos');
+                });
+            case 'refactors':
+                return entries.filter(e => {
+                    const content = `${e.title} ${e.summary || ''} ${e.type || ''}`.toLowerCase();
+                    return content.includes('refactor') || content.includes('clean') || content.includes('polish');
+                });
+            case 'experiment':
+                return entries.filter(e => !!e.isV3Entry);
+            default:
+                // Crew filter (modelId match)
+                return entries.filter(e => e.modelId === filter);
+        }
+    }
+
+    /**
+     * Public API: filter entries by category or crew modelId.
+     * Pass null to reset to "All".
+     */
+    filterBy(filter: string | null): void {
+        this.activeFilter = filter;
+        this.visibleCount = this.pageSize;
+        this.paginationEnabled = true;
+        this.applyLogic();
+        this.renderTimeline();
+    }
+
+    /** Expose entries for external consumers (e.g. filter bar counts) */
+    getOriginalEntries(): BlogEntry[] {
+        return this.originalEntries;
     }
 
     // --- RENDERING ---

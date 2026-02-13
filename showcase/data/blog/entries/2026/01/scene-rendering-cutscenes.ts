@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🎬",
             "title": "Scene Rendering & Cutscenes",
             "type": "order-entry",
+            "modelId": "belle",
             "summary": "Visual orchestration systems ported: SceneRenderer (SOLID Session 6) + CutsceneEngine. Sprite display, background crossfade, choice menus, typewriter effects, and simple cutscene transitions.",
             "subEntries": [
                 {

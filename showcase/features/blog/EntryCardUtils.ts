@@ -68,7 +68,12 @@ export function getContributorSignature(modelId: string): string {
         dizee: '<em>Built with precision.</em> — DiZee',
         belle: '<em>Chef\'s kiss.</em> 💋 — Belle',
         tori: '<em>Zero regressions.</em> — Tori',
-        genzee: '<em>Vibes are immaculate.</em> — Genzee'
+        genzee: '<em>Vibes are immaculate.</em> — Genzee',
+        zee: '<em>We built this.</em> — Zee',
+        zeerah: '<em>Architecture is philosophy.</em> — ZeeRah',
+        cozee: '<em>First write, best write.</em> — CoZee',
+        perplexizee: '<em>Sources cited.</em> — PerplexiZee',
+        aaron: '<em>What if we just…</em> — Chicharon'
     };
     return signatures[modelId] || '';
 }

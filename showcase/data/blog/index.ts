@@ -100,6 +100,9 @@ import { entry as entry94 } from './entries/2025/10/demon-lord-naming';
 import { entry as entry95 } from './entries/2025/10/applebees-tether-system';
 import { entry as entry96 } from './entries/2025/10/custom-engine-realization';
 
+// V3 Lab entries — merged into main journal timeline
+import { entries as labEntries } from '../lab-entries';
+
 export * from './types';
 import type { BlogEntry } from './types';
 
@@ -201,7 +204,9 @@ export const timelineData: BlogEntry[] = [
     entry93,
     entry94,
     entry95,
-    entry96
+    entry96,
+    // V3 Lab experiment entries (merged into journal timeline)
+    ...labEntries
 ];
 
 export const TIMELINE_DATA = {

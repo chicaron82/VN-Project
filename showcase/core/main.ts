@@ -40,6 +40,7 @@ import { BlogParallax } from '../features/blog/BlogParallax';
 import { BlogBackgrounds } from '../features/blog/BlogBackgrounds';
 import { BlogHaptics } from '../features/blog/BlogHaptics';
 import { BlogMeta } from '../features/blog/BlogMeta';
+import { JournalFilterBar } from '../features/blog/JournalFilterBar';
 import { GlobalSearch } from '../features/GlobalSearch';
 import { GentleNudges } from '../controllers/GentleNudges';
 import { BougieTracker } from '../controllers/BougieTracker';
@@ -195,8 +196,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Blog enhancements query those entries, so they must come AFTER.
 
     // Initialize BlogRenderer (Journal tab) - creates timeline entries in DOM
-    new BlogRenderer('#timeline-container');
+    const blogRenderer = new BlogRenderer('#timeline-container');
     Logger.system('✅ Blog renderer initialized');
+
+    // Journal filter bar — bougie chip strip with crew portraits + category pills
+    const filterBar = new JournalFilterBar(
+        '#journal-filter-mount',
+        blogRenderer.getOriginalEntries(),
+        (filter) => blogRenderer.filterBy(filter)
+    );
+    filterBar.applyUrlFilter();
+    Logger.system('✅ Journal filter bar initialized');
 
     // Blog enhancements (all use deferred patterns: event delegation, IntersectionObserver, RAF)
     const blogDeepLink = new BlogDeepLink();

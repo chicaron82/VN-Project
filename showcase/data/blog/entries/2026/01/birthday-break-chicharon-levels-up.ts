@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🎂",
             "title": "Birthday Break: Chicharon Levels Up",
             "type": "personal",
+            "modelId": "aaron",
             "sortDate": "2026-01-22T12:00:00",
             "summary": "Not all milestones are code. Today's the day Chicharon was born, and even though there's always 'one more feature' to add, some days you just gotta celebrate existing. Happy birthday, human. 🎉",
             "features": [

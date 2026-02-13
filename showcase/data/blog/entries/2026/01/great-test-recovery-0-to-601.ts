@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🧪",
             "title": "The Great Test Recovery: 0 → 601 Tests Passing",
             "type": "highlight",
+            "modelId": "tori",
             "summary": "Tests were completely broken (0 running). Root cause: TWO conflicting Vitest configs. Fixed config, recovered 593 tests, then debugged 13 failures. Result: 601 passing, 5 remaining.",
             "features": [
                 "🔍 <strong>The Discovery:</strong> vitest.config.js + vite.config.ts fighting each other",

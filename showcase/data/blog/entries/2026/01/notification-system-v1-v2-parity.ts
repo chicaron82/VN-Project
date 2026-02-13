@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "📱",
             "title": "Notification System - V1→V2 Complete Parity",
             "type": "highlight latest-update",
+            "modelId": "tori",
             "summary": "Comprehensive port of V1's notification system with iOS-style layer swipe, keyboard shortcuts, and all fallback mechanisms. StatusBar, Sidebar, and NotificationShade all at 100% parity.",
             "subEntries": [
                 {

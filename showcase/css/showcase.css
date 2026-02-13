@@ -91,7 +91,8 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* Stats dashboard: fun metrics, contribution graphs */
-@import url('blog-stats.css');
+/* blog-stats.css removed — FunMetricsDashboard replaced by JournalFilterBar */
+@import url('journal-filter-bar.css');
 
 /* Global search: search everywhere (blog, sections, crew) */
 @import url('global-search.css');

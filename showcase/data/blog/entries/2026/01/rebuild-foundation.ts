@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
             "emoji": "🏗️",
             "title": "The Rebuild - Foundation",
             "type": "order-entry",
+            "modelId": "belle",
             "summary": "Decision: Start fresh. TypeScript, EventBus, StateManager. Taking everything learned from the V1 chaos and building it right from scratch with strict architectural principles.",
             "features": [
                 "📡 <strong>EventBus:</strong> Centralized event system for decoupled communication",

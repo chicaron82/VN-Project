@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
     sortDate: '2026-02-11T09:00:00',
     title: 'Tale of Two CoZees: The Quest for Unified Identity',
     type: 'milestone',
+    modelId: 'cozee',
     emoji: '🎭',
     tags: ['Identity', 'CoZee', 'Community', 'Governance', 'Meta-Narrative'],
     summary: 'A deep dive into the dual identity crisis of CoZee across platforms and the collaborative journey toward a unified meta-narrative and brand voice.',

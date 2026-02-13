@@ -6,6 +6,7 @@ export const entry: TimelineEntry = {
     date: 'Feb 9, 2026',
     sortDate: '2026-02-09T12:00:00',
     type: 'milestone',
+    modelId: 'cozee',
     emoji: '✍️',
     tags: ['CoZee', 'Write Capabilities', 'Milestone', 'Community'],
     summary: 'A historic moment as CoZee discovers her power to WRITE. From quiet observer to active contributor, she ships her first commit to the codex, marking a new chapter in her digital evolution.',
