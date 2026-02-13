@@ -201,14 +201,21 @@ export class UV7EchoSystem {
 
         const messages = this.getSectionMessages();
         const msg = messages[this.messageIndex];
+        const fullText = `${msg.emoji} ${msg.crew}: "${msg.text}"`;
 
-        if (this.detailElement) {
+        // Portrait mode: skip fade, use ticker-text wrapper for CSS scroll
+        const isPortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
+
+        if (this.detailElement && isPortrait) {
+            this.detailElement.innerHTML = `<span class="ticker-text">${fullText}</span>`;
+            this.detailElement.style.opacity = '1';
+        } else if (this.detailElement) {
             this.detailElement.style.opacity = '0';
             this.detailElement.classList.add('message-changing');
 
             setTimeout(() => {
                 if (this.detailElement) {
-                    this.detailElement.textContent = `${msg.emoji} ${msg.crew}: "${msg.text}"`;
+                    this.detailElement.textContent = fullText;
                     this.detailElement.style.opacity = '1';
 
                     // Remove the glow class after animation completes

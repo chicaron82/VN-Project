@@ -93,6 +93,37 @@ export class SystemBannerController {
         this.renderAppIndicators();
         this.wireKeyboardShortcuts();
         this.startStatusUpdates();
+        this.renderPortraitHint();
+    }
+
+    /**
+     * Show a one-time "Tap ⚡ to switch apps" hint on portrait
+     * Dismisses on tap, auto-fades after 8s, persisted via localStorage
+     */
+    private renderPortraitHint(): void {
+        if (!this.bannerElement) return;
+        if (localStorage.getItem('uv7-banner-hint-dismissed')) return;
+
+        const sysLeft = this.bannerElement.querySelector('.sys-left');
+        if (!sysLeft) return;
+
+        const hint = document.createElement('span');
+        hint.className = 'banner-app-hint';
+        hint.textContent = '↑ TAP LOGO TO SWITCH APPS';
+        hint.setAttribute('role', 'status');
+
+        const dismiss = (): void => {
+            hint.classList.add('dismissed');
+            localStorage.setItem('uv7-banner-hint-dismissed', '1');
+            setTimeout(() => hint.remove(), 300);
+        };
+
+        hint.addEventListener('click', dismiss);
+
+        // Auto-dismiss after 8 seconds
+        setTimeout(dismiss, 8000);
+
+        sysLeft.after(hint);
     }
 
     /**

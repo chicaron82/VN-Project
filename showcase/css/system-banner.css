@@ -186,6 +186,107 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   PORTRAIT MODE — Stock Ticker Banner
+   Hide app dots, scroll echo text like a ticker
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) and (orientation: portrait) {
+    /* Hide app indicator dots entirely */
+    .sys-apps {
+        display: none !important;
+    }
+
+    /* Ticker container — fixed width, clips overflow */
+    .system-banner .sys-right {
+        flex: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            black 8%,
+            black 92%,
+            transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+            to right,
+            transparent 0%,
+            black 8%,
+            black 92%,
+            transparent 100%
+        );
+    }
+
+    /* Ticker text — scrolls left */
+    .system-banner .sys-right .ticker-text {
+        display: inline-block;
+        animation: banner-ticker 12s linear infinite;
+        padding-left: 100%;
+    }
+
+    /* Pause ticker on hover/focus */
+    .system-banner .sys-right:hover .ticker-text,
+    .system-banner .sys-right:focus-within .ticker-text {
+        animation-play-state: paused;
+    }
+}
+
+@keyframes banner-ticker {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Accessibility: kill ticker for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+    .system-banner .sys-right .ticker-text {
+        animation: none !important;
+        padding-left: 0 !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   APP SWITCHER HINT (Portrait only, one-time)
+   Points users to the status bar logo
+   ═══════════════════════════════════════════════════════════════ */
+
+.banner-app-hint {
+    display: none;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    .banner-app-hint {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 0.5rem;
+        padding: 1px 6px;
+        background: rgba(0, 255, 136, 0.1);
+        border: 1px solid rgba(0, 255, 136, 0.25);
+        border-radius: 3px;
+        font-size: 9px;
+        color: rgba(0, 255, 136, 0.8);
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        animation: hint-pulse 2s ease-in-out 3;
+        transition: opacity 0.3s ease;
+    }
+
+    .banner-app-hint.dismissed {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+@keyframes hint-pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; border-color: rgba(0, 255, 136, 0.5); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    PREVIEW CARDS (Desktop Only)
    ═══════════════════════════════════════════════════════════════ */
 
