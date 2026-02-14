@@ -68,32 +68,34 @@
    ECHO SPRITE GROUP (TORI ROUTE)
    Three separate sprites: Echo 1, Echo 2, Despair
    Sprites are 1024x1536 (2:3 ratio).
-   With background-size: contain, containers must be wide
-   enough that the width constraint produces the target height.
-   At 85% viewport height, needed width = 85vh / 1.5 ≈ 32% vw.
+   With background-size:contain, each container must be wide
+   enough that width is NOT the constraining dimension.
+   For full height (85vh on 16:9): need ≥ 85vh/1.5 ≈ 32vw per sprite.
+   Using absolute positioning with overlap for the clustered look.
+   Group=70vw, each sprite=46% of group = ~32.2vw. ✓
    ======================================== */
 
 .echo-group {
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 55%;
+    width: 70%;
     height: 85%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: 0;
     z-index: 40;
     pointer-events: none;
     transition: opacity 0.5s ease-in-out;
 }
 
 .echo-sprite {
+    position: absolute;
+    bottom: 0;
+    width: 46%;
+    height: 100%;
     background-size: contain;
     background-position: bottom center;
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    transition: opacity 0.3s ease, filter 0.3s ease, height 0.8s ease, width 0.8s ease, transform 1.5s ease-in-out;
+    transition: opacity 0.3s ease, filter 0.3s ease, height 0.8s ease, transform 1.5s ease-in-out;
 }
 
 /* Dim echo when not speaking */
@@ -101,19 +103,17 @@
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.5);
 }
 
-/* Base echo sizes — wide enough for contain to produce full height */
-#echo-1-sprite,
-#echo-2-sprite,
-#despair-sprite {
-    width: 35%;
-    height: 100%;
-    flex-shrink: 0;
-    margin-left: -5%;
+/* Position each echo — overlapping cluster, anchored right */
+#echo-1-sprite {
+    right: 52%;
 }
 
-/* First sprite has no overlap margin */
-#echo-1-sprite {
-    margin-left: 0;
+#echo-2-sprite {
+    right: 26%;
+}
+
+#despair-sprite {
+    right: 0;
 }
 
 /* ========================================
@@ -211,8 +211,7 @@
     }
 
     .echo-group {
-        width: 60%;
-        right: 0;
+        width: 75%;
     }
 }
 
@@ -229,10 +228,9 @@
     }
 
     .echo-group {
-        width: 80%;
+        width: 90%;
         height: 60%;
         bottom: 30vh !important;
-        right: 0;
     }
 }
 
@@ -247,9 +245,8 @@
     }
 
     .echo-group {
-        width: 50%;
+        width: 65%;
         height: 80%;
-        right: 0;
     }
 }
 
@@ -264,7 +261,6 @@
     }
 
     .echo-group {
-        width: 50%;
-        max-width: 900px;
+        width: 60%;
     }
 }
