@@ -1,18 +1,26 @@
 import { GameEngine } from './GameEngine';
 import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
+import type { BootstrapTracker } from '@systems/BootstrapTracker';
 import type { Scene } from './types';
 
 describe('GameEngine', () => {
     let engine: GameEngine;
     let eventBus: EventBus;
     let stateManager: StateManager;
+    let mockBootstrapTracker: BootstrapTracker;
 
     beforeEach(() => {
         eventBus = new EventBus();
         stateManager = new StateManager();
+        mockBootstrapTracker = {
+            getCurrentAttempt: vi.fn().mockReturnValue(848),
+            getHistory: vi.fn().mockReturnValue([]),
+            showTimelineModal: vi.fn(),
+            reset: vi.fn(),
+        } as unknown as BootstrapTracker;
 
-        engine = new GameEngine(eventBus, stateManager);
+        engine = new GameEngine(eventBus, stateManager, mockBootstrapTracker);
     });
 
     it('should initialize', async () => {

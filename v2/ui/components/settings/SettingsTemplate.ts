@@ -356,7 +356,7 @@ export function createSettingsDOM(): HTMLElement {
                         <p class="codes-intro">Enter secret codes found in notes and lore.</p>
 
                         <div class="code-input-group">
-                            <input type="text" id="secret-code-input" placeholder="Enter code here...">
+                            <input type="text" id="secret-code-input" placeholder="Enter code here..." autocomplete="off">
                             <button id="submit-code-btn" class="action-btn">REDEEM CODE</button>
                         </div>
 

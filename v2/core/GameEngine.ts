@@ -2,10 +2,7 @@ import type { EventBus } from './EventBus';
 import type { StateManager } from './StateManager';
 import { GameConfig } from './GameConfig';
 import { Logger } from '@utils/Logger';
-import { BootstrapTracker } from '@systems/BootstrapTracker';
-import { SecretCodesSystem } from '@systems/SecretCodesSystem';
-import { DevCommentarySystem } from '@systems/DevCommentarySystem';
-import { AchievementSystem } from '@systems/AchievementSystem';
+import type { BootstrapTracker } from '@systems/BootstrapTracker';
 import { BacklogManager } from './BacklogManager';
 import type { Scene, SceneId } from './types';
 
@@ -129,29 +126,22 @@ export class GameEngine {
     private currentScene: Scene | null = null;
     private isInitialized: boolean = false;
 
-    // Systems
+    // Systems (injected — single instances owned by SystemInitializer)
     public bootstrapTracker: BootstrapTracker;
-    public secretCodesSystem: SecretCodesSystem;
-    public devCommentarySystem: DevCommentarySystem;
-    public achievementSystem: AchievementSystem;
     public backlogManager: BacklogManager;
 
     constructor(
         eventBus: EventBus,
-        stateManager: StateManager
+        stateManager: StateManager,
+        bootstrapTracker: BootstrapTracker
     ) {
         this.eventBus = eventBus;
         this.stateManager = stateManager;
         this.scenes = new Map();
 
-        // Initialize Core Systems
-        this.bootstrapTracker = new BootstrapTracker(stateManager);
-        this.devCommentarySystem = new DevCommentarySystem(eventBus, stateManager);
-        this.achievementSystem = new AchievementSystem(eventBus, stateManager);
+        // Injected systems (single source of truth — no duplicates)
+        this.bootstrapTracker = bootstrapTracker;
         this.backlogManager = new BacklogManager(eventBus, stateManager);
-
-        // SecretCodesSystem depends on others
-        this.secretCodesSystem = new SecretCodesSystem(eventBus, stateManager, this.bootstrapTracker, this.devCommentarySystem);
 
         // Listen for dialog advancement
         this.eventBus.on('dialog:advance', () => this.advanceScene());

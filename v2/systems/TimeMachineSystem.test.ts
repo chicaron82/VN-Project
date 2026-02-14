@@ -22,7 +22,12 @@ describe('TimeMachineSystem', () => {
     beforeEach(() => {
         eventBus = new EventBus();
         stateManager = new StateManager(eventBus);
-        engine = new GameEngine(eventBus, stateManager);
+        engine = new GameEngine(eventBus, stateManager, {
+            getCurrentAttempt: () => 848,
+            getHistory: () => [],
+            showTimelineModal: () => {},
+            reset: () => {},
+        } as any);
         timeMachine = new TimeMachineSystem(eventBus, stateManager, engine, {
             maxEntries: 10, // Small for testing
             pruneStrategy: 'smart'

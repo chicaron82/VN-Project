@@ -143,7 +143,10 @@ export class SystemInitializer {
 
         const hapticSystem = new HapticSystem(eventBus, settingsSystem);
 
-        const gameEngine = new GameEngine(eventBus, stateManager);
+        // BootstrapTracker must be created BEFORE GameEngine (injected dependency)
+        const bootstrapTracker = new BootstrapTracker(stateManager);
+
+        const gameEngine = new GameEngine(eventBus, stateManager, bootstrapTracker);
         const contentLoader = new ContentLoader(gameEngine);
 
         // ============================================
@@ -225,9 +228,8 @@ export class SystemInitializer {
 
         const spriteController = new SpriteController(eventBus, stateManager);
 
-        const bootstrapTracker = new BootstrapTracker(stateManager); // Needed for SecretCodesSystem
         // Secret Codes & Collectibles (Initialize BEFORE UI components that depend on them)
-        const secretCodesSystem = new SecretCodesSystem(eventBus, stateManager, bootstrapTracker);
+        const secretCodesSystem = new SecretCodesSystem(eventBus, stateManager, bootstrapTracker, devCommentarySystem);
         const collectiblesSystem = new CollectiblesSystem(eventBus);
 
         // ============================================

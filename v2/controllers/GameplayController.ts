@@ -212,7 +212,7 @@ export class GameplayController {
 
         // Create choice container
         const choiceContainer = document.createElement('div');
-        choiceContainer.id = 'choice-container';
+        choiceContainer.id = 'choices-container';
         choiceContainer.style.cssText = `
             position: absolute;
             bottom: 20%;

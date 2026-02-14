@@ -67,7 +67,6 @@ const {
 
 declare global {
     interface Window {
-        game: unknown;
         collectiblesSystem: unknown;
         saveSystem: unknown;
     }
@@ -156,7 +155,7 @@ const systemEventHandlers = new SystemEventHandlers(
 
 // Setup gameplay start event handlers (navigation handlers are in NavigationController)
 function setupGameplayHandlers(): void {
-    eventBus.on('ui:start_game', (data: { route: 'ronnie' | 'tori' | 'prologue' }) => {
+    eventBus.on('ui:start_game', (data: { route: 'ronnie' | 'tori' }) => {
         startGameplay(data.route);
     });
 

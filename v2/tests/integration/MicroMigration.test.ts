@@ -34,7 +34,12 @@ describe('Micro-Migration Integration', () => {
 
         hapticSystem = new HapticSystem(eventBus, settingsSystem);
         saveSystem = new SaveSystem(stateManager, eventBus);
-        engine = new GameEngine(eventBus, stateManager);
+        engine = new GameEngine(eventBus, stateManager, {
+            getCurrentAttempt: () => 848,
+            getHistory: () => [],
+            showTimelineModal: () => {},
+            reset: () => {},
+        } as any);
     });
 
     it('should verify the full lifecycle of the migration scene', async () => {
