@@ -2,6 +2,12 @@ import type { EventBus } from '@core/EventBus';
 import type { StateManager } from '@core/StateManager';
 import { Logger } from '@utils/Logger';
 
+import type { SaveData, GameInstance, NoteDiscoveryData, SaveSlotInfo } from './SaveManagerTypes';
+import { restoreGameState as _restoreGameState } from './SaveManagerRestore';
+
+// Re-export types for backward compatibility
+export type { SaveData } from './SaveManagerTypes';
+
 /**
  * SaveManager - Browser localStorage save/load system
  * V1 Parity Port from save-manager.js (594 lines)
@@ -12,101 +18,14 @@ import { Logger } from '@utils/Logger';
  * - Auto-save on major story beats
  * - Save file validation and corruption handling
  *
- * Save Data Includes:
- * - Current route and act
- * - Scene position and page index
- * - All story flags (choices made)
- * - Tether level (if applicable)
- * - Difficulty mode
- * - Unlocked features (skip, codes discovered)
- *
- * Save Restrictions:
- * - Act 1 saves disabled by default (tutorial)
- * - Can enable via secret code: saveanywhere
+ * DECOMPOSED: Types      → SaveManagerTypes.ts
+ *             Restore    → SaveManagerRestore.ts
+ *             Orchestrator → this file
  *
  * CRITICAL DEPENDENCY: AutoSaveManager relies on this
  *
  * 848 is sacred. 💚🔥💀
  */
-
-// ========================================
-// TYPES & INTERFACES
-// ========================================
-
-export interface SaveData {
-    version: string; // Living version number - loop iteration
-    loopStatus: 'attempting' | 'succeeded' | 'accepted';
-    timestamp: string; // ISO timestamp
-    routeName: 'ronnie' | 'tori';
-    customLabel: string | null;
-    currentSceneId: string | null;
-    gameState: GameState;
-    routeData: RouteData;
-}
-
-interface GameState {
-    flags: Record<string, boolean | number | string>;
-    progress?: {
-        currentScene?: string;
-        [key: string]: unknown;
-    };
-    [key: string]: unknown;
-}
-
-interface RouteData {
-    tetherLevel?: number;
-    trueRoutePoints?: number;
-    badRoutePoints?: number;
-    digitalForeverPoints?: number;
-    collectedNotes?: string[];
-    progressMarkers?: Record<string, boolean>;
-    flags?: Record<string, boolean | number | string>;
-    [key: string]: unknown;
-}
-
-interface NoteDiscoveryData {
-    seenNotes: Record<string, boolean>;
-    noteCodeDrops: Record<string, string>;
-    collectedNotes: string[];
-}
-
-interface SaveSlotInfo {
-    exists: boolean;
-    saveData?: SaveData;
-    displayText?: string;
-}
-
-// Game interface (minimal for type safety)
-interface GameInstance {
-    loopVersion: number;
-    loopStatus: 'attempting' | 'succeeded' | 'accepted';
-    currentRoute: RouteInstance | null;
-    gameState: GameState;
-    echoMemory?: {
-        recordSave(): void;
-        recordLoad(): void;
-    };
-    collectiblesManager?: {
-        seenNotes: Record<string, boolean>;
-        noteCodeDrops: Record<string, string>;
-        collectedNotes: Set<string>;
-        totalNotes: number;
-    };
-    saveLoadUI?: HTMLElement;
-    holdOnButton?: HTMLElement;
-    triggerSensoryFeedback?: (type: string, target: HTMLElement | null, message: string) => void;
-    displayScene?: (sceneId: string) => void;
-}
-
-interface RouteInstance {
-    name: string;
-    getState?: () => RouteData;
-    restoreState?: (data: RouteData) => void;
-    start?: () => void;
-    updateTether?: (level: number) => void;
-    collectedNotes?: Record<string, string[]>;
-    [key: string]: unknown; // For scene methods
-}
 
 export class SaveManager {
     private game: GameInstance;
@@ -235,7 +154,6 @@ export class SaveManager {
             customLabel: customLabel || null,
 
             // Get the current scene ID from the game engine
-            // NOTE: displayScene() stores this in gameState.progress.currentScene
             currentSceneId: this.game.gameState.progress?.currentScene || null,
 
             // Get global game state (flags, etc.)
@@ -370,199 +288,14 @@ export class SaveManager {
 
     /**
      * Restore game state from save data
-     * V1 Parity: Complete restoration of all systems
+     * Delegates to SaveManagerRestore for the heavy lifting
      */
     public restoreGameState(saveData: SaveData): void {
-        Logger.save('🔄 Restoring game state from save...');
-
-        // Restore loop version (LIVING VERSION)
-        if (saveData.version) {
-            this.game.loopVersion = parseInt(saveData.version);
-        }
-
-        // Restore loop status
-        if (saveData.loopStatus) {
-            this.game.loopStatus = saveData.loopStatus;
-        }
-
-        // Restore game state (flags, etc.)
-        this.game.gameState = saveData.gameState;
-
-        // Hide save/load UI
-        if (this.game.saveLoadUI) {
-            this.game.saveLoadUI.style.display = 'none';
-        }
-
-        // Hide route selection
-        const routeSelect = document.getElementById('route-select');
-        if (routeSelect) routeSelect.style.display = 'none';
-
-        // Show game UI
-        const gameUI = document.getElementById('game-ui');
-        if (gameUI) gameUI.style.display = 'block';
-
-        // Initialize the route
-        let route: RouteInstance | null = null;
-        if (saveData.routeName === 'ronnie') {
-            // Initialize Ronnie's route
-            // Note: Route initialization will be handled by game engine
-            Logger.save('💙 Loading Ronnie route...');
-
-            // Show hold-on button if available
-            if (this.game.holdOnButton) {
-                this.game.holdOnButton.style.display = 'block';
-            }
-        } else {
-            // Initialize Tori's route
-            Logger.save('🖤 Loading Tori route...');
-        }
-
-        // Get the route instance (will be set by game engine)
-        route = this.game.currentRoute;
-
-        // Apply insane mode visuals if active
-        if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
-            const gameContainer = document.getElementById('game-container');
-            if (gameContainer) {
-                gameContainer.classList.add('insane-mode');
-            }
-        }
-
-        // Restore route-specific data
-        if (route && route.restoreState && typeof route.restoreState === 'function') {
-            route.restoreState(saveData.routeData);
-        } else {
-            // Legacy fallback
-            this.restoreRouteDataLegacy(saveData.routeData);
-        }
-
-        // Jump to the saved scene
-        if (saveData.currentSceneId && route) {
-            this.jumpToScene(route, saveData.currentSceneId);
-        } else {
-            // No scene ID - start from beginning
-            if (route && route.start && typeof route.start === 'function') {
-                route.start();
-            }
-        }
-
-        // Restore note discovery data
-        const discoveryData = this.loadNoteDiscovery(null, false); // Load from same slot
-        if (discoveryData && this.game.collectiblesManager) {
-            this.game.collectiblesManager.seenNotes = discoveryData.seenNotes;
-            this.game.collectiblesManager.noteCodeDrops = discoveryData.noteCodeDrops;
-            this.game.collectiblesManager.collectedNotes = new Set(discoveryData.collectedNotes);
-        }
-
-        Logger.save('✅ Game state restored');
-    }
-
-    /**
-     * Jump to a specific scene
-     * V1 Parity: Scene jumping functionality
-     */
-    private jumpToScene(route: RouteInstance, sceneId: string): void {
-        Logger.save(`🎬 Jumping to scene: ${sceneId}`);
-
-        // Robust scene ID validation
-        // Check if scene exists as a method on the route
-        if (route[sceneId]) {
-            const sceneFunction = route[sceneId];
-
-            // Additional guard: Ensure it's actually a function
-            if (typeof sceneFunction === 'function') {
-                try {
-                    // Use game engine's displayScene if available
-                    if (this.game.displayScene) {
-                        this.game.displayScene(sceneId);
-                    } else {
-                        // Fallback: Call scene directly
-                        (sceneFunction as () => void).call(route);
-                    }
-                } catch (error) {
-                    Logger.error(`Failed to jump to scene ${sceneId}:`, error);
-                    // Fallback: Start route from beginning
-                    if (route.start && typeof route.start === 'function') {
-                        route.start();
-                    }
-                }
-            }
-        } else {
-            Logger.warn(`Scene ${sceneId} not found on route, starting from beginning`);
-            if (route.start && typeof route.start === 'function') {
-                route.start();
-            }
-        }
-    }
-
-    /**
-     * Legacy route data restoration
-     * V1 Parity: Fallback for routes without restoreState()
-     */
-    private restoreRouteDataLegacy(routeData: RouteData): void {
-        const route = this.game.currentRoute;
-
-        if (!route || !routeData) return;
-
-        if (route.name === 'ToriRoute') {
-            if (routeData.tetherLevel !== undefined) {
-                // Restore tether level
-                if (route.updateTether) {
-                    route.updateTether(routeData.tetherLevel);
-                }
-            }
-            if (routeData.trueRoutePoints !== undefined) {
-                (route as unknown as Record<string, number>).trueRoutePoints = routeData.trueRoutePoints;
-            }
-            if (routeData.badRoutePoints !== undefined) {
-                (route as unknown as Record<string, number>).badRoutePoints = routeData.badRoutePoints;
-            }
-            if (routeData.digitalForeverPoints !== undefined) {
-                (route as unknown as Record<string, number>).digitalForeverPoints = routeData.digitalForeverPoints;
-            }
-            if (routeData.collectedNotes) {
-                this.restoreCollectedNotes(route, routeData.collectedNotes);
-            }
-        }
-
-        if (route.name === 'RonnieRoute') {
-            if (routeData.progressMarkers) {
-                (route as unknown as Record<string, Record<string, boolean>>).progressMarkers = routeData.progressMarkers;
-            }
-        }
-    }
-
-    /**
-     * Restore collected notes
-     * V1 Parity: Reconstructs note collection state
-     */
-    private restoreCollectedNotes(route: RouteInstance, noteIds: string[]): void {
-        if (!route.collectedNotes || !Array.isArray(noteIds)) return;
-
-        // Note structure is expected to be: { noteId: '...' }
-        for (const noteId of noteIds) {
-            // Try to find the note definition (type would be in note metadata)
-            // This is a simplified restoration - V1 has more complex logic
-            if (route.collectedNotes) {
-                // Create type categories if they don't exist
-                Object.keys(route.collectedNotes).forEach(type => {
-                    if (!route.collectedNotes![type]) {
-                        route.collectedNotes![type] = [];
-                    }
-                    if (!route.collectedNotes![type].includes(noteId)) {
-                        route.collectedNotes![type].push(noteId);
-                    }
-                });
-            }
-        }
-
-        // Update notes count display
-        if (this.game.collectiblesManager) {
-            const totalCollected = noteIds.length;
-            const totalNotes = this.game.collectiblesManager.totalNotes;
-            // UI update would be handled by collectibles manager
-            Logger.save(`📧 Restored ${totalCollected}/${totalNotes} notes`);
-        }
+        _restoreGameState(
+            this.game,
+            saveData,
+            () => this.loadNoteDiscovery(null, false),
+        );
     }
 
     // ========================================
