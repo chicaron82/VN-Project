@@ -1794,7 +1794,6 @@ class GameEngine {
         // If no background specified, keep previous background (currentBackground stays same)
 
         // Handle special styling (preserve route, prologue, epilogue classes!)
-        // Handle special styling (preserve route, prologue, epilogue classes!)
         // First, get current special classes
         if (this.dialogueBox) {
             const routeClass = this.dialogueBox.classList.contains('ronnie-route') ? 'ronnie-route' :

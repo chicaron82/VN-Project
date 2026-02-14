@@ -180,7 +180,6 @@ class MenuController {
     handleSplashSkip() {
         console.log('GameEngine: Splash skip detected');
         this.game.splashSkipped = true;
-        window.splashSkippedByUser = true; // Set global flag for preload to check
 
         // Cancel any pending proceedToMenu timeout
         if (this.game.proceedToMenuTimeout) {

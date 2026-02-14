@@ -306,10 +306,6 @@ class CollectiblesManager {
 
     initializeRouteNotes() {
         // Override this per route to define available notes
-        // Example structure:
-        // this.allNotes = {
-        //     'gz1': { type: 'gz', title: 'Note Title', content: 'Note content...' }
-        // };
     }
 
     // ========================================

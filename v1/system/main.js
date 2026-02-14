@@ -54,7 +54,6 @@ import './accessibility-manager.js';
 import './swipe-handler.js';
 import './analytics.js';
 import './bootstrap-tracker.js';
-import './accessibility.js';
 import './mobile-ux.js';
 
 // Achievement system

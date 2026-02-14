@@ -70,5 +70,4 @@
 @import 'css/mobile-polish.css';
 /* Mobile optimizations */
 
-/* Also import the unified route select */
-@import 'route-select-unified.css';
+/* Route select styles loaded via <link> in index.html */

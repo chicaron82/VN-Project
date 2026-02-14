@@ -2003,9 +2003,6 @@
                 console.log('📊 Boot sequence linked to game engine for dynamic stats');
             }
 
-            // Initialize dev console (mobile debugging)
-
-
             // Initialize Dev Suite v2.0 (full debugging interface)
             if (typeof DevSuite !== 'undefined') {
                 game.devSuite = new DevSuite(game);
@@ -2055,10 +2052,6 @@
             }
         });
     </script>
-
-    <!-- V1 Telemetry Infrastructure -->
-    <script src="system/telemetry-shim.js"></script>
-    <script src="system/macro-driver.js"></script>
 
     <!-- UV7 OS App Switcher -->
     <script src="../assets/uv7-app-switcher.js"></script>
