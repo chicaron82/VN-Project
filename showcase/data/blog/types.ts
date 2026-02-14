@@ -218,6 +218,20 @@ export interface BlogEntry {
     futureWork?: string[];
     status?: 'completed' | 'in-progress' | 'blocked' | 'planned';
     blockedReason?: string;
+
+    // Detailed blog entry sections
+    details?: Array<{
+        title: string;
+        points: string[];
+    }>;
+    achievements?: Array<{
+        icon: string;
+        title: string;
+        description: string;
+    }>;
+    codeSnippets?: CodeSnippet[];
+    collaborators?: string[];
+    flavor?: string;
 }
 
 // Alias for backward compatibility

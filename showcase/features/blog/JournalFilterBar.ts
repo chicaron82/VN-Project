@@ -12,6 +12,7 @@
 
 import type { BlogEntry } from '../../data/blog';
 import { Logger } from '@utils/Logger';
+import { extractContributorIds } from './EntryCardUtils';
 
 /** Category filter definition */
 interface FilterCategory {
@@ -105,6 +106,51 @@ export class JournalFilterBar {
         this.entries = entries;
         this.onFilter = onFilter;
         this.render();
+        this.setupExternalFilterListener();
+    }
+
+    /**
+     * Listen for external filter requests (from portrait clicks in entry cards)
+     */
+    private setupExternalFilterListener(): void {
+        window.addEventListener('uv7:filter:crew', ((e: CustomEvent<{ chefId: string }>) => {
+            const { chefId } = e.detail;
+            this.filterByChef(chefId);
+        }) as EventListener);
+    }
+
+    /**
+     * Programmatically filter by chef ID (called from portrait clicks)
+     */
+    filterByChef(chefId: string): void {
+        if (!this.barElement) return;
+
+        // Find the crew chip button for this chef
+        const btn = this.barElement.querySelector(`[data-filter="${chefId}"]`) as HTMLButtonElement | null;
+
+        if (btn) {
+            // Use existing handleFilterClick to maintain state consistency
+            this.handleFilterClick(chefId, btn);
+        } else {
+            // Chef exists in entries but not enough to show in filter bar
+            // Still filter, just won't highlight a button
+            this.activeFilter = chefId;
+            this.onFilter(chefId);
+
+            // Update URL
+            const url = new URL(window.location.href);
+            url.searchParams.set('filter', chefId);
+            window.history.replaceState({}, '', url.toString());
+
+            // Clear all active states since this chef isn't in the bar
+            this.barElement.querySelectorAll('.filter-pill, .filter-crew-chip').forEach(el => {
+                el.classList.remove('active');
+                el.setAttribute('aria-checked', 'false');
+            });
+        }
+
+        // Scroll to top of journal for better UX
+        this.mount?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     private render(): void {
@@ -225,9 +271,12 @@ export class JournalFilterBar {
 
     private buildCrewChips(): CrewChip[] {
         const crewCounts: Record<string, number> = {};
+
+        // Count ALL contributors from each entry (not just modelId)
         for (const entry of this.entries) {
-            if (entry.modelId) {
-                crewCounts[entry.modelId] = (crewCounts[entry.modelId] || 0) + 1;
+            const contributorIds = extractContributorIds(entry);
+            for (const id of contributorIds) {
+                crewCounts[id] = (crewCounts[id] || 0) + 1;
             }
         }
 

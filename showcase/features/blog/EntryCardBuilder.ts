@@ -11,10 +11,145 @@ import type { BlogEntry, CodeSnippet, Lesson, MetricGroup, QuoteDetail } from '.
 import { markdownToHtml } from './MarkdownParser';
 import { Logger } from '@utils/Logger';
 import { type CodeComparison as UICodeComparison } from '../../types/types';
-import { estimateWordCount, getVibeIndicator, getStatIcon, getContributorSignature } from './EntryCardUtils';
+import {
+    estimateWordCount,
+    getVibeIndicator,
+    getStatIcon,
+    getContributorSignature,
+    getContributorInfos,
+    type ContributorInfo
+} from './EntryCardUtils';
 
 // Re-export utilities for backward compatibility
-export { estimateWordCount, getVibeIndicator, getStatIcon, getContributorSignature } from './EntryCardUtils';
+export { estimateWordCount, getVibeIndicator, getStatIcon, getContributorSignature, getContributorInfos } from './EntryCardUtils';
+
+// --- Contributor Portrait Strip ---
+
+/**
+ * Render multi-portrait strip with hover tooltips and click-to-filter.
+ * Shows up to maxCount portraits with "+N" overflow indicator.
+ */
+function renderContributorStrip(contributors: ContributorInfo[], overflow: string[]): string {
+    const portraits = contributors.map((c, i) => {
+        // Truncate role for tooltip (max 50 chars)
+        const roleText = c.role ? ` • ${c.role.slice(0, 50)}${c.role.length > 50 ? '...' : ''}` : '';
+        const tooltipText = `${c.name}${roleText}`;
+
+        // Primary author gets a ring in their signature color
+        const primaryClass = c.isPrimary ? 'is-primary' : '';
+        const animDelay = i * 50; // Staggered entrance
+
+        return `
+            <button
+                class="contributor-portrait ${primaryClass}"
+                data-chef-id="${c.id}"
+                title="${tooltipText}"
+                aria-label="Filter by ${c.name}"
+                style="--chef-color: ${c.color}; --anim-delay: ${animDelay}ms;"
+            >
+                <img src="${c.portrait}" alt="${c.name}" loading="lazy" />
+            </button>
+        `;
+    }).join('');
+
+    // Overflow indicator with tooltip listing remaining names
+    const overflowHtml = overflow.length > 0
+        ? `<span class="contributor-overflow" title="+${overflow.length}: ${overflow.join(', ')}">+${overflow.length}</span>`
+        : '';
+
+    return `
+        <div class="contributor-strip">
+            ${portraits}
+            ${overflowHtml}
+        </div>
+    `;
+}
+
+// Inject contributor strip styles (once)
+const CONTRIBUTOR_STYLES = `
+.contributor-strip {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.contributor-portrait {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    animation: portrait-fade-in 0.3s ease forwards;
+    animation-delay: var(--anim-delay, 0ms);
+    opacity: 0;
+    overflow: hidden;
+}
+
+@keyframes portrait-fade-in {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.contributor-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.contributor-portrait:hover {
+    border-color: var(--chef-color, #00ff88);
+    box-shadow: 0 0 8px var(--chef-color, #00ff88);
+    transform: scale(1.15);
+    z-index: 2;
+}
+
+.contributor-portrait.is-primary {
+    width: 40px;
+    height: 40px;
+    border-color: var(--chef-color, #00ff88);
+    box-shadow: 0 0 4px var(--chef-color, #00ff88);
+}
+
+.contributor-overflow {
+    font-size: 0.75rem;
+    color: #888;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    cursor: default;
+    margin-left: 2px;
+}
+
+.contributor-overflow:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Active filter echo - when a chef filter is active, highlight their portraits */
+.blog-entry[data-active-filter] .contributor-portrait[data-chef-id] {
+    opacity: 0.5;
+}
+.blog-entry[data-active-filter] .contributor-portrait.is-filtered {
+    opacity: 1;
+    border-color: var(--chef-color);
+    box-shadow: 0 0 6px var(--chef-color);
+}
+`;
+
+// Inject styles once on module load
+if (typeof document !== 'undefined') {
+    const styleId = 'contributor-strip-styles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = CONTRIBUTOR_STYLES;
+        document.head.appendChild(style);
+    }
+}
 
 // --- DOM Generators ---
 
@@ -144,28 +279,25 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
 
     // --- Header & Metadata ---
     const authorInfo = fragment.querySelector('.blog-author-info')!;
-    if (entry.modelId) {
-        const names: Record<string, string> = {
-            belle: 'Belle', dizee: 'DiZee', tori: 'Tori', genzee: 'Genzee',
-            zee: 'Zee', zeerah: 'ZeeRah', cozee: 'CoZee', perplexizee: 'PerplexiZee',
-            aaron: 'Aaron \"Chicharon\"'
-        };
-        const avatars: Record<string, string> = {
-            belle: '../assets/iz-portrait.png',
-            dizee: '../assets/dz-portrait.png',
-            tori: '../assets/tori-portrait.png',
-            genzee: '../assets/gz-portrait.png',
-            zee: '../assets/z-portrait.png',
-            zeerah: '../assets/zr-portrait.png',
-            cozee: '../assets/cz-portrait.png',
-            perplexizee: '../assets/pz-portrait.png',
-            aaron: '../assets/creator-portrait.png'
-        };
-        const avatarPath = avatars[entry.modelId];
-        const authorName = names[entry.modelId] || entry.modelId;
-        authorInfo.innerHTML = avatarPath
-            ? `<img src="${avatarPath}" class="blog-avatar" alt="${authorName}" /><span class="blog-author-name">${authorName}</span>`
-            : `<span class="blog-author-name">🤖 ${authorName}</span>`;
+    const { contributors, overflow } = getContributorInfos(entry, 4);
+
+    if (contributors.length > 0) {
+        // Build multi-portrait strip with hover tooltips and click-to-filter
+        authorInfo.innerHTML = renderContributorStrip(contributors, overflow);
+
+        // Wire up click handlers for filtering
+        authorInfo.querySelectorAll('.contributor-portrait').forEach((el) => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const chefId = (el as HTMLElement).dataset.chefId;
+                if (chefId) {
+                    // Dispatch custom event for JournalFilterBar to catch
+                    window.dispatchEvent(new CustomEvent('uv7:filter:crew', {
+                        detail: { chefId }
+                    }));
+                }
+            });
+        });
     }
 
     const metadata = fragment.querySelector('.blog-metadata')!;

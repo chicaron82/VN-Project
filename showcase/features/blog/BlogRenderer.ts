@@ -9,6 +9,7 @@
 
 import { TIMELINE_DATA, type BlogEntry } from '../../data/blog';
 import { createEntryElement } from './EntryCardBuilder';
+import { extractContributorIds } from './EntryCardUtils';
 import { Logger } from '@utils/Logger';
 
 export class BlogRenderer {
@@ -179,8 +180,11 @@ export class BlogRenderer {
             case 'experiment':
                 return entries.filter(e => !!e.isV3Entry);
             default:
-                // Crew filter (modelId match)
-                return entries.filter(e => e.modelId === filter);
+                // Crew filter - check ALL contributors (not just modelId)
+                return entries.filter(e => {
+                    const contributorIds = extractContributorIds(e);
+                    return contributorIds.includes(filter);
+                });
         }
     }
 
