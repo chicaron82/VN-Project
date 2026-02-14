@@ -1,7 +1,6 @@
 import type { EventBus, GameEvents } from '../../core/EventBus';
 import { Logger } from '@utils/Logger';
 import {
-    PRIORITY_COLORS,
     DEFAULT_DURATIONS
 } from '@core/NotificationSystem/NotificationCore';
 
