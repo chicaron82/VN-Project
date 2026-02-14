@@ -5,6 +5,8 @@
 **Developer**: Aaron (chicaron82)  
 **AI Pair Programmer**: DiZee  
 
+> **⚠️ NOTE FOR FUTURE AI SESSIONS:** This journal is a historical artifact from the early V1 SOLID refactor (Dec 2025). It stopped being updated after session 117. **All blog entries now live in `showcase/data/blog/entries/`** as TypeScript files, wired through `showcase/data/blog/index.ts`. See `showcase/data/blog/README.md` for the entry template and instructions.
+
 ---
 
 ## Overview
