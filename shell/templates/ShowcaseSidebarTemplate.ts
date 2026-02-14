@@ -123,6 +123,59 @@ export function generateShowcaseSidebarContent(): string {
 }
 
 /**
+ * Close the sidebar properly, including grab handle repositioning.
+ * Works in both shell mode (parent frame) and standalone mode.
+ */
+function closeSidebarProperly(): void {
+    // Try UV7System's closeSidebar (handles grab handle automatically)
+    const shell = (window as unknown as { uv7Shell?: { system?: { closeSidebar: () => void } } }).uv7Shell;
+    if (shell?.system?.closeSidebar) {
+        shell.system.closeSidebar();
+        return;
+    }
+
+    // Fallback: manual close with grab handle reset
+    const sidebar = document.getElementById('uv7-sidebar');
+    const backdrop = document.getElementById('uv7-backdrop');
+    const toggle = document.getElementById('uv7-sidebar-toggle');
+
+    if (sidebar) sidebar.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('visible');
+    document.body.classList.remove('uv7-no-scroll');
+
+    // Reset grab handle position (otherwise it floats at sidebar-open offset)
+    if (toggle) {
+        const isRightSide = sidebar?.classList.contains('right-side');
+        if (isRightSide) {
+            toggle.style.right = '0';
+            toggle.style.left = 'auto';
+        } else {
+            toggle.style.left = '0';
+            toggle.style.right = 'auto';
+        }
+    }
+}
+
+/**
+ * Navigate to a showcase tab. Works in both shell mode (via postMessage
+ * to showcase iframe) and standalone mode (direct tabController access).
+ */
+function navigateToShowcaseTab(tab: string): void {
+    // Standalone mode: tabController exists in this window
+    const tabCtrl = (window as unknown as { tabController?: { navigateToTab: (tab: string) => void } }).tabController;
+    if (tabCtrl) {
+        tabCtrl.navigateToTab(tab);
+        return;
+    }
+
+    // Shell mode: tabController lives inside the showcase iframe
+    const iframe = document.getElementById('showcase-iframe') as HTMLIFrameElement | null;
+    if (iframe?.contentWindow) {
+        iframe.contentWindow.postMessage({ type: 'uv7:navigate-tab', tab }, '*');
+    }
+}
+
+/**
  * Initialize showcase sidebar event listeners
  * Called after sidebar is rendered
  */
@@ -138,10 +191,7 @@ export function initShowcaseSidebarListeners(): void {
             } else if (action === 'launch-v2') {
                 window.location.hash = '#/v2';
             } else if (action === 'go-home') {
-                const tabController = (window as unknown as { tabController?: { setActiveTab: (tab: string) => void } }).tabController;
-                if (tabController) {
-                    tabController.setActiveTab('home');
-                }
+                navigateToShowcaseTab('home');
             } else if (action === 'toggle-theme') {
                 // Use shared ThemeManager for proper theme handling
                 import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
@@ -156,10 +206,7 @@ export function initShowcaseSidebarListeners(): void {
             }
 
             // Close sidebar after action (except theme toggle)
-            const sidebar = document.getElementById('uv7-sidebar');
-            const backdrop = document.getElementById('uv7-backdrop');
-            if (sidebar) sidebar.classList.remove('open');
-            if (backdrop) backdrop.classList.remove('visible');
+            closeSidebarProperly();
         });
     });
 
@@ -167,16 +214,12 @@ export function initShowcaseSidebarListeners(): void {
     document.querySelectorAll('.section-nav-item').forEach((btn) => {
         btn.addEventListener('click', () => {
             const tab = btn.getAttribute('data-tab');
-            const tabCtrl = (window as unknown as { tabController?: { setActiveTab: (tab: string) => void } }).tabController;
-            if (tabCtrl && tab) {
-                tabCtrl.setActiveTab(tab);
+            if (tab) {
+                navigateToShowcaseTab(tab);
             }
 
             // Close sidebar after navigation
-            const sidebar = document.getElementById('uv7-sidebar');
-            const backdrop = document.getElementById('uv7-backdrop');
-            if (sidebar) sidebar.classList.remove('open');
-            if (backdrop) backdrop.classList.remove('visible');
+            closeSidebarProperly();
         });
     });
 }

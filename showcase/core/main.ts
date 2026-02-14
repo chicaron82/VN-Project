@@ -95,6 +95,35 @@ window.UV7System = {
 
 // Home interactions moved to HomeInteractionController.ts (194 lines extracted)
 
+/**
+ * Close sidebar properly with grab handle position reset.
+ * Standalone mode helper - prevents grab handle from floating
+ * after sidebar closes (the inline style.left/right must be reset).
+ */
+function closeSidebarWithGrabHandleReset(): void {
+    const sidebar = document.getElementById('uv7-sidebar');
+    const backdrop = document.getElementById('uv7-backdrop');
+    const toggle = document.getElementById('uv7-sidebar-toggle');
+
+    if (!sidebar?.classList.contains('open')) return;
+
+    sidebar.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('visible');
+    document.body.classList.remove('uv7-no-scroll');
+
+    // Reset grab handle to edge (inline styles override CSS sibling selectors)
+    if (toggle) {
+        const isRightSide = sidebar.classList.contains('right-side');
+        if (isRightSide) {
+            toggle.style.right = '0';
+            toggle.style.left = 'auto';
+        } else {
+            toggle.style.left = '0';
+            toggle.style.right = 'auto';
+        }
+    }
+}
+
 // Initialize showcase components on DOM ready
 document.addEventListener('DOMContentLoaded', async () => {
     Logger.system('🚀 Initializing showcase components...');
@@ -168,6 +197,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize Tab Navigation
     const tabController = new TabController();
     window.tabController = tabController; // Expose for legacy compatibility
+
+    // Listen for navigation messages from parent shell (iframe mode)
+    // When the showcase runs inside the shell iframe, the parent sidebar
+    // sends postMessage to navigate tabs since tabController is iframe-local
+    if (isInShell) {
+        window.addEventListener('message', (e) => {
+            if (e.data?.type === 'uv7:navigate-tab' && e.data.tab) {
+                tabController.navigateToTab(e.data.tab);
+            }
+        });
+        Logger.system('✅ Listening for shell navigation messages');
+    }
 
     // Initialize section renderers (these inject HTML into mount points)
     new HomeSection();
@@ -366,14 +407,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
             }
 
-            // Close sidebar after any action
-            const sidebar = document.getElementById('uv7-sidebar');
-            const backdrop = document.getElementById('uv7-backdrop');
-            if (sidebar && sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-                backdrop?.classList.remove('visible');
-                document.body.classList.remove('uv7-no-scroll');
-            }
+            // Close sidebar after any action (with grab handle reset)
+            closeSidebarWithGrabHandleReset();
         });
     });
 
@@ -393,14 +428,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const tab = item.getAttribute('data-tab');
             if (tab && window.tabController) {
                 window.tabController.navigateToTab(tab);
-                // Close sidebar after navigation
-                const sidebar = document.getElementById('uv7-sidebar');
-                const backdrop = document.getElementById('uv7-backdrop');
-                if (sidebar && sidebar.classList.contains('open')) {
-                    sidebar.classList.remove('open');
-                    backdrop?.classList.remove('visible');
-                    document.body.classList.remove('uv7-no-scroll');
-                }
+                // Close sidebar after navigation (with grab handle reset)
+                closeSidebarWithGrabHandleReset();
             }
         });
     });
