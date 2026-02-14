@@ -35,6 +35,7 @@ interface ShellElements {
     statusContext: HTMLElement | null;
     shade: HTMLElement | null;
     sidebar: HTMLElement | null;
+    sidebarToggle: HTMLElement | null;
     backdrop: HTMLElement | null;
     appSwitcher: HTMLElement | null;
     appCardsGrid: HTMLElement | null;
@@ -218,6 +219,7 @@ export class UV7Shell {
             statusContext: document.getElementById('uv7-context'),
             shade: document.getElementById('uv7-shade'),
             sidebar: document.getElementById('uv7-sidebar'),
+            sidebarToggle: document.getElementById('uv7-sidebar-toggle'),
             backdrop: document.getElementById('uv7-backdrop'),
             appSwitcher: document.getElementById('uv7-app-switcher'),
             appCardsGrid: document.getElementById('app-cards-grid')
@@ -307,6 +309,7 @@ export class UV7Shell {
                         // Restore all shell chrome
                         if (this.elements.statusBar) this.elements.statusBar.style.display = '';
                         if (this.elements.sidebar) this.elements.sidebar.style.display = '';
+                        if (this.elements.sidebarToggle) this.elements.sidebarToggle.style.display = '';
                         if (this.elements.shade) this.elements.shade.style.display = '';
 
                         // Restore viewport to below status bar
@@ -361,6 +364,7 @@ export class UV7Shell {
                     // Hide all shell chrome: status bar, sidebar, shade
                     if (this.elements.statusBar) this.elements.statusBar.style.display = 'none';
                     if (this.elements.sidebar) this.elements.sidebar.style.display = 'none';
+                    if (this.elements.sidebarToggle) this.elements.sidebarToggle.style.display = 'none';
                     if (this.elements.shade) this.elements.shade.style.display = 'none';
 
                     // Expand viewport to full screen
