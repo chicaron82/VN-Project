@@ -21,8 +21,8 @@ describe('BougieTracker', () => {
     });
 
     it('should display time with restaurant-themed flair', () => {
-        // Set "now" to a few days after the last enhancement
-        vi.setSystemTime(new Date('2026-02-09T12:00:00'));
+        // Set "now" to a few days after the last enhancement (Feb 13, 2026)
+        vi.setSystemTime(new Date('2026-02-17T12:00:00'));
         const tracker = new BougieTracker();
         vi.advanceTimersByTime(100);
 
@@ -34,8 +34,8 @@ describe('BougieTracker', () => {
     });
 
     it('should show hours format when less than a day', () => {
-        // Set to 12 hours after enhancement
-        vi.setSystemTime(new Date('2026-02-06T12:00:00'));
+        // Set to 12 hours after enhancement (Feb 13, 2026 22:00)
+        vi.setSystemTime(new Date('2026-02-14T10:00:00'));
         const tracker = new BougieTracker();
         vi.advanceTimersByTime(100);
 
@@ -47,7 +47,7 @@ describe('BougieTracker', () => {
     });
 
     it('should update every second', () => {
-        vi.setSystemTime(new Date('2026-02-09T12:00:00'));
+        vi.setSystemTime(new Date('2026-02-17T12:00:00'));
         const tracker = new BougieTracker();
         vi.advanceTimersByTime(100); // init
 
@@ -64,7 +64,7 @@ describe('BougieTracker', () => {
     });
 
     it('should stop updating after destroy', () => {
-        vi.setSystemTime(new Date('2026-02-09T12:00:00'));
+        vi.setSystemTime(new Date('2026-02-17T12:00:00'));
         const tracker = new BougieTracker();
         vi.advanceTimersByTime(100);
 
