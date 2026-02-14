@@ -979,3 +979,34 @@ body {
     box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
     transform: translateY(-2px);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   MARKDOWN TABLES (rendered from blog entry content)
+   ═══════════════════════════════════════════════════════════ */
+
+.md-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+}
+
+.md-table th,
+.md-table td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.md-table th {
+    color: #00ff88;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.md-table tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}

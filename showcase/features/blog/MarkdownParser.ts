@@ -26,6 +26,29 @@ export function markdownToHtml(markdown: unknown): string {
         return `<pre><code class="language-${lang || 'plaintext'}">${escapeHtml(code.trim())}</code></pre>`;
     });
 
+    // Tables (| col | col | ... with |---|---| separator)
+    html = html.replace(/(?:^|\n)((?:\|[^\n]+\|\n)+)/g, (_match, tableBlock: string) => {
+        const rows = tableBlock.trim().split('\n').filter(r => r.trim());
+        if (rows.length < 2) return tableBlock;
+
+        // Check for separator row (|---|---|)
+        const sepIndex = rows.findIndex(r => /^\|[\s\-:|]+\|$/.test(r.trim()));
+        if (sepIndex < 1) return tableBlock;
+
+        const parseRow = (row: string): string[] =>
+            row.split('|').slice(1, -1).map(cell => cell.trim());
+
+        const headerCells = parseRow(rows[sepIndex - 1]);
+        const thead = `<thead><tr>${headerCells.map(c => `<th>${c}</th>`).join('')}</tr></thead>`;
+
+        const bodyRows = rows.slice(sepIndex + 1);
+        const tbody = bodyRows.length
+            ? `<tbody>${bodyRows.map(r => `<tr>${parseRow(r).map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`
+            : '';
+
+        return `<table class="md-table">${thead}${tbody}</table>`;
+    });
+
     // Inline code (`code`)
     html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
