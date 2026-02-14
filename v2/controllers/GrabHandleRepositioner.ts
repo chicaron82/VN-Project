@@ -416,13 +416,6 @@ export class GrabHandleRepositioner {
     // SIDEBAR INTEGRATION
     // ========================================
 
-    private toggleSidebar(): void {
-        // Emit event to toggle sidebar
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- event not in typed GameEvents map
-        (this.eventBus as any).emit('ui:sidebar_toggle', {});
-        Logger.ui('[GrabHandle] 👆 Tap-to-toggle sidebar');
-    }
-
     private flipSide(): void {
         this.position.side = this.position.side === 'left' ? 'right' : 'left';
         this.applyPosition();

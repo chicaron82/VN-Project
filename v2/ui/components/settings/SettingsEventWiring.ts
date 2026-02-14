@@ -174,6 +174,8 @@ export function wireSettingsEvents(container: HTMLElement, actions: SettingsActi
 
     codeInput?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && codeInput.value.trim()) {
+            e.preventDefault();
+            e.stopPropagation();
             actions.submitSecretCode(codeInput.value.trim());
             codeInput.value = '';
         }

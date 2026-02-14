@@ -397,6 +397,7 @@ devhelp - Show this help
 
             // Success Feedback
             this.showCodeSuccess();
+            this.updateCodesUI(); // Refresh discovered codes list
             this.eventBus.emit('visual:cue', { type: 'success', channel: 'ui' });
             this.eventBus.emit('tether:boost', { amount: 5 }); // Tiny boost for fun
         } else {
@@ -461,6 +462,32 @@ devhelp - Show this help
      */
     public hasDiscoveredCode(code: string): boolean {
         return this.discoveredCodes.has(code.toLowerCase());
+    }
+
+    /**
+     * Update the codes UI in the settings panel
+     * Called when settings modal opens to refresh discovered codes display
+     */
+    public updateCodesUI(): void {
+        const codesList = document.getElementById('codes-list');
+        const codesCount = document.getElementById('codes-count');
+
+        if (codesList) {
+            const html = this.renderDiscoveredCodesHTML();
+            codesList.innerHTML = html || '<p class="no-codes">No codes discovered yet...</p>';
+
+            // Wire click handlers for discovered codes
+            codesList.querySelectorAll('[data-code]').forEach(el => {
+                el.addEventListener('click', () => {
+                    const code = (el as HTMLElement).dataset.code;
+                    if (code) this.showCodeInfo(code);
+                });
+            });
+        }
+
+        if (codesCount) {
+            codesCount.textContent = String(this.getCodeCount());
+        }
     }
 
     /**
