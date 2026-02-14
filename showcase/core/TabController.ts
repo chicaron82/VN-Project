@@ -5,6 +5,7 @@
 // ========================================
 
 import { Logger } from '@utils/Logger';
+import { BackButtonHandler } from './BackButtonHandler';
 
 /**
  * TabController
@@ -26,6 +27,7 @@ export class TabController {
     private observer?: IntersectionObserver;
     private isProgrammaticScroll: boolean = false;
     private scrollTimeout?: number;
+    private backButtonHandler: BackButtonHandler;
 
     constructor() {
         this.tabs = [
@@ -49,6 +51,13 @@ export class TabController {
 
         // Panels use CSS scroll-snap for native swipe behavior
 
+        // Initialize back button handler (before event listeners)
+        this.backButtonHandler = new BackButtonHandler({
+            navigateToTab: (tabId: string) => this.scrollToTab(tabId),
+            getActiveTab: () => this.activeTab,
+            tabs: this.tabs
+        });
+
         // Initialize
         this.setupEventListeners();
         this.initializePanelAccessibility();
@@ -57,6 +66,9 @@ export class TabController {
         // Start at saved tab or home
         const lastTab = this.loadLastTab();
         this.setActiveTab(lastTab && this.tabs.includes(lastTab) ? lastTab : 'home');
+
+        // Initialize back button handler after initial tab is set
+        this.backButtonHandler.init();
 
         // Update indicator on window resize
         window.addEventListener('resize', () => this.updateIndicator());
@@ -149,8 +161,12 @@ export class TabController {
 
         this.activeTab = tabId;
 
-        // Update URL hash without scrolling
-        history.replaceState(null, '', `#${tabId}`);
+        // Update URL hash — push for user clicks, replace for scroll-spy
+        if (isFromClick) {
+            this.backButtonHandler.pushTabState(tabId);
+        } else {
+            history.replaceState({ tab: tabId }, '', `#${tabId}`);
+        }
 
         // Update UI
         this.updateTabButtons();
@@ -231,13 +247,7 @@ export class TabController {
         // Keyboard navigation
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
 
-        // Hash change (back/forward buttons)
-        window.addEventListener('hashchange', () => {
-            const tab = this.getTabFromHash();
-            if (tab && tab !== this.activeTab) {
-                this.scrollToTab(tab);
-            }
-        });
+        // Back/forward navigation handled by BackButtonHandler (popstate)
     }
 
     /**
