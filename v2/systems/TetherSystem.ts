@@ -6,31 +6,9 @@
 //
 // "The tether is her lifeline. Your attention is her oxygen."
 //
-// RESPONSIBILITIES:
-// - Tether decay (passive over time)
-// - Hold On button (restore tether)
-// - Tether death trigger at 0%
-// - Difficulty scaling (Comfort/Normal/Intense/INSANE)
-// - Visual feedback (UI updates, warnings, glitches)
-//
-// DIFFICULTY SCALING:
-// - Comfort: No decay, auto-Hold On enabled
-// - Normal: 0.15%/sec base decay, manual Hold On
-// - Intense: 0.08%/sec (1.6x faster), manual Hold On
-// - INSANE: 0.10%/sec, 66% cap, NO Hold On, read-only backlog
-//
-// DEATH TRIGGER:
-// - At 0%, emits tether:death event
-// - Route handler decides what happens (bad ending, retry, etc.)
-//
-// HOLD ON MECHANIC:
-// - Restores 15% tether (configurable per difficulty)
-// - Cooldown: 30 seconds (configurable)
-// - INSANE mode: Button hidden entirely (no mercy)
-//
-// ZEE'S HAPTIC POLISH 🖤:
-// - Vibration warning when entering critical zone
-// - Heartbeat feedback on Hold On press
+// DECOMPOSED: Types    → TetherTypes.ts
+//             Hold On  → TetherHoldOn.ts
+//             Core     → this file
 //
 // 848 is sacred. 💚🔥💀
 //
@@ -48,28 +26,11 @@ import {
     getDifficultyProfile
 } from './DifficultyProfiles';
 
-// ========================================
-// TYPES
-// ========================================
+import type { TetherState, EchoState } from './TetherTypes';
+import { HoldOnManager } from './TetherHoldOn';
 
-/**
- * Tether system state for save/load
- */
-export interface TetherState {
-    level: number;
-    difficulty: DifficultyId;
-    holdOnCooldown: boolean;
-    decayFrozen: boolean;
-}
-
-/**
- * Echo state (legacy from V1 - now mostly handled by EchoMemorySystem)
- */
-export interface EchoState {
-    echo1: { name: string; mood: string; color: string; active: boolean };
-    echo2: { name: string; mood: string; color: string; active: boolean };
-    despair: { name: string; mood: string; color: string; active: boolean };
-}
+// Re-export types for backward compatibility
+export type { TetherState, EchoState } from './TetherTypes';
 
 // ========================================
 // TETHER SYSTEM
@@ -99,13 +60,10 @@ export class TetherSystem {
     private decayTimer: ReturnType<typeof setInterval> | null = null;
     private decayFrozen: boolean = false;
 
-    // Hold On cooldown
-    private holdOnCooldown: boolean = false;
-    private holdOnCooldownTimer: ReturnType<typeof setInterval> | null = null;
-    private holdOnCooldownRemaining: number = 0;
+    // Hold On subsystem (extracted)
+    private holdOnManager: HoldOnManager;
 
     // Tutorial state
-    private hasUsedHoldOn: boolean = false;
     private hasShownTutorialFlash: boolean = false;
 
     // Echo system state (legacy - for sprite display compatibility)
@@ -117,8 +75,6 @@ export class TetherSystem {
 
     // Configuration (from difficulty profile)
     private tetherCap: number = 100;
-    private holdOnBoost: number = 15;
-    private holdOnCooldownMs: number = 30000;
     private decayRateBase: number = 0.15;
     private decayRateMedium: number = 0.25;
     private decayRateCritical: number = 0.40;
@@ -136,6 +92,9 @@ export class TetherSystem {
     constructor(eventBus: EventBus, stateManager: StateManager) {
         this.eventBus = eventBus;
         this.stateManager = stateManager;
+
+        // Initialize Hold On subsystem
+        this.holdOnManager = new HoldOnManager(eventBus);
 
         // Get initial difficulty from settings or default to normal
         const savedDifficulty = stateManager.get<string>('settings.tetherDifficulty') ?? 'normal';
@@ -199,7 +158,7 @@ export class TetherSystem {
         this.stateManager.set('settings.tetherDifficulty', difficultyId);
 
         Logger.tether(`⚙️ Tether difficulty set to ${this.profile.name}`);
-        Logger.tether(`   Decay: ${this.decayRateBase} | Cap: ${this.tetherCap}% | Hold On: ${this.holdOnBoost}`);
+        Logger.tether(`   Decay: ${this.decayRateBase} | Cap: ${this.tetherCap}%`);
 
         // If INSANE mode, activate insane visuals
         if (difficultyId === 'insane') {
@@ -210,15 +169,16 @@ export class TetherSystem {
     }
 
     /**
-     * Apply difficulty profile settings
+     * Apply difficulty profile settings (to both TetherSystem + HoldOnManager)
      */
     private applyDifficultyProfile(profile: DifficultyProfile): void {
         this.tetherCap = profile.tetherCap;
-        this.holdOnBoost = profile.holdOnBoost;
-        this.holdOnCooldownMs = profile.holdOnCooldown;
         this.decayRateBase = profile.decayRates.base;
         this.decayRateMedium = profile.decayRates.medium;
         this.decayRateCritical = profile.decayRates.critical;
+
+        // Delegate Hold On config to subsystem
+        this.holdOnManager.applyDifficultyProfile(profile);
 
         // Clamp current level to new cap if needed
         if (this.level > this.tetherCap) {
@@ -256,7 +216,6 @@ export class TetherSystem {
         // Only trigger ONCE when crossing threshold
         if (previousLevel > 30 && this.level <= 30 && amount < 0) {
             this.eventBus.emit('effect:shake', { intensity: 'medium' });
-            // Note: HapticSystem integration would go here
         }
 
         // Emit change event for reactive UI
@@ -269,7 +228,7 @@ export class TetherSystem {
         this.updateDisplay();
 
         // Trigger Hold On tutorial when first drops below 95%
-        if (this.level <= 95 && previousLevel > 95 && !this.hasUsedHoldOn) {
+        if (this.level <= 95 && previousLevel > 95 && !this.holdOnManager.getHasUsedHoldOn()) {
             this.triggerTutorialHint();
         }
 
@@ -396,12 +355,6 @@ export class TetherSystem {
             this.decayTimer = null;
             Logger.tether('⚡ Tether decay stopped');
         }
-
-        // Clear cooldown timer if active
-        if (this.holdOnCooldownTimer) {
-            clearInterval(this.holdOnCooldownTimer);
-            this.holdOnCooldownTimer = null;
-        }
     }
 
     /**
@@ -458,7 +411,7 @@ export class TetherSystem {
     }
 
     // ========================================
-    // HOLD ON BUTTON
+    // HOLD ON BUTTON (delegated to HoldOnManager)
     // ========================================
 
     /**
@@ -468,95 +421,31 @@ export class TetherSystem {
      * @returns true if boost was applied, false if on cooldown
      */
     public holdOn(): boolean {
-        // Check if Hold On is disabled (INSANE mode)
-        if (!this.profile.holdOn.enabled) {
-            Logger.tether('💀 INSANE MODE: Hold On disabled');
-            return false;
-        }
-
-        // Check cooldown
-        if (this.holdOnCooldown) {
-            Logger.tether('⚡ Hold On on cooldown');
-            return false;
-        }
-
-        // Mark that player has used Hold On
-        this.hasUsedHoldOn = true;
-
-        // Apply boost
-        this.updateTether(this.holdOnBoost, 'HOLD ON button pressed');
-
-        // Emit event for UI feedback
-        this.eventBus.emit('tether:boost', { amount: this.holdOnBoost });
-
-        // Start cooldown
-        this.startHoldOnCooldown();
-
-        return true;
-    }
-
-    /**
-     * Start Hold On cooldown with countdown
-     */
-    private startHoldOnCooldown(): void {
-        this.holdOnCooldown = true;
-        this.holdOnCooldownRemaining = Math.ceil(this.holdOnCooldownMs / 1000);
-
-        // Countdown timer for UI
-        this.holdOnCooldownTimer = setInterval(() => {
-            this.holdOnCooldownRemaining--;
-
-            // Emit update for UI
-            this.eventBus.emit('settings:changed', {
-                key: 'holdOnCooldown',
-                value: this.holdOnCooldownRemaining
-            });
-
-            if (this.holdOnCooldownRemaining <= 0) {
-                this.resetHoldOnCooldown();
-            }
-        }, 1000);
-
-        // Also set absolute timeout as safety
-        setTimeout(() => {
-            this.resetHoldOnCooldown();
-        }, this.holdOnCooldownMs);
-    }
-
-    /**
-     * Reset Hold On cooldown
-     */
-    private resetHoldOnCooldown(): void {
-        this.holdOnCooldown = false;
-        this.holdOnCooldownRemaining = 0;
-
-        if (this.holdOnCooldownTimer) {
-            clearInterval(this.holdOnCooldownTimer);
-            this.holdOnCooldownTimer = null;
-        }
-
-        Logger.tether('⚡ Hold On ready');
+        return this.holdOnManager.holdOn(
+            this.profile,
+            (amount, reason) => this.updateTether(amount, reason),
+        );
     }
 
     /**
      * Check if Hold On is on cooldown
      */
     public isHoldOnCooldown(): boolean {
-        return this.holdOnCooldown;
+        return this.holdOnManager.isOnCooldown();
     }
 
     /**
      * Get remaining cooldown seconds
      */
     public getHoldOnCooldownRemaining(): number {
-        return this.holdOnCooldownRemaining;
+        return this.holdOnManager.getCooldownRemaining();
     }
 
     /**
      * Check if Hold On is enabled for current difficulty
      */
     public isHoldOnEnabled(): boolean {
-        return this.profile.holdOn.enabled;
+        return this.holdOnManager.isEnabled(this.profile);
     }
 
     // ========================================
@@ -662,9 +551,6 @@ export class TetherSystem {
 
         // Record death for echo memory
         this.eventBus.emit('tether:death', {});
-
-        // The route handler (or GameEngine) should listen for this
-        // and trigger the appropriate ending sequence
     }
 
     // ========================================
@@ -690,7 +576,7 @@ export class TetherSystem {
         this.updateDisplay();
 
         // Clear cooldowns
-        this.resetHoldOnCooldown();
+        this.holdOnManager.resetCooldown();
 
         // Restart decay
         this.stopDecay();
@@ -706,7 +592,7 @@ export class TetherSystem {
         return {
             level: this.level,
             difficulty: this.currentDifficulty,
-            holdOnCooldown: this.holdOnCooldown,
+            holdOnCooldown: this.holdOnManager.isOnCooldown(),
             decayFrozen: this.decayFrozen
         };
     }
@@ -717,7 +603,7 @@ export class TetherSystem {
     public restoreState(state: TetherState): void {
         this.level = state.level ?? 100;
         this.currentDifficulty = state.difficulty ?? 'normal';
-        this.holdOnCooldown = state.holdOnCooldown ?? false;
+        this.holdOnManager.restoreCooldownState(state.holdOnCooldown ?? false);
         this.decayFrozen = state.decayFrozen ?? false;
 
         // Apply difficulty profile
@@ -745,11 +631,7 @@ export class TetherSystem {
      */
     public destroy(): void {
         this.stopDecay();
-
-        if (this.holdOnCooldownTimer) {
-            clearInterval(this.holdOnCooldownTimer);
-            this.holdOnCooldownTimer = null;
-        }
+        this.holdOnManager.destroy();
 
         Logger.tether('⚡ TetherSystem destroyed');
     }
