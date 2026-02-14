@@ -23,7 +23,7 @@ describe('EasterEggController', () => {
 
     beforeEach(() => {
         eventBus = new EventBus();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
         controller = new EasterEggController(eventBus, stateManager);
 
         // Clear window.open mock

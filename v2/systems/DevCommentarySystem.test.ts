@@ -21,7 +21,7 @@ describe('DevCommentarySystem', () => {
         localStorage.clear();
 
         eventBus = new EventBus();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
         system = new DevCommentarySystem(eventBus, stateManager);
     });
 
@@ -50,12 +50,12 @@ describe('DevCommentarySystem', () => {
 
     describe('Unlock Mechanics', () => {
         it('should unlock via CHICHARON secret code', () => {
-            eventBus.emit('secret_code:unlocked', { code: 'CHICHARON' });
+            eventBus.emit('secret_code:unlocked', { code: 'CHICHARON', name: 'Chicharon' });
             expect(system.isUnlocked()).toBe(true);
         });
 
         it('should unlock via CHICHARON (case insensitive)', () => {
-            eventBus.emit('secret_code:unlocked', { code: 'chicharon' });
+            eventBus.emit('secret_code:unlocked', { code: 'chicharon', name: 'Chicharon' });
             expect(system.isUnlocked()).toBe(true);
         });
 
@@ -168,7 +168,7 @@ describe('DevCommentarySystem', () => {
         it('should respond to commentary:show event', () => {
             const showSpy = vi.spyOn(system, 'showCommentary');
 
-            eventBus.emit('commentary:show', { sceneId: 'prologue_street_bump' });
+            (eventBus as any).emit('commentary:show', { sceneId: 'prologue_street_bump' });
 
             expect(showSpy).toHaveBeenCalledWith('prologue_street_bump');
         });
@@ -176,7 +176,7 @@ describe('DevCommentarySystem', () => {
         it('should respond to commentary:showAll event', () => {
             const showAllSpy = vi.spyOn(system, 'showAllCommentary');
 
-            eventBus.emit('commentary:showAll', {});
+            (eventBus as any).emit('commentary:showAll', {});
 
             expect(showAllSpy).toHaveBeenCalled();
         });
@@ -267,7 +267,7 @@ describe('DevCommentarySystem', () => {
 
             // Create new locked system with fresh state
             const freshEventBus = new EventBus();
-            const freshStateManager = new StateManager({});
+            const freshStateManager = new StateManager();
             const lockedSystem = new DevCommentarySystem(freshEventBus, freshStateManager);
 
             lockedSystem.showAllCommentary();

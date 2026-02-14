@@ -1,23 +1,5 @@
 import { MacroRunner } from './MacroRunner';
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
-// Mock EventBus
-const _mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 describe('MacroRunner', () => {
     let instance: MacroRunner;
 
@@ -33,48 +15,48 @@ describe('MacroRunner', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new MacroRunner();
+                instance = new MacroRunner({} as any, {} as any, {} as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             expect(instance).toBeInstanceOf(MacroRunner);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle MacroRunner', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Test MacroRunner functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for MacroRunner
         });
 
         it('should handle run', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Test run functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for run
         });
 
         it('should handle if', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Test if functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for if
         });
 
         it('should handle for', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Test for functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for for
         });
 
         it('should handle catch', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Test catch functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for catch
@@ -84,13 +66,13 @@ describe('MacroRunner', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -98,14 +80,14 @@ describe('MacroRunner', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new MacroRunner();
+            instance = new MacroRunner({} as any, {} as any, {} as any);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

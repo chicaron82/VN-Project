@@ -1,12 +1,5 @@
 import { PerformanceMonitor } from './PerformanceMonitor';
 
-// Mock EventBus
-const _mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 describe('PerformanceMonitor', () => {
     let instance: PerformanceMonitor;
 

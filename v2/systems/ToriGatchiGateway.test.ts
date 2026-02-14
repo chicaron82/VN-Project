@@ -1,16 +1,5 @@
 import { ToriGatchiGateway } from './ToriGatchiGateway';
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
 // Mock localStorage
 const _localStorageMock = {
     getItem: vi.fn(),
@@ -19,13 +8,6 @@ const _localStorageMock = {
     clear: vi.fn()
 };
 Object.defineProperty(window, 'localStorage', { value: _localStorageMock });
-
-// Mock EventBus
-const _mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
 
 describe('ToriGatchiGateway', () => {
     let instance: ToriGatchiGateway;
@@ -42,48 +24,48 @@ describe('ToriGatchiGateway', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new ToriGatchiGateway();
+                instance = new ToriGatchiGateway({} as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             expect(instance).toBeInstanceOf(ToriGatchiGateway);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle js', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Test js functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for js
         });
 
         it('should handle prompts', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Test prompts functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for prompts
         });
 
         it('should handle voices', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Test voices functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for voices
         });
 
         it('should handle tracking', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Test tracking functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for tracking
         });
 
         it('should handle loadGatewayState', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Test loadGatewayState functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for loadGatewayState
@@ -93,13 +75,13 @@ describe('ToriGatchiGateway', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -107,14 +89,14 @@ describe('ToriGatchiGateway', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new ToriGatchiGateway();
+            instance = new ToriGatchiGateway({} as any);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

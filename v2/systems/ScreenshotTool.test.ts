@@ -1,16 +1,5 @@
 import { ScreenshotTool } from './ScreenshotTool';
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
 describe('ScreenshotTool', () => {
     let instance: ScreenshotTool;
 
@@ -26,48 +15,48 @@ describe('ScreenshotTool', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new ScreenshotTool();
+                instance = new ScreenshotTool({} as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             expect(instance).toBeInstanceOf(ScreenshotTool);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle capture', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Test capture functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for capture
         });
 
         it('should handle download', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Test download functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for download
         });
 
         it('should handle if', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Test if functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for if
         });
 
         it('should handle toBlob', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Test toBlob functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for toBlob
         });
 
         it('should handle copyToClipboard', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Test copyToClipboard functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for copyToClipboard
@@ -77,13 +66,13 @@ describe('ScreenshotTool', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -91,14 +80,14 @@ describe('ScreenshotTool', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new ScreenshotTool();
+            instance = new ScreenshotTool({} as any);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

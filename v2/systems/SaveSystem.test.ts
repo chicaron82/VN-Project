@@ -52,7 +52,7 @@ describe('SaveSystem', () => {
 
         const restored = stateManager.getAll();
         expect(restored.currentScene).toBe('test_scene');
-        expect(restored.flags.testFlag).toBe(true);
+        expect((restored as any).flags.testFlag).toBe(true);
     });
 
     it('should return valid metadata for existing slots', async () => {

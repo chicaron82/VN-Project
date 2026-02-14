@@ -1,4 +1,7 @@
-import { StatusBarContext as _StatusBarContext } from './StatusBarContext';
+import { detectContext, getFeatures, getInitialTint } from './StatusBarContext';
+
+// Suppress unused import warning until tests are implemented
+void detectContext; void getFeatures; void getInitialTint;
 
 describe('StatusBarContext', () => {
     beforeEach(() => {

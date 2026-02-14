@@ -1,16 +1,5 @@
 import { ErrorBoundary } from './ErrorBoundary';
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
 // Mock localStorage
 const localStorageMock = {
     getItem: vi.fn(),
@@ -35,48 +24,48 @@ describe('ErrorBoundary', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new ErrorBoundary();
+                instance = ErrorBoundary.getInstance();
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             expect(instance).toBeInstanceOf(ErrorBoundary);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle getInstance', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Test getInstance functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for getInstance
         });
 
         it('should handle if', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Test if functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for if
         });
 
         it('should handle init', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Test init functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for init
         });
 
         it('should handle addEventListener', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Test addEventListener functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for addEventListener
         });
 
         it('should handle handleError', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Test handleError functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for handleError
@@ -86,13 +75,13 @@ describe('ErrorBoundary', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -100,14 +89,14 @@ describe('ErrorBoundary', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new ErrorBoundary();
+            instance = ErrorBoundary.getInstance();
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

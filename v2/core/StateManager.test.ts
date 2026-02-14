@@ -193,8 +193,8 @@ describe('StateManager', () => {
       stateManager.set('test.value2', 2);
 
       const all = stateManager.getAll();
-      expect(all.test?.value1).toBe(1);
-      expect(all.test?.value2).toBe(2);
+      expect((all.test as any)?.value1).toBe(1);
+      expect((all.test as any)?.value2).toBe(2);
     });
 
     it('should return deep clone from getAll', () => {

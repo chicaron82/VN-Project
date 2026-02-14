@@ -10,8 +10,6 @@ describe('DialogController', () => {
     beforeEach(() => {
         vi.useFakeTimers();
 
-        // Mocks
-        const _stateManagerMock = { get: () => 30 } as any;
         settings = { get: () => 30 } as any;
         eventBus = new EventBus();
 

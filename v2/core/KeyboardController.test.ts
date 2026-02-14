@@ -1,23 +1,5 @@
 import { KeyboardController } from './KeyboardController';
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
-// Mock EventBus
-const _mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 describe('KeyboardController', () => {
     let instance: KeyboardController;
 
@@ -33,48 +15,48 @@ describe('KeyboardController', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new KeyboardController();
+                instance = new KeyboardController({} as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             expect(instance).toBeInstanceOf(KeyboardController);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle setupListeners', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Test setupListeners functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for setupListeners
         });
 
         it('should handle addEventListener', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Test addEventListener functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for addEventListener
         });
 
         it('should handle handleKeyDown', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Test handleKeyDown functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for handleKeyDown
         });
 
         it('should handle if', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Test if functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for if
         });
 
         it('should handle open', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Test open functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for open
@@ -84,13 +66,13 @@ describe('KeyboardController', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -98,14 +80,14 @@ describe('KeyboardController', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new KeyboardController();
+            instance = new KeyboardController({} as any);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

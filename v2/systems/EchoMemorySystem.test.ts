@@ -25,7 +25,7 @@ describe('EchoMemorySystem', () => {
         localStorage.clear();
 
         eventBus = new EventBus();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
         echoSystem = new EchoMemorySystem(eventBus, stateManager);
     });
 

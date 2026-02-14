@@ -16,7 +16,7 @@ describe('BootstrapTracker', () => {
 
     beforeEach(() => {
         localStorage.clear();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
         tracker = new BootstrapTracker(stateManager);
     });
 

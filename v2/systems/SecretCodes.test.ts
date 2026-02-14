@@ -78,7 +78,7 @@ describe('SecretCodesSystem & BootstrapTracker', () => {
             expect(resetSpy).toHaveBeenCalled();
 
             // Cleanup
-            window.location = originalLocation;
+            Object.defineProperty(window, 'location', { value: originalLocation, writable: true });
         });
     });
 });

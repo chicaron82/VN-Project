@@ -11,7 +11,7 @@ describe('TutorialManager', () => {
 
     beforeEach(() => {
         eventBus = new EventBus();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
 
         mockPauseManager = {
             request: vi.fn(),

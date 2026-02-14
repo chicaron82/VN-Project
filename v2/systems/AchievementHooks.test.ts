@@ -1,16 +1,5 @@
 import { AchievementHooks } from './AchievementHooks';
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
 // Mock localStorage
 const _localStorageMock = {
     getItem: vi.fn(),
@@ -19,13 +8,6 @@ const _localStorageMock = {
     clear: vi.fn()
 };
 Object.defineProperty(window, 'localStorage', { value: _localStorageMock });
-
-// Mock EventBus
-const _mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
 
 describe('AchievementHooks', () => {
     let instance: AchievementHooks;

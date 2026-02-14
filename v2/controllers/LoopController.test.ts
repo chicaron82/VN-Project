@@ -19,7 +19,7 @@ describe('LoopController', () => {
         localStorage.clear();
 
         eventBus = new EventBus();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
         loopController = new LoopController(eventBus, stateManager);
     });
 

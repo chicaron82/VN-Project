@@ -1,4 +1,7 @@
-import { UV7OSConfig as _UV7OSConfig } from './UV7OSConfig';
+import { UV7_CREW } from './UV7OSConfig';
+
+// Suppress unused import warning until tests are implemented
+void UV7_CREW;
 
 describe('UV7OSConfig', () => {
     beforeEach(() => {

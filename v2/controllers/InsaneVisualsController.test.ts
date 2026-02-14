@@ -29,7 +29,7 @@ describe('InsaneVisualsController', () => {
         document.body.appendChild(dialogBox);
 
         eventBus = new EventBus();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
         controller = new InsaneVisualsController(eventBus, stateManager);
     });
 

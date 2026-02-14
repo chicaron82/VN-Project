@@ -1,23 +1,5 @@
 import { TelemetryRecorder } from './Telemetry';
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
-// Mock EventBus
-const _mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 describe('TelemetryRecorder', () => {
     let instance: TelemetryRecorder;
 
@@ -33,48 +15,48 @@ describe('TelemetryRecorder', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new TelemetryRecorder();
+                instance = new TelemetryRecorder({} as any, {} as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             expect(instance).toBeInstanceOf(TelemetryRecorder);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle state', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Test state functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for state
         });
 
         it('should handle snapshot', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Test snapshot functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for snapshot
         });
 
         it('should handle Recorder', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Test Recorder functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for Recorder
         });
 
         it('should handle start', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Test start functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for start
         });
 
         it('should handle if', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Test if functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for if
@@ -84,13 +66,13 @@ describe('TelemetryRecorder', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -98,14 +80,14 @@ describe('TelemetryRecorder', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new TelemetryRecorder();
+            instance = new TelemetryRecorder({} as any, {} as any);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

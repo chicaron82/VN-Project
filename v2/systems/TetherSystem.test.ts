@@ -21,7 +21,7 @@ describe('TetherSystem', () => {
         localStorage.clear();
 
         eventBus = new EventBus();
-        stateManager = new StateManager({});
+        stateManager = new StateManager();
         system = new TetherSystem(eventBus, stateManager);
     });
 
@@ -395,8 +395,6 @@ describe('TetherSystem', () => {
 
             system.destroy();
 
-            // Verify timers are cleared by checking no state changes
-            const _level = system.getLevel();
             vi.advanceTimersByTime(10000);
 
             // Level should not have changed (decay stopped)
