@@ -39,11 +39,6 @@ function renderContributorStrip(contributors: ContributorInfo[], overflow: strin
         const primaryClass = c.isPrimary ? 'is-primary' : '';
         const animDelay = i * 50; // Staggered entrance
 
-        // Platform badge (skip for human/aaron)
-        const platformBadge = c.platform && c.platform !== 'human'
-            ? `<img src="media/logos/${c.platform}.svg" alt="${c.platform}" class="contributor-platform-badge" loading="lazy" />`
-            : '';
-
         return `
             <button
                 class="contributor-portrait ${primaryClass}"
@@ -53,7 +48,6 @@ function renderContributorStrip(contributors: ContributorInfo[], overflow: strin
                 style="--chef-color: ${c.color}; --anim-delay: ${animDelay}ms;"
             >
                 <img src="${c.portrait}" alt="${c.name}" loading="lazy" />
-                ${platformBadge}
             </button>
         `;
     }).join('');
@@ -145,23 +139,6 @@ const CONTRIBUTOR_STYLES = `
     box-shadow: 0 0 6px var(--chef-color);
 }
 
-/* Platform badge overlay on contributor portraits */
-.contributor-platform-badge {
-    position: absolute;
-    bottom: -2px;
-    right: -2px;
-    width: 14px;
-    height: 14px;
-    background: rgba(10, 10, 15, 0.9);
-    border-radius: 50%;
-    padding: 2px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-    pointer-events: none;
-}
-
-.contributor-portrait {
-    position: relative;
-}
 `;
 
 // Inject styles once on module load
@@ -587,6 +564,23 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
     if (entry.modelId && hasDetails) {
         const sig = getContributorSignature(entry.modelId);
         if (sig) addSection('contributor-signature', sig);
+    }
+
+    // Platform attribution at end of expanded content
+    if (hasDetails) {
+        const { contributors } = getContributorInfos(entry, 10);
+        const uniquePlatforms = [...new Set(contributors.map(c => c.platform).filter(p => p && p !== 'human'))];
+        if (uniquePlatforms.length > 0) {
+            const logos = uniquePlatforms.map(platform =>
+                `<img src="media/logos/${platform}.svg" alt="${platform}" class="entry-platform-logo" loading="lazy" />`
+            ).join('');
+            addSection('entry-platform-attribution', `
+                <div class="entry-platform-attribution">
+                    <span class="attribution-label">Built with</span>
+                    ${logos}
+                </div>
+            `);
+        }
     }
 
     // --- Interactions ---
