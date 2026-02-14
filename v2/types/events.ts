@@ -176,6 +176,8 @@ export type GameEvents = {
     'ui:screen_change': { screen: string };
     /** Game view reset requested */
     'game:reset_view': {};
+    /** Game ending reached */
+    'game:ending': { endingId: string };
     /** Show route selection screen */
     'ui:show_route_select': {};
     /** Show skip confirmation prompt */

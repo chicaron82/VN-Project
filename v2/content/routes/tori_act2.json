@@ -815,7 +815,21 @@
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "right": "echoes"
-            }
+            },
+            "tetherCondition": "despair"
+        },
+        {
+            "id": "beat7_despairAttempt_normal",
+            "type": "dialog",
+            "character": "Despair Echo (attempting)",
+            "text": "\"Let go. Make him let go. Tell him to upload. It's kinder than watching him fail.\"",
+            "nextSceneId": "beat7_choice",
+            "internal": "[Despair is trying to force surrender, but the other Echoes are fighting back.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            },
+            "tetherCondition": "balanced|strong"
         },
         {
             "id": "beat7_choiceLocked",
@@ -907,7 +921,34 @@
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "right": "echoes"
-            }
+            },
+            "tetherCondition": "despair"
+        },
+        {
+            "id": "beat7_echoesReact_balanced",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"She's still fighting.\"\\nEcho 2: \"Stronger than we were.\"\\nDespair: \"For now.\"",
+            "nextSceneId": "tori_act3_beat2",
+            "internal": "[Whiteout. The battle continues. Act 3 begins...]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            },
+            "tetherCondition": "balanced"
+        },
+        {
+            "id": "beat7_echoesReact_strong",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"YES! That's it!\"\\nEcho 2: \"She can do this. She really can.\"\\nDespair: \"...We'll see.\"",
+            "nextSceneId": "tori_act3_beat2",
+            "internal": "[Whiteout. Tori holds strong. Act 3 begins...]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            },
+            "tetherCondition": "strong"
         }
     ]
 }

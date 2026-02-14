@@ -37,6 +37,7 @@ export type GameEvents = {
   'tether:death': {};
   'ui:screen_change': { screen: string };
   'game:reset_view': {};
+  'game:ending': { endingId: string };
   'effect:code_rain': { duration: number; color?: string };
   'effect:glitch': { intensity: number };
   'effect:shake': { intensity: string };

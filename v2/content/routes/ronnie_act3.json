@@ -207,7 +207,7 @@
         {
             "id": "beat4_toriScreaming",
             "type": "dialog",
-            "character": "Tori",
+            "character": "Tori (distorted)",
             "text": "\"I can feel it. The edges. I'm coming apart. Ronnie, I'm SCARED—\"",
             "nextSceneId": "beat4_ronnieGrabs",
             "internal": "[Her voice fragments mid-word. Sprite dissolving at the edges.]",
@@ -215,8 +215,7 @@
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            },
-            "isInternal": true
+            }
         },
         {
             "id": "beat4_ronnieGrabs",
@@ -491,7 +490,7 @@
         {
             "id": "act3CriticalChoice",
             "type": "dialog",
-            "character": "Ronnie",
+            "character": "Ronnie (internal)",
             "text": "One minute. One choice. Everything depends on this.",
             "nextSceneId": null,
             "internal": "[What do you do?]",
@@ -515,8 +514,7 @@
                     "value": "connect",
                     "nextSceneId": "digitalForeverEnding"
                 }
-            ],
-            "isInternal": true
+            ]
         }
     ]
 }

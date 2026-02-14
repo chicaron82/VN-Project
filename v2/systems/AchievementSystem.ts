@@ -12,32 +12,56 @@ export interface Achievement {
     unlockedAt: number | null;
 }
 
+interface AchievementStats {
+    routeStartTime: number | null;
+    backlogViews: number;
+    endingsReached: string[];
+}
+
 export class AchievementSystem {
     private eventBus: EventBus;
+    private stateManager: StateManager;
     private achievements: Record<string, Achievement>;
+    private stats: AchievementStats;
     private readonly STORAGE_KEY = 'uv7_achievements';
+    private readonly STATS_KEY = 'uv7_achievement_stats';
 
      
-    constructor(eventBus: EventBus, _stateManager: StateManager) {
+    constructor(eventBus: EventBus, stateManager: StateManager) {
         this.eventBus = eventBus;
-        // _stateManager reserved for future state-based achievements
+        this.stateManager = stateManager;
         this.achievements = this.initializeAchievements();
+        this.stats = this.loadStats();
         this.loadAchievements();
 
         this.bindEvents();
     }
 
     private bindEvents(): void {
-        // Listen for events that might trigger achievements
+        // Listen for external unlock requests (e.g. from EchoMemorySystem)
         this.eventBus.on('achievement:unlock', (data) => {
-            // Re-emit visual cue or handle strictly if called externally
-            // But usually this system EMITS that event. 
-            // If another system requests unlock, we handle it here:
             this.unlock(data.id);
         });
 
-        // Example trigger: Ending Reached (we need to define this event in EventBus first)
-        // this.eventBus.on('game:ending', (data) => this.checkEnding(data.endingId));
+        // Listen for ending events
+        this.eventBus.on('game:ending', (data) => {
+            this.checkEndingAchievements(data.endingId);
+        });
+
+        // Listen for backlog opens
+        this.eventBus.on('ui:backlog:toggle', () => {
+            this.checkExplorer();
+        });
+
+        // Listen for route starts
+        this.eventBus.on('ui:start_game', () => {
+            this.startRouteTimer();
+        });
+
+        // Listen for note collection
+        this.eventBus.on('note:collected', () => {
+            this.checkArchivist();
+        });
     }
 
     private initializeAchievements(): Record<string, Achievement> {
@@ -184,45 +208,147 @@ export class AchievementSystem {
     }
 
     // ========================================
-    // ACHIEVEMENT CHECK STUBS (Legacy Hooks Support)
+    // STATS PERSISTENCE
     // ========================================
 
+    private loadStats(): AchievementStats {
+        try {
+            const saved = localStorage.getItem(this.STATS_KEY);
+            if (saved) {
+                return JSON.parse(saved);
+            }
+        } catch (_e) {
+            Logger.error('Failed to load achievement stats', _e);
+        }
+        return {
+            routeStartTime: null,
+            backlogViews: 0,
+            endingsReached: []
+        };
+    }
+
+    private saveStats(): void {
+        try {
+            localStorage.setItem(this.STATS_KEY, JSON.stringify(this.stats));
+        } catch (_e) {
+            Logger.error('Failed to save achievement stats', _e);
+        }
+    }
+
+    // ========================================
+    // ACHIEVEMENT TRIGGERS — V1 Faithful 🏆
+    // ========================================
+
+    /** Start route timer for Speed Runner achievement */
     public startRouteTimer(): void {
-        // TODO: Implement Speed Runner timer logic
-        Logger.achievement('🏆 [AchievementSystem] startRouteTimer called');
+        this.stats.routeStartTime = Date.now();
+        this.saveStats();
+        Logger.achievement('🏃 Achievement: Route timer started');
     }
 
-    public checkArchivist(): void {
-        // TODO: Implement Archivist check via CollectiblesSystem
-        Logger.achievement('🏆 [AchievementSystem] checkArchivist called');
-    }
-
-    public checkExplorer(): void {
-        // TODO: Implement Explorer check via BacklogManager
-        Logger.achievement('🏆 [AchievementSystem] checkExplorer called');
-    }
-
-    public checkPetParent(): void {
-        // TODO: Implement Pet Parent check via ToriGatchi
-        Logger.achievement('🏆 [AchievementSystem] checkPetParent called');
-    }
-
-    public checkTimeTravel(endingId: string): void {
-        // TODO: Implement Time Traveler / Endings checks
-        Logger.achievement(`🏆 [AchievementSystem] checkTimeTravel called for ${endingId}`);
-        // Basic check: Unlock ending achievement if exists
-        this.unlock(endingId);
-        this.unlock('time_traveler');
-        // Check completionist...?
-    }
-
+    /** Check Speed Runner — complete any route in under 30 minutes */
     public checkSpeedRunner(): void {
-        // TODO: Implement Speed Runner check
-        Logger.achievement('🏆 [AchievementSystem] checkSpeedRunner called');
+        if (!this.stats.routeStartTime) return;
+
+        const elapsed = Date.now() - this.stats.routeStartTime;
+        const thirtyMinutes = 30 * 60 * 1000;
+
+        if (elapsed < thirtyMinutes) {
+            this.unlock('speed_runner');
+        }
     }
 
+    /** Check Archivist — collect all 13 notes on Tori's route */
+    public checkArchivist(): void {
+        // Use stateManager to check collectibles count
+        const collectiblesState = this.stateManager.get('collectibles') as Record<string, unknown> | undefined;
+        if (!collectiblesState) return;
+
+        const collectedNotes = collectiblesState.collectedNotes as Record<string, string[]> | undefined;
+        if (!collectedNotes) return;
+
+        const toriTypes = ['z', 'cz', 'zr'];
+        let totalCollected = 0;
+
+        toriTypes.forEach(type => {
+            if (collectedNotes[type]) {
+                totalCollected += collectedNotes[type].length;
+            }
+        });
+
+        if (totalCollected >= 13) {
+            this.unlock('archivist');
+        }
+    }
+
+    /** Handle ending achievements — maps ending IDs to achievement IDs */
+    public checkTimeTravel(endingId: string): void {
+        // Track ending reached
+        if (!this.stats.endingsReached.includes(endingId)) {
+            this.stats.endingsReached.push(endingId);
+            this.saveStats();
+        }
+
+        // First ending = Time Traveler
+        if (this.stats.endingsReached.length === 1) {
+            this.unlock('time_traveler');
+        }
+
+        // Map ending IDs to achievement IDs (V1 faithful)
+        if (endingId === 'bad_ending') {
+            this.unlock('heartbreaker');
+        }
+
+        if (endingId === 'true_ending') {
+            this.unlock('true_ending');
+        }
+
+        // Completionist — all 3 endings reached
+        const allEndings = ['bad_ending', 'digital_ending', 'true_ending'];
+        if (allEndings.every(e => this.stats.endingsReached.includes(e))) {
+            this.unlock('completionist');
+        }
+    }
+
+    /** Check Pet Parent — ToriGatchi unlocked */
+    public checkPetParent(): void {
+        if (localStorage.getItem('torigatchiUnlocked') === 'true') {
+            this.unlock('pet_parent');
+        }
+    }
+
+    /** Check Insane — completed on INSANE difficulty */
     public checkInsane(): void {
-        // TODO: Implement Insane check
-        Logger.achievement('🏆 [AchievementSystem] checkInsane called');
+        const settings = this.stateManager.get('settings') as Record<string, unknown> | undefined;
+        const difficulty = settings?.tetherDifficulty;
+        if (difficulty === 'insane') {
+            this.unlock('insane');
+        }
+    }
+
+    /** Check Explorer — 100+ backlog views */
+    public checkExplorer(): void {
+        this.stats.backlogViews++;
+        this.saveStats();
+
+        if (this.stats.backlogViews >= 100) {
+            this.unlock('explorer');
+        }
+    }
+
+    /** Combined ending check — called from hooks or event listeners */
+    public checkEndingAchievements(endingId: string): void {
+        this.checkTimeTravel(endingId);
+        this.checkSpeedRunner();
+        this.checkInsane();
+        Logger.achievement(`🏆 Checked achievements for ending: ${endingId}`);
+    }
+
+    public getTotalUnlocked(): number {
+        return Object.values(this.achievements).filter(a => a.unlocked).length;
+    }
+
+    public getTotalAchievements(): number {
+        return Object.keys(this.achievements).length;
     }
 }

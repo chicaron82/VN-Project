@@ -416,10 +416,12 @@ export class KonamiSystem {
         `;
         escapeBtn.addEventListener('click', () => {
             Logger.ui('🎮 Player chose to escape INSANE mode');
-            this.stateManager.set('game.difficulty', 'normal');
+            // V1 parity: downgrade to 'intense', not 'normal'
+            this.stateManager.set('game.difficulty', 'intense');
             localStorage.setItem('konamiInsaneUsedCount', '1');
             this.overlayFactory.closeOverlay(overlay);
             this.eventBus.emit('visual:cue', { type: 'glitch', channel: 'ui' });
+            this.eventBus.emit('achievement:unlock', { id: 'tactical_retreat' });
         });
 
         // Stay button
@@ -447,6 +449,9 @@ export class KonamiSystem {
         stayBtn.addEventListener('click', () => {
             Logger.ui('🎮 Player chose to stay in INSANE mode - RESPECT');
             this.overlayFactory.closeOverlay(overlay);
+            this.eventBus.emit('achievement:unlock', { id: 'masochist' });
+            // V1 parity: tether remembers this - 50% decay reduction buff
+            this.eventBus.emit('tether:boost', { amount: 50 });
         });
 
         box.appendChild(escapeBtn);
