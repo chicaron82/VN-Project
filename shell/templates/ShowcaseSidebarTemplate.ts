@@ -13,14 +13,11 @@ import { navigateWithTransition } from '../utils/NavigationHelper.js';
 import { Logger } from '@utils/Logger';
 
 /**
- * Generate showcase-specific sidebar content
+ * Generate showcase-specific sidebar INNER content (for UV7Shell which has existing structure)
+ * This returns just the content to go inside .sidebar-content
  */
-export function generateShowcaseSidebarContent(): string {
+export function generateShowcaseSidebarInnerContent(): string {
     return `
-        <div class="sidebar-header">
-            <span class="sidebar-title">📖 SHOWCASE</span>
-        </div>
-        <div class="sidebar-content">
             <!-- Quick Actions -->
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Quick Actions</div>
@@ -36,10 +33,6 @@ export function generateShowcaseSidebarContent(): string {
                     <button class="quick-action" data-action="go-home">
                         <span class="quick-action-icon">🌐</span>
                         <span class="quick-action-label">Showcase Home</span>
-                    </button>
-                    <button class="quick-action" data-action="go-landing">
-                        <span class="quick-action-icon">🏠</span>
-                        <span class="quick-action-label">Back to Landing</span>
                     </button>
                     <button class="quick-action" data-action="toggle-theme">
                         <span class="quick-action-icon">🌙</span>
@@ -86,7 +79,7 @@ export function generateShowcaseSidebarContent(): string {
                         <span class="section-icon">🌐</span>
                         <span class="section-label">Home</span>
                     </button>
-                    <button class="section-nav-item" data-tab="journey">
+                    <button class="section-nav-item" data-tab="journal">
                         <span class="section-icon">🗺️</span>
                         <span class="section-label">Journal</span>
                     </button>
@@ -112,6 +105,20 @@ export function generateShowcaseSidebarContent(): string {
                     </button>
                 </div>
             </div>
+    `;
+}
+
+/**
+ * Generate showcase-specific sidebar FULL structure (for standalone UV7System)
+ * This returns the complete sidebar HTML including header and content wrapper
+ */
+export function generateShowcaseSidebarContent(): string {
+    return `
+        <div class="sidebar-header">
+            <span class="sidebar-title">📖 SHOWCASE</span>
+        </div>
+        <div class="sidebar-content">
+            ${generateShowcaseSidebarInnerContent()}
         </div>
     `;
 }
@@ -127,16 +134,17 @@ export function initShowcaseSidebarListeners(): void {
             const action = btn.getAttribute('data-action');
 
             if (action === 'launch-v1') {
-                navigateWithTransition('../index.html');
+                // Use location-aware path that works from both showcase/ and root
+                const basePath = window.location.pathname.includes('/showcase/') ? '..' : '.';
+                navigateWithTransition(`${basePath}/v1/index.html`);
             } else if (action === 'launch-v2') {
-                navigateWithTransition('../index.v2.html');
+                const basePath = window.location.pathname.includes('/showcase/') ? '..' : '.';
+                navigateWithTransition(`${basePath}/v2/index.html`);
             } else if (action === 'go-home') {
                 const tabController = (window as unknown as { tabController?: { setActiveTab: (tab: string) => void } }).tabController;
                 if (tabController) {
                     tabController.setActiveTab('home');
                 }
-            } else if (action === 'go-landing') {
-                navigateWithTransition('../index.html');
             } else if (action === 'toggle-theme') {
                 // Use shared ThemeManager for proper theme handling
                 import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
@@ -177,6 +185,7 @@ export function initShowcaseSidebarListeners(): void {
 }
 
 export default {
+    generateShowcaseSidebarInnerContent,
     generateShowcaseSidebarContent,
     initShowcaseSidebarListeners
 };

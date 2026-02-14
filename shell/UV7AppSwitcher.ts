@@ -319,7 +319,7 @@ export class UV7AppSwitcher {
                 name: 'V2 Engine',
                 icon: '⚡',
                 description: 'TypeScript Rebuild',
-                url: '../index.v2.html',
+                url: '../v2/index.html',
                 color: 'rgba(0, 255, 136, 0.2)',
                 saveKeys: ['uv7_game_state'],
                 getState: () => {

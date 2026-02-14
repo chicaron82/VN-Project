@@ -82,9 +82,6 @@ export class Sidebar {
                             window.tabController.navigateToTab('home');
                             this.close();
                         }
-                    } else if (action === 'go-landing') {
-                        // "Landing" means exit to main index
-                        window.location.href = '../index.html#/landing';
                     } else if (action !== 'toggle-mode') {
                         this.close();
                     }
@@ -127,16 +124,49 @@ export class Sidebar {
         this.el.sidebar?.classList.add('open');
         this.el.backdrop?.classList.add('visible');
         document.body.classList.add('uv7-no-scroll');
+        this.repositionGrabHandle(true);
     }
 
     close(): void {
         if (!this.el.sidebar || !this.el.backdrop) return;
 
-
-
         this.el.sidebar.classList.remove('open');
         this.el.backdrop.classList.remove('visible');
         document.body.classList.remove('uv7-no-scroll');
+        this.repositionGrabHandle(false);
+    }
+
+    /**
+     * Reposition grab handle to sidebar edge when open
+     * Handles both left and right side variants
+     */
+    private repositionGrabHandle(isOpen: boolean): void {
+        const toggle = this.el.toggle;
+        if (!toggle) return;
+
+        const SIDEBAR_WIDTH = 280; // px - matches CSS
+        const isRightSide = this.el.sidebar?.classList.contains('right-side');
+
+        if (isOpen) {
+            if (isRightSide) {
+                // Right side: position from right edge + sidebar width
+                toggle.style.right = `${SIDEBAR_WIDTH}px`;
+                toggle.style.left = 'auto';
+            } else {
+                // Left side: position from left edge + sidebar width
+                toggle.style.left = `${SIDEBAR_WIDTH}px`;
+                toggle.style.right = 'auto';
+            }
+        } else {
+            // Closed: reset to edge (GrabHandle will maintain its saved position)
+            if (isRightSide) {
+                toggle.style.right = '0';
+                toggle.style.left = 'auto';
+            } else {
+                toggle.style.left = '0';
+                toggle.style.right = 'auto';
+            }
+        }
     }
 }
 

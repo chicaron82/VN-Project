@@ -20,6 +20,7 @@
 import { generateShadeContent } from './ShadeTemplate.js';
 import { generateDefaultSidebarContent } from './SidebarTemplate.js';
 import { ChromeDevTools } from './devtools/ChromeDevTools.js';
+import { UV7GrabHandleRepositioner } from '../v2/ui/components/GrabHandle.js';
 import { Logger } from '@utils/Logger';
 
 // Import shared types
@@ -93,6 +94,10 @@ export class UV7System {
 
     // DevTools (optional, dev mode only)
     public devTools?: ChromeDevTools;
+
+    // GrabHandle for sidebar toggle repositioning
+    private grabHandle: UV7GrabHandleRepositioner | null = null;
+    private static readonly SIDEBAR_WIDTH = 280; // px - matches CSS
 
     constructor(options: UV7SystemOptions = {}) {
         this.mode = options.mode || 'shell';
@@ -281,15 +286,19 @@ export class UV7System {
     }
 
     /**
-     * Initialize Sidebar Toggle Button
+     * Initialize Sidebar Toggle Button with GrabHandle for repositioning
      */
     private initSidebarToggle(): void {
         const toggleBtn = document.getElementById('uv7-sidebar-toggle');
         if (toggleBtn) {
-            toggleBtn.addEventListener('click', () => {
-                this.toggleSidebar();
+            // Initialize GrabHandle with drag/tap/double-tap support
+            this.grabHandle = new UV7GrabHandleRepositioner(toggleBtn, {
+                storageKey: `uv7-${this.prefix}-grab-handle`,
+                headerSafeTop: 52,
+                bottomSafePad: 120,
+                onToggle: () => this.toggleSidebar()
             });
-            Logger.system('✅ [UV7System] Sidebar toggle initialized');
+            Logger.system('✅ [UV7System] Sidebar toggle initialized with GrabHandle');
         } else {
             Logger.warn('[UV7System] Sidebar toggle button not found');
         }
@@ -552,16 +561,50 @@ export class UV7System {
     openSidebar(): void {
         this.elements.sidebar?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
+        this.repositionGrabHandle(true);
     }
 
     closeSidebar(): void {
         this.elements.sidebar?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
+        this.repositionGrabHandle(false);
     }
 
     toggleSidebar(): void {
+        const wasOpen = this.elements.sidebar?.classList.contains('open');
         this.elements.sidebar?.classList.toggle('open');
         this.elements.backdrop?.classList.toggle('visible');
+        this.repositionGrabHandle(!wasOpen);
+    }
+
+    /**
+     * Reposition grab handle to sidebar edge when open
+     * Handles both left and right side variants
+     */
+    private repositionGrabHandle(isOpen: boolean): void {
+        const toggle = document.getElementById('uv7-sidebar-toggle');
+        if (!toggle) return;
+
+        const isRightSide = this.elements.sidebar?.classList.contains('right-side');
+
+        if (isOpen) {
+            if (isRightSide) {
+                toggle.style.right = `${UV7System.SIDEBAR_WIDTH}px`;
+                toggle.style.left = 'auto';
+            } else {
+                toggle.style.left = `${UV7System.SIDEBAR_WIDTH}px`;
+                toggle.style.right = 'auto';
+            }
+        } else {
+            // Closed: reset to edge
+            if (isRightSide) {
+                toggle.style.right = '0';
+                toggle.style.left = 'auto';
+            } else {
+                toggle.style.left = '0';
+                toggle.style.right = 'auto';
+            }
+        }
     }
 
     /**

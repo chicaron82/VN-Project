@@ -11,7 +11,7 @@
 import type { StatusBarConfig, SidebarConfig } from './BaseApp.js';
 import { BaseApp } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
-import { generateShowcaseSidebarContent, initShowcaseSidebarListeners } from '../templates/ShowcaseSidebarTemplate.js';
+import { generateShowcaseSidebarInnerContent, initShowcaseSidebarListeners } from '../templates/ShowcaseSidebarTemplate.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
 import type { StatusBarSpec } from '../../types/chrome.js';
 import { Logger } from '@utils/Logger';
@@ -45,7 +45,7 @@ export class ShowcaseApp extends BaseApp {
     getSidebarConfig(): SidebarConfig {
         return {
             title: '📖 SHOWCASE',
-            content: generateShowcaseSidebarContent(),
+            content: generateShowcaseSidebarInnerContent(),
             init: () => {
                 // Initialize shared sidebar listeners
                 initShowcaseSidebarListeners();

@@ -121,7 +121,7 @@ export class AppCatalog {
                 name: 'V2 Engine',
                 icon: '⚡',
                 description: 'TypeScript Rebuild',
-                url: isShellMode ? '#/v2' : '/VN-Project/index.v2.html',
+                url: isShellMode ? '#/v2' : '/VN-Project/v2/index.html',
                 color: 'rgba(0, 255, 136, 0.2)',
                 saveKeys: ['uv7_game_state'],
                 getState: (): AppStateData => {

@@ -26,7 +26,7 @@ export class AppSwitcherState {
     public detectCurrentApp(): string {
         const path = window.location.pathname;
         if (path.includes('/v1/')) return 'v1';
-        if (path.includes('/v2/') || path === '/index.v2.html') return 'v2';
+        if (path.includes('/v2/')) return 'v2';
         if (path.includes('/torigatchi/')) return 'torigatchi';
         if (path.includes('/showcase/')) return 'showcase';
         // Landing page or root - this shouldn't happen normally

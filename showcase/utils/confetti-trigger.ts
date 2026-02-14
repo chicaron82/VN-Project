@@ -88,7 +88,7 @@ window.uv7Confetti = new ConfettiSystem();
 
 // Auto-attach to "Launch V2" buttons
 document.addEventListener('DOMContentLoaded', () => {
-    const launchBtns = document.querySelectorAll('a[href*="index.v2.html"]');
+    const launchBtns = document.querySelectorAll('a[href*="v2/index.html"]');
     launchBtns.forEach(btn => {
         btn.addEventListener('mouseenter', (_e) => {
             // Little mini burst on hover for fun

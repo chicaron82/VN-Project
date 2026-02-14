@@ -25,14 +25,14 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
-        v2: path.resolve(__dirname, 'index.v2.html'),
+        v2: path.resolve(__dirname, 'v2/index.html'),
         showcase: path.resolve(__dirname, 'showcase/index.html'),
       },
     },
   },
   server: {
     port: 5173,
-    open: true, // Opens index.v2.html automatically
+    open: true, // Opens v2/index.html automatically
   },
   // @ts-expect-error - Vitest config
   test: {

@@ -103,11 +103,11 @@ export class UV7OSNavigation {
         // Context-specific action URLs
         const actionUrls: ActionUrls = this.deps.context === 'landing' ? {
             'launch-v1': `${basePath}/v1/index.html`,
-            'launch-v2': `${basePath}/index.v2.html`,
+            'launch-v2': `${basePath}/v2/index.html`,
             'view-showcase': `${basePath}/showcase/index.html`
         } : {
             'launch-v1': `${basePath}/v1/index.html`,
-            'launch-v2': `${basePath}/index.v2.html`,
+            'launch-v2': `${basePath}/v2/index.html`,
             'go-home': `${basePath}/index.html`
         };
 
@@ -174,7 +174,7 @@ export class UV7OSNavigation {
 
                     const appUrls: { [key: string]: string } = {
                         'v1': `${basePath}/v1/index.html`,
-                        'v2': `${basePath}/index.v2.html`,
+                        'v2': `${basePath}/v2/index.html`,
                         'showcase': `${basePath}/showcase/index.html`
                     };
 
