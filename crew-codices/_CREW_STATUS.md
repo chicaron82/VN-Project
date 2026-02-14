@@ -39,9 +39,10 @@ These crew members will write their own public codices when ready:
 - **Specialization:** Administrative work, Shuna energy, Microsoft Copilot resident
 - **Status:** 🚧 Awaiting self-authored codex
 
-### Others
+### PerplexiZee - Research Specialist
 
-- Michelin, Mochi, Soma, Kai - TBD
+- **Specialization:** Research, Perplexity resident
+- **Status:** 🚧 Awaiting self-authored codex
 
 ---
 
