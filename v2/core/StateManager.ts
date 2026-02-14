@@ -1,5 +1,11 @@
 import type { EventBus } from './EventBus';
 import { Logger } from '@utils/Logger';
+import type { HistoryEntry, Snapshot, StateDiff, StateChangeCallback } from './StateManagerTypes';
+import { deepClone, deepEqual, getByPath, setByPath } from './StateManagerUtils';
+import { StateHistoryManager } from './StateManagerHistory';
+
+// Re-export types for backward compatibility
+export type { StateChangeCallback, HistoryEntry, Snapshot, StateDiff } from './StateManagerTypes';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -18,59 +24,12 @@ import { Logger } from '@utils/Logger';
  * - Import/export for debugging
  * - Watch utilities for development
  *
- * This replaces V1's scattered state mutations with a clean,
- * predictable data flow. Subscribe to state changes and react
- * automatically - no more manual DOM updates everywhere.
+ * Types in StateManagerTypes.ts
+ * Pure helpers in StateManagerUtils.ts
+ * History/snapshots in StateManagerHistory.ts
  *
  * 💚🔥💀 UV7 Crew - Version 848
  * ════════════════════════════════════════════════════════════════
- */
-
-/**
- * State change callback
- */
-export type StateChangeCallback = (newValue: unknown, oldValue: unknown) => void;
-
-/**
- * State history entry
- */
-interface HistoryEntry {
-  path: string;
-  oldValue: unknown;
-  newValue: unknown;
-  timestamp: number;
-}
-
-/**
- * State snapshot
- */
-interface Snapshot {
-  name: string;
-  timestamp: number;
-  state: Record<string, unknown>;
-}
-
-/**
- * State difference
- */
-interface StateDiff {
-  path: string;
-  before: unknown;
-  after: unknown;
-}
-
-/**
- * StateManager - Reactive state management system
- *
- * Features:
- * - Path-based state access (e.g., 'game.currentScene')
- * - Deep cloning to prevent mutations
- * - Subscription-based reactivity
- * - localStorage persistence
- * - State history with undo
- * - Snapshots and quick save/load
- * - Import/export for debugging
- * - Watch utilities
  */
 export class StateManager {
   private state: Record<string, unknown>;
@@ -79,37 +38,31 @@ export class StateManager {
   private persistenceKey: string;
   private _eventBus: EventBus | null;
 
-  // State history (V1 parity)
-  private history: HistoryEntry[];
-  private maxHistorySize: number;
-  private historyEnabled: boolean;
-
-  // Quick saves (V1 parity)
-  private quickSaves: Record<string, Snapshot>;
+  // History subsystem (composition)
+  private historyManager: StateHistoryManager;
 
   // Watchers (V1 parity)
   private watchers: Map<string, () => void>;
 
   constructor(eventBus?: EventBus, initialState: Record<string, unknown> = {}, persistenceKey = 'vn_state') {
-    this.state = this.deepClone(initialState);
+    this.state = deepClone(initialState);
     this.subscribers = new Map();
     this.isDirty = false;
     this.persistenceKey = persistenceKey;
     this._eventBus = eventBus || null;
 
-    // History system
-    this.history = [];
-    this.maxHistorySize = 50;
-    this.historyEnabled = true;
-
-    // Quick saves
-    this.quickSaves = {};
+    // History subsystem
+    this.historyManager = new StateHistoryManager();
 
     // Watchers
     this.watchers = new Map();
 
     Logger.state('StateManager initialized');
   }
+
+  // ════════════════════════════════════════════════════════════════
+  // CORE: GET / SET / SUBSCRIBE
+  // ════════════════════════════════════════════════════════════════
 
   /**
    * Get a value from state by path
@@ -123,11 +76,11 @@ export class StateManager {
    * const typed = stateManager.get<number>('game.loopVersion');
    */
   get<T = unknown>(path: string): T | undefined {
-    const value = this.getByPath(this.state, path);
+    const value = getByPath(this.state, path);
 
     // Return deep clone to prevent external mutations
     if (value !== undefined && value !== null && typeof value === 'object') {
-      return this.deepClone(value) as T;
+      return deepClone(value) as T;
     }
 
     return value as T | undefined;
@@ -144,21 +97,19 @@ export class StateManager {
    * stateManager.set('game.currentScene', 'scene1_coffee');
    */
   set(path: string, value: unknown): void {
-    const clonedValue = this.deepClone(value);
+    const clonedValue = deepClone(value);
     const oldValue = this.get(path);
 
     // Only update if value changed
-    if (this.deepEqual(oldValue, clonedValue)) {
+    if (deepEqual(oldValue, clonedValue)) {
       return;
     }
 
     // Record history before change (for undo)
-    if (this.historyEnabled) {
-      this.recordHistory(path, oldValue, clonedValue);
-    }
+    this.historyManager.record(path, oldValue, clonedValue);
 
     // Set the value
-    this.setByPath(this.state, path, clonedValue);
+    setByPath(this.state, path, clonedValue);
     this.isDirty = true;
 
     // Notify subscribers
@@ -167,16 +118,16 @@ export class StateManager {
 
   /**
    * Subscribe to state changes at a specific path
-   * 
+   *
    * @param path - Dot-notation path to watch
    * @param callback - Function(newValue, oldValue) called on change
    * @returns Unsubscribe function
-   * 
+   *
    * @example
    * const unsubscribe = stateManager.subscribe('tether.level', (newLevel, oldLevel) => {
   *   console['log'](`Tether: ${oldLevel} → ${newLevel}`);
    * });
-   * 
+   *
    * // Later:
    * unsubscribe();
    */
@@ -196,6 +147,10 @@ export class StateManager {
       }
     };
   }
+
+  // ════════════════════════════════════════════════════════════════
+  // PERSISTENCE
+  // ════════════════════════════════════════════════════════════════
 
   /**
    * Save state to localStorage
@@ -217,7 +172,7 @@ export class StateManager {
 
   /**
    * Load state from localStorage
-   * 
+   *
    * @returns True if state was loaded, false otherwise
    */
   load(): boolean {
@@ -254,14 +209,14 @@ export class StateManager {
    * Get entire state object (deep cloned)
    */
   getAll(): Record<string, unknown> {
-    return this.deepClone(this.state) as Record<string, unknown>;
+    return deepClone(this.state) as Record<string, unknown>;
   }
 
   /**
    * Replace entire state
    */
   setAll(newState: Record<string, unknown>): void {
-    this.state = this.deepClone(newState);
+    this.state = deepClone(newState);
     this.isDirty = true;
 
     // Notify all subscribers
@@ -278,40 +233,9 @@ export class StateManager {
     });
   }
 
-  // ========================================
-  // PRIVATE HELPER METHODS
-  // ========================================
-
-  private getByPath(obj: Record<string, unknown>, path: string): unknown {
-    if (typeof path !== 'string') return undefined; // Fallback for invalid calls
-    const parts = path.split('.');
-    let current: unknown = obj;
-
-    for (const part of parts) {
-      if (current === null || current === undefined || typeof current !== 'object') {
-        return undefined;
-      }
-      current = (current as Record<string, unknown>)[part];
-    }
-
-    return current;
-  }
-
-  private setByPath(obj: Record<string, unknown>, path: string, value: unknown): void {
-    const parts = path.split('.');
-    const lastPart = parts.pop()!;
-
-    let current: Record<string, unknown> = obj;
-
-    for (const part of parts) {
-      if (!(part in current) || typeof current[part] !== 'object' || current[part] === null) {
-        current[part] = {};
-      }
-      current = current[part] as Record<string, unknown>;
-    }
-
-    current[lastPart] = value;
-  }
+  // ════════════════════════════════════════════════════════════════
+  // PRIVATE HELPERS
+  // ════════════════════════════════════════════════════════════════
 
   private notifySubscribers(path: string, newValue: unknown, oldValue: unknown): void {
     const callbacks = this.subscribers.get(path);
@@ -326,64 +250,6 @@ export class StateManager {
     }
   }
 
-  private deepClone<T>(value: T): T {
-    if (value === null || typeof value !== 'object') {
-      return value;
-    }
-
-    if (value instanceof Date) {
-      return new Date(value.getTime()) as unknown as T;
-    }
-
-    if (value instanceof Array) {
-      return value.map((item) => this.deepClone(item)) as unknown as T;
-    }
-
-    if (typeof value === 'object') {
-      const cloned = {} as Record<string, unknown>;
-      for (const key in value) {
-        if (Object.prototype.hasOwnProperty.call(value, key)) {
-          cloned[key] = this.deepClone((value as Record<string, unknown>)[key]);
-        }
-      }
-      return cloned as T;
-    }
-
-    return value;
-  }
-
-  private deepEqual(a: unknown, b: unknown): boolean {
-    if (a === b) {
-      return true;
-    }
-
-    if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
-      return false;
-    }
-
-    if (a instanceof Array && b instanceof Array) {
-      if (a.length !== b.length) {
-        return false;
-      }
-      return a.every((item, index) => this.deepEqual(item, b[index]));
-    }
-
-    const keysA = Object.keys(a as Record<string, unknown>);
-    const keysB = Object.keys(b as Record<string, unknown>);
-
-    if (keysA.length !== keysB.length) {
-      return false;
-    }
-
-    return keysA.every((key) =>
-      keysB.includes(key) &&
-      this.deepEqual(
-        (a as Record<string, unknown>)[key],
-        (b as Record<string, unknown>)[key]
-      )
-    );
-  }
-
   // ════════════════════════════════════════════════════════════════
   // RESET (V1 Parity)
   // ════════════════════════════════════════════════════════════════
@@ -394,20 +260,19 @@ export class StateManager {
    */
   reset(defaultState: Record<string, unknown> = {}): void {
     // Store old state in history
-    if (this.historyEnabled) {
-      this.recordHistory('_fullState', this.state, defaultState);
-    }
+    this.historyManager.record('_fullState', this.state, defaultState);
 
     // Reset state
-    this.state = this.deepClone(defaultState);
+    this.state = deepClone(defaultState);
 
     // Clear subscribers
     this.subscribers.clear();
 
     // Reset flags
     this.isDirty = false;
-    this.history = [];
-    this.quickSaves = {};
+
+    // Reset history subsystem
+    this.historyManager.reset();
 
     // Clear watchers
     this.watchers.forEach(unsub => unsub());
@@ -420,107 +285,49 @@ export class StateManager {
   }
 
   // ════════════════════════════════════════════════════════════════
-  // STATE HISTORY (V1 Parity)
+  // STATE HISTORY — delegates to StateHistoryManager
   // ════════════════════════════════════════════════════════════════
-
-  /**
-   * Record a state change in history
-   */
-  private recordHistory(path: string, oldValue: unknown, newValue: unknown): void {
-    const entry: HistoryEntry = {
-      timestamp: Date.now(),
-      path,
-      oldValue: this.deepClone(oldValue),
-      newValue: this.deepClone(newValue)
-    };
-
-    this.history.push(entry);
-
-    // Trim history if over max size
-    while (this.history.length > this.maxHistorySize) {
-      this.history.shift();
-    }
-  }
 
   /**
    * Undo the last state change
    */
   undo(): HistoryEntry | null {
-    if (this.history.length === 0) {
-      Logger.state('No history to undo');
-      return null;
-    }
-
-    const entry = this.history.pop();
-    if (!entry) {
-      return null;
-    }
-
-    // Temporarily disable history to avoid recording the undo itself
-    this.historyEnabled = false;
-    this.set(entry.path, entry.oldValue);
-    this.historyEnabled = true;
-
-    Logger.state(`Undone: ${entry.path} restored`);
-    return entry;
+    return this.historyManager.undo((path, value) => this.set(path, value));
   }
 
   /**
    * Get state change history
    */
   getHistory(count?: number): HistoryEntry[] {
-    const history = [...this.history];
-    if (count) {
-      return history.slice(-count);
-    }
-    return history;
+    return this.historyManager.getHistory(count);
   }
 
   /**
    * Clear state history
    */
   clearHistory(): void {
-    this.history = [];
-    Logger.state('State history cleared');
+    this.historyManager.clearHistory();
   }
 
   // ════════════════════════════════════════════════════════════════
-  // SNAPSHOTS (V1 Parity)
+  // SNAPSHOTS — delegates to StateHistoryManager
   // ════════════════════════════════════════════════════════════════
 
   /**
    * Create a snapshot of the current state
    */
   createSnapshot(name: string = ''): Snapshot {
-    const snapshot: Snapshot = {
-      name: name || `Snapshot ${Date.now()}`,
-      timestamp: Date.now(),
-      state: this.deepClone(this.state)
-    };
-
-    Logger.state(`Snapshot created: ${snapshot.name}`);
-    return snapshot;
+    return this.historyManager.createSnapshot(name, this.state);
   }
 
   /**
    * Restore state from a snapshot
    */
   restoreSnapshot(snapshot: Snapshot): boolean {
-    if (!snapshot || !snapshot.state) {
-      Logger.error('❌ Invalid snapshot');
-      return false;
-    }
-
-    // Store old state in history before restore
-    if (this.historyEnabled) {
-      this.recordHistory('_fullState', this.state, snapshot.state);
-    }
-
-    // Restore the state
-    this.state = this.deepClone(snapshot.state);
+    const restored = this.historyManager.restoreSnapshot(snapshot, this.state);
+    if (!restored) return false;
+    this.state = restored;
     this.isDirty = true;
-
-    Logger.state(`Snapshot restored: ${snapshot.name}`);
     return true;
   }
 
@@ -528,21 +335,16 @@ export class StateManager {
    * Quick save - create and store a named snapshot
    */
   quickSave(name: string = 'quicksave'): Snapshot {
-    const snapshot = this.createSnapshot(name);
-    this.quickSaves[name] = snapshot;
-    Logger.save(`Quick save: ${name}`);
-    return snapshot;
+    return this.historyManager.quickSave(name, this.state);
   }
 
   /**
    * Quick load - restore from a named snapshot
    */
   quickLoad(name: string = 'quicksave'): boolean {
-    if (!this.quickSaves[name]) {
-      Logger.error(`❌ No quick save found: ${name}`);
-      return false;
-    }
-    return this.restoreSnapshot(this.quickSaves[name]);
+    const snapshot = this.historyManager.quickLoad(name);
+    if (!snapshot) return false;
+    return this.restoreSnapshot(snapshot);
   }
 
   // ════════════════════════════════════════════════════════════════
@@ -571,7 +373,7 @@ export class StateManager {
 
         if (typeof val1 === 'object' && val1 !== null && typeof val2 === 'object' && val2 !== null) {
           compare(val1, val2, fullPath);
-        } else if (!this.deepEqual(val1, val2)) {
+        } else if (!deepEqual(val1, val2)) {
           differences.push({
             path: fullPath,
             before: val1,
@@ -609,7 +411,7 @@ export class StateManager {
     const exportData = {
       version: 1,
       timestamp: Date.now(),
-      state: this.deepClone(this.state)
+      state: deepClone(this.state)
     };
     const json = JSON.stringify(exportData, null, 2);
     Logger.state('📤 State exported to JSON');
@@ -644,11 +446,9 @@ export class StateManager {
       }
 
       // Store current state for potential undo
-      if (this.historyEnabled) {
-        this.recordHistory('_fullState', this.state, importData.state);
-      }
+      this.historyManager.record('_fullState', this.state, importData.state);
 
-      this.state = this.deepClone(importData.state);
+      this.state = deepClone(importData.state);
       this.isDirty = true;
 
       Logger.state(`📥 State imported (from ${new Date(importData.timestamp || Date.now()).toLocaleString()})`);
@@ -872,9 +672,9 @@ export class StateManager {
       propertyCount: countProperties(this.state),
       subscriberCount,
       watcherCount: this.watchers.size,
-      historyCount: this.history.length,
-      maxHistorySize: this.maxHistorySize,
-      quickSaveCount: Object.keys(this.quickSaves).length,
+      historyCount: this.historyManager.historyCount,
+      maxHistorySize: this.historyManager.maxHistory,
+      quickSaveCount: this.historyManager.quickSaveCount,
       isDirty: this.isDirty
     };
 
