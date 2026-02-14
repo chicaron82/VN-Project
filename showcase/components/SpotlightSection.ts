@@ -234,7 +234,7 @@ export class SpotlightSection {
                             <div class="metric-card">
                                 <div class="metric-value" data-accent="pink" data-target="8">0</div>
                                 <div class="metric-label">AI Collaborators</div>
-                                <div class="metric-sublabel">DiZee, Tori, Belle, Zee, Ronnie, +3</div>
+                                <div class="metric-sublabel">DiZee, Tori, Belle, Zee, ZeeRah, +3</div>
                             </div>
 
                             <div class="metric-card">
