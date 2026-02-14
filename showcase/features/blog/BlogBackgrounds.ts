@@ -6,9 +6,9 @@
  * Part of MAXIMUM MICHELIN timeline enhancements
  *
  * Features:
- * - Ambient background gradients that shift based on era
+ * - Ambient background gradients that shift based on entry type
  * - Smooth CSS transitions
- * - Phase awareness (detects V1 vs V2 era)
+ * - Type awareness (chaos/debug → red, investigation/feature → blue, refactor/milestone → green)
  *
  * Credit: ZeeRah's Chaos 😈
  * 848 is sacred. 💚🔥💀
@@ -19,10 +19,14 @@ import { Logger } from '@utils/Logger';
 
 // Define era colors
 const ERAS = {
-    CHAOS: 'radial-gradient(circle at 50% 50%, rgba(255, 60, 0, 0.15) 0%, rgba(255, 0, 80, 0.05) 50%, transparent 100%)', // V1 Red/Pink
-    ORDER: 'radial-gradient(circle at 50% 50%, rgba(0, 160, 255, 0.15) 0%, rgba(0, 100, 255, 0.05) 50%, transparent 100%)', // Transition Blue
-    MICHELIN: 'radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.15) 0%, rgba(0, 200, 100, 0.05) 50%, transparent 100%)' // V2 Green
+    CHAOS: 'radial-gradient(circle at 50% 50%, rgba(255, 60, 0, 0.15) 0%, rgba(255, 0, 80, 0.05) 50%, transparent 100%)',
+    ORDER: 'radial-gradient(circle at 50% 50%, rgba(0, 160, 255, 0.15) 0%, rgba(0, 100, 255, 0.05) 50%, transparent 100%)',
+    MICHELIN: 'radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.15) 0%, rgba(0, 200, 100, 0.05) 50%, transparent 100%)'
 };
+
+// Map entry types to eras
+const CHAOS_TYPES = new Set(['chaos-entry', 'debug', 'philosophy']);
+const ORDER_TYPES = new Set(['investigation', 'feature', 'hygiene']);
 
 export class BlogBackgrounds {
     private container: HTMLElement | null;
@@ -34,7 +38,7 @@ export class BlogBackgrounds {
         this.container = null;
         this.background = null;
         this.observer = null;
-        this.currentEra = ERAS.MICHELIN; // Default
+        this.currentEra = ERAS.MICHELIN;
 
         this.init();
     }
@@ -54,39 +58,36 @@ export class BlogBackgrounds {
 
         this.container = timeline.parentElement;
 
-        // Create background element
         this.background = document.createElement('div');
         this.background.className = 'timeline-dynamic-background';
 
-        // Initial style
         Object.assign(this.background.style, {
             position: 'absolute',
             top: '0',
             left: '0',
             width: '100%',
             height: '100%',
-            zIndex: '0', // Behind timeline
+            zIndex: '0',
             background: this.currentEra,
             transition: 'background 1.5s ease-in-out',
             opacity: '0.6',
             pointerEvents: 'none'
         });
 
-        // Insert behind timeline
-        this.container.style.position = 'relative'; // Ensure positioning context
+        this.container.style.position = 'relative';
         this.container.insertBefore(this.background, timeline);
     }
 
     /**
-     * Setup intersection observer to detect active phase
+     * Setup intersection observer to detect active entry
      */
     private setupObserver(): void {
         const timeline = document.querySelector(this.timelineSelector);
         if (!timeline) return;
 
         const options = {
-            root: null, // Viewport
-            rootMargin: '-40% 0px -40% 0px', // Trigger when item is in middle 20%
+            root: null,
+            rootMargin: '-40% 0px -40% 0px',
             threshold: 0
         };
 
@@ -98,39 +99,45 @@ export class BlogBackgrounds {
             });
         }, options);
 
-        // Observe all timeline items
-        const items = timeline.querySelectorAll('.timeline-item');
+        // Observe blog entries (not .timeline-item — that class was renamed)
+        const items = timeline.querySelectorAll('.blog-entry');
         items.forEach(item => this.observer?.observe(item));
+
+        // Re-observe when new entries are added (pagination / "Show More")
+        this.mutationObserver = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node instanceof HTMLElement && node.classList.contains('blog-entry')) {
+                        this.observer?.observe(node);
+                    }
+                });
+            });
+        });
+        this.mutationObserver.observe(timeline, { childList: true });
     }
 
+    private mutationObserver: MutationObserver | null = null;
+
     /**
-     * Update background based on item content
+     * Update background based on entry type
      */
     private updateBackground(item: HTMLElement): void {
         if (!this.background) return;
 
-        // Determine era based on title/content
-        const title = item.querySelector('strong')?.textContent || '';
-        const header = item.querySelector('h3')?.textContent || '';
-        const text = title + ' ' + header;
+        const type = item.getAttribute('data-type') || '';
 
-        let targetEra = ERAS.MICHELIN; // Default
-
-        // Logic to determine era
-        if (text.includes('Phase 1') || text.includes('Phase 2') || text.includes('Genesis') || text.includes('Chaos')) {
+        let targetEra: string;
+        if (CHAOS_TYPES.has(type)) {
             targetEra = ERAS.CHAOS;
-        } else if (text.includes('Phase 3') || text.includes('Phase 4') || text.includes('Transition')) {
+        } else if (ORDER_TYPES.has(type)) {
             targetEra = ERAS.ORDER;
         } else {
             targetEra = ERAS.MICHELIN;
         }
 
-        // Apply if changed
         if (this.currentEra !== targetEra) {
             this.currentEra = targetEra;
             this.background.style.background = targetEra;
-            // Also move the center point slightly for parallax feel? 
-            // Nah, kept simple per requirements.
         }
     }
 
@@ -138,6 +145,10 @@ export class BlogBackgrounds {
         if (this.observer) {
             this.observer.disconnect();
             this.observer = null;
+        }
+        if (this.mutationObserver) {
+            this.mutationObserver.disconnect();
+            this.mutationObserver = null;
         }
         if (this.background) {
             this.background.remove();
