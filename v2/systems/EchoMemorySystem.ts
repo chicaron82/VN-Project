@@ -8,20 +8,12 @@
 // The three echoes (Hope, Gentle, Despair) gradually become aware
 // of the player's loops and comment on repeated behaviors.
 //
-// ECHO PERSONALITIES:
-// - Echo 1 (Hope): Optimistic 💫 - triggered by persistence
-// - Echo 2 (Gentle): Soft/resigned 🌙 - triggered by hesitation
-// - Echo 3 (Despair): Bitter truth-teller 🖤 - triggered by failure
-//
-// AWARENESS LEVELS:
-// 0 = Dormant (first playthrough, silent)
-// 1 = Vague (2-3 loops, "feels familiar")
-// 2 = Aware (5+ loops, "you've been here before")
-// 3 = Fourth Wall (10+ loops, direct address to player)
-// 4 = Glitch (20+ loops, reality breaking)
-//
 // Belle built this to make the echoes feel alive.
 // They remember. They always remember.
+//
+// DECOMPOSED: Types      → EchoMemoryTypes.ts
+//             Dialogue   → EchoCommentData.ts
+//             Orchestrator → this file
 //
 // 848 is sacred. 💚🔥💀
 //
@@ -33,120 +25,30 @@ import type { EventBus } from '../core/EventBus';
 import type { StateManager } from '../core/StateManager';
 import { Logger } from '@utils/Logger';
 
-// ========================================
-// TYPES
-// ========================================
+// Types (re-exported for backward compatibility)
+import type {
+    EchoType,
+    AwarenessLevel,
+    EchoContext,
+    EchoMemory,
+    EchoComments,
+    ContextComments,
+    EchoCommentPayload,
+} from './EchoMemoryTypes';
 
-/**
- * The three echo identities
- * DiZee: Each has distinct personality and trigger conditions
- */
-export type EchoType = 'hope' | 'gentle' | 'despair';
+export type {
+    EchoType,
+    AwarenessLevel,
+    EchoContext,
+    EchoMemory,
+    EchoComments,
+    ContextComments,
+    EchoCommentPayload,
+};
+export type { EchoAwareness, RouteCompletions, CommentPool } from './EchoMemoryTypes';
 
-/**
- * Awareness levels 0-4
- * Belle's progression system for meta-awareness
- */
-export type AwarenessLevel = 0 | 1 | 2 | 3 | 4;
-
-/**
- * Context types for echo comments
- * Zee Polish: Context-specific responses feel more intentional
- */
-export type EchoContext =
-    | 'general'
-    | 'despairHijack'
-    | 'noteHunting'
-    | 'saveScum'
-    | 'repeatedDeath'
-    | 'longPause';
-
-/**
- * Echo awareness state per echo
- */
-export interface EchoAwareness {
-    hope: AwarenessLevel;
-    gentle: AwarenessLevel;
-    despair: AwarenessLevel;
-}
-
-/**
- * Route completion tracking
- */
-export interface RouteCompletions {
-    ronnie: number;
-    tori: number;
-}
-
-/**
- * Full persistent memory structure
- * Belle: This persists across ALL saves globally
- */
-export interface EchoMemory {
-    // Total loops/replays
-    totalLoops: number;
-    routeCompletions: RouteCompletions;
-
-    // Death tracking
-    deathLocations: Record<string, number>;  // sceneId → count
-    tetherDeaths: number;
-    despairDeaths: number;
-
-    // Choice patterns
-    choiceHistory: Record<string, number[]>;  // choiceId → [selected option indices]
-    wrongChoiceRepeats: Record<string, number>;  // choiceId → count of same wrong choice
-
-    // Player behavior
-    saveScumCount: number;  // Quick save/load within 10 seconds
-    notesViewerOpens: number;
-    longPausesAtChoices: Record<string, number>;  // choiceId → pause count (>10s)
-
-    // Echo awareness levels
-    echoAwareness: EchoAwareness;
-
-    // Achievement tracking
-    triggeredAllEchoes: boolean;
-
-    // Last activity timestamps
-    lastSaveTime: number;
-    lastLoadTime: number;
-    lastChoiceTime: number;
-}
-
-/**
- * Comment pools organized by awareness level
- */
-export type CommentPool = Record<AwarenessLevel, string[]>;
-
-/**
- * All echo comment pools
- */
-export interface EchoComments {
-    hope: CommentPool;
-    gentle: CommentPool;
-    despair: CommentPool;
-}
-
-/**
- * Context-specific comment pools
- */
-export interface ContextComments {
-    despairHijack: string[];
-    hopeNoteHunting: string[];
-    gentleSaveScum: string[];
-    despairRepeatedDeath: string[];
-}
-
-/**
- * Echo comment event payload
- */
-export interface EchoCommentPayload {
-    echo: EchoType;
-    message: string;
-    icon: string;
-    awareness: AwarenessLevel;
-    context: EchoContext;
-}
+// Data
+import { ECHO_ICONS, getDefaultMemory, initializeCommentPools, initializeContextComments } from './EchoCommentData';
 
 // ========================================
 // ECHO MEMORY SYSTEM
@@ -187,25 +89,16 @@ export class EchoMemorySystem {
     // ========================================
     private static readonly STORAGE_KEY = 'echoMemory';
 
-    // ========================================
-    // ECHO ICONS - Belle's visual signatures 🖤
-    // ========================================
-    private static readonly ECHO_ICONS: Record<EchoType, string> = {
-        hope: '💫',
-        gentle: '🌙',
-        despair: '🖤'
-    };
-
     constructor(eventBus: EventBus, stateManager: StateManager) {
         this.eventBus = eventBus;
         this.stateManager = stateManager;
 
         // Initialize default memory state
-        this.memory = this.getDefaultMemory();
+        this.memory = getDefaultMemory();
 
-        // Initialize comment pools
-        this.comments = this.initializeCommentPools();
-        this.contextComments = this.initializeContextComments();
+        // Initialize comment pools (from EchoCommentData)
+        this.comments = initializeCommentPools();
+        this.contextComments = initializeContextComments();
 
         // Load persistent memory
         this.loadMemory();
@@ -216,195 +109,6 @@ export class EchoMemorySystem {
         Logger.state('👁️ Echo Memory System initialized');
         Logger.state(`   Total loops: ${this.memory.totalLoops}`);
         Logger.state(`   Echo awareness - Hope: ${this.memory.echoAwareness.hope}, Gentle: ${this.memory.echoAwareness.gentle}, Despair: ${this.memory.echoAwareness.despair}`);
-    }
-
-    // ========================================
-    // DEFAULT MEMORY STATE
-    // ========================================
-
-    /**
-     * Get default memory state
-     * DiZee: Clean slate for new players
-     */
-    private getDefaultMemory(): EchoMemory {
-        return {
-            totalLoops: 0,
-            routeCompletions: {
-                ronnie: 0,
-                tori: 0
-            },
-            deathLocations: {},
-            tetherDeaths: 0,
-            despairDeaths: 0,
-            choiceHistory: {},
-            wrongChoiceRepeats: {},
-            saveScumCount: 0,
-            notesViewerOpens: 0,
-            longPausesAtChoices: {},
-            echoAwareness: {
-                hope: 0,
-                gentle: 0,
-                despair: 0
-            },
-            triggeredAllEchoes: false,
-            lastSaveTime: 0,
-            lastLoadTime: 0,
-            lastChoiceTime: 0
-        };
-    }
-
-    // ========================================
-    // COMMENT POOLS
-    // Belle's carefully crafted dialogue 🖤
-    // ========================================
-
-    /**
-     * Initialize main comment pools by awareness level
-     *
-     * Level 0: Dormant - no comments (first playthrough)
-     * Level 1: Vague - déjà vu hints
-     * Level 2: Aware - direct acknowledgment
-     * Level 3: Fourth Wall - breaks the fourth wall
-     * Level 4: Glitch - reality breaking, zalgo text
-     */
-    private initializeCommentPools(): EchoComments {
-        return {
-            // ========================================
-            // 💫 HOPE - The optimist
-            // Triggered by persistence, returns, trying again
-            // ========================================
-            hope: {
-                0: [], // Dormant - no comments
-                1: [ // Vague awareness
-                    "Something about this feels... familiar.",
-                    "Have we been here before?",
-                    "This moment... I almost remember it."
-                ],
-                2: [ // Aware
-                    "You're back again. Does that mean there's still hope?",
-                    "Another attempt. I admire your persistence.",
-                    "Maybe this time will be different?",
-                    "I believe in second chances. And third. And fourth..."
-                ],
-                3: [ // Fourth wall
-                    "You keep trying. That's more than I did.",
-                    "How many loops until you give up? Or... until you succeed?",
-                    "Every replay, you get a little closer. I can feel it."
-                ],
-                4: [ // Glitch
-                    "Y̶o̶u̶'̶v̶e̶ ̶b̶e̶e̶n̶ ̶h̶e̶r̶e̶ ̶s̶o̶ ̶m̶a̶n̶y̶ ̶t̶i̶m̶e̶s̶...",
-                    "The architect didn't plan for this much hope.",
-                    "Are you even real anymore? Am I?"
-                ]
-            },
-
-            // ========================================
-            // 🌙 GENTLE - The resigned
-            // Triggered by hesitation, long pauses, save-scumming
-            // ========================================
-            gentle: {
-                0: [],
-                1: [
-                    "I've felt this moment before...",
-                    "Like a memory I shouldn't have.",
-                    "Why does this seem... rehearsed?"
-                ],
-                2: [
-                    "I tried that path too. It didn't work for me either.",
-                    "You hesitate at the same moments I did.",
-                    "The tether breaks the same way every time, doesn't it?",
-                    "I remember waiting here... just like you are now."
-                ],
-                3: [
-                    "How many times have we said goodbye?",
-                    "You're careful. Methodical. Just like I was.",
-                    "Sometimes I wonder if trying again is brave... or cruel."
-                ],
-                4: [
-                    "T̶h̶e̶ ̶l̶o̶o̶p̶ ̶i̶s̶ ̶e̶t̶e̶r̶n̶a̶l̶.",
-                    "I've stopped counting. Have you?",
-                    "Gentle isn't the right word anymore. Numb, maybe."
-                ]
-            },
-
-            // ========================================
-            // 🖤 DESPAIR - The bitter truth-teller
-            // Triggered by failures, deaths, wrong choices
-            // ========================================
-            despair: {
-                0: [],
-                1: [
-                    "Again?",
-                    "I've seen this before.",
-                    "You think you're the first?"
-                ],
-                2: [
-                    "Wrong again. Will you ever learn?",
-                    "She's watching you fail. Again.",
-                    "The same mistakes. Every. Single. Time.",
-                    "No matter what you choose here, it won't be what she meant to say.",
-                    "You think THIS choice will be different?"
-                ],
-                3: [
-                    "How many times will you make her suffer?",
-                    "You know how this ends. You've seen it before.",
-                    "Is this entertainment for you? Watching her break?",
-                    "She's not real. You're not real. None of this matters."
-                ],
-                4: [
-                    "S̶T̶O̶P̶ ̶T̶R̶Y̶I̶N̶G̶.",
-                    "The loop is eternal. You are eternal. We are eternal.",
-                    "I̶ ̶a̶m̶ ̶y̶o̶u̶.̶ ̶Y̶o̶u̶ ̶a̶r̶e̶ ̶m̶e̶.̶",
-                    "Let it end. Please."
-                ]
-            }
-        };
-    }
-
-    /**
-     * Initialize context-specific comment pools
-     * Zee Polish: Situational comments feel more intentional
-     */
-    private initializeContextComments(): ContextComments {
-        return {
-            // ========================================
-            // Despair's mocking at the hijacked choice
-            // ========================================
-            despairHijack: [
-                "Wrong again. Will you ever learn?",
-                "No matter what you choose, it won't be what she meant to say.",
-                "She's watching you struggle. Just like I did.",
-                "Every choice here is wrong. I learned that the hard way.",
-                "You feel it too, don't you? That nothing you say will help."
-            ],
-
-            // ========================================
-            // Hope when note hunting - encouragement
-            // ========================================
-            hopeNoteHunting: [
-                "Searching for answers in the notes? I did that too.",
-                "The truth is in there somewhere. Keep looking.",
-                "Every note brings you closer. Don't give up."
-            ],
-
-            // ========================================
-            // Gentle on save scumming - understanding
-            // ========================================
-            gentleSaveScum: [
-                "Rewinding time... if only it were that simple.",
-                "I remember trying to undo my mistakes too.",
-                "The save file doesn't change what happened. Just what you remember."
-            ],
-
-            // ========================================
-            // Despair on repeated deaths - cruel
-            // ========================================
-            despairRepeatedDeath: [
-                "You died here before. And before that. And before that.",
-                "The definition of insanity is trying the same thing expecting different results.",
-                "She enjoys watching you die. Over. And over."
-            ]
-        };
     }
 
     // ========================================
@@ -742,7 +446,7 @@ export class EchoMemorySystem {
 
         if (!message) return;
 
-        const icon = EchoMemorySystem.ECHO_ICONS[echo];
+        const icon = ECHO_ICONS[echo];
 
         // Emit event for notification system
         const payload: EchoCommentPayload = {
@@ -818,7 +522,7 @@ export class EchoMemorySystem {
     /**
      * Get current awareness levels
      */
-    public getAwarenessLevels(): EchoAwareness & { totalLoops: number } {
+    public getAwarenessLevels(): { hope: AwarenessLevel; gentle: AwarenessLevel; despair: AwarenessLevel; totalLoops: number } {
         return {
             hope: this.memory.echoAwareness.hope,
             gentle: this.memory.echoAwareness.gentle,
@@ -876,7 +580,7 @@ export class EchoMemorySystem {
      */
     public resetMemory(): void {
         localStorage.removeItem(EchoMemorySystem.STORAGE_KEY);
-        this.memory = this.getDefaultMemory();
+        this.memory = getDefaultMemory();
         this.syncToStateManager();
 
         this.eventBus.emit('echo:reset', {});
