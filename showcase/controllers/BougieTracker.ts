@@ -11,21 +11,25 @@ export class BougieTracker {
     private timerElement: HTMLElement | null = null;
     private updateInterval: number | null = null;
 
-    // Last bougie enhancement: GentleNudges scroll hints (Feb 6, 2026)
-    private readonly LAST_ENHANCEMENT = new Date('2026-02-06T00:00:00');
+    // Last bougie enhancement: Platform logos celebrating AI collaboration (Feb 13, 2026)
+    private readonly LAST_ENHANCEMENT = new Date('2026-02-13T22:00:00');
 
     constructor() {
         this.init();
     }
 
     private init(): void {
-        // Wait for footer to be injected
-        setTimeout(() => {
+        // Retry until footer element exists (footers are cloned from template)
+        const findAndStart = (attempts = 0): void => {
             this.timerElement = document.getElementById('bougie-timer');
             if (this.timerElement) {
                 this.startTimer();
+            } else if (attempts < 20) {
+                // Retry up to 20 times (2 seconds total)
+                setTimeout(() => findAndStart(attempts + 1), 100);
             }
-        }, 100);
+        };
+        findAndStart();
     }
 
     private startTimer(): void {
