@@ -138,8 +138,8 @@ export interface Scene {
     id: SceneId;
     /** Scene type hint */
     type?: string;
-    /** Background image for this scene */
-    background?: BackgroundId;
+    /** Background image path for this scene (resolved relative to /v2/) */
+    background?: string;
     /** Music explicitly forbidden (V1 design decision) */
     music?: never;
 

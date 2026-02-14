@@ -75,10 +75,11 @@ export class ContentLoader {
                 sprites = [];
                 for (const [position, path] of Object.entries(sceneData.sprites)) {
                     if (path && (position === 'left' || position === 'right' || position === 'center')) {
+                        const normalizedPath = this.normalizeAssetPath(path as string);
                         sprites.push({
                             id: this.extractSpriteId(path as string),
                             position: position as 'left' | 'center' | 'right',
-                            variant: path as string // Store full path in variant for now
+                            variant: normalizedPath // Normalized path for CSS url()
                         });
                     }
                 }
@@ -98,7 +99,7 @@ export class ContentLoader {
                 character: sceneData.character,
                 text: sceneData.text,
                 internal: sceneData.internal,
-                background: sceneData.background,
+                background: sceneData.background ? this.normalizeAssetPath(sceneData.background) : undefined,
                 sprites,
                 // Map nextSceneId to next
                 next: sceneData.nextSceneId || sceneData.next,
@@ -127,5 +128,18 @@ export class ContentLoader {
         // Match patterns like "full-sprite-tori.webp" or "ronnie-sprite.png"
         const match = filename.match(/(?:full-sprite-|sprite-)?([\w-]+)\.(png|webp)/);
         return match?.[1] ?? 'unknown';
+    }
+
+    /**
+     * Normalize asset paths from JSON scene data.
+     * JSON files use "assets/..." for readability, but since V2 is served
+     * from /v2/index.html, CSS url() resolves relative to /v2/.
+     * This prefixes "../" so paths resolve to the project-root /assets/ dir.
+     */
+    private normalizeAssetPath(path: string): string {
+        if (path.startsWith('assets/')) {
+            return `../${path}`;
+        }
+        return path;
     }
 }
