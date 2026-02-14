@@ -329,8 +329,8 @@ export class GrabHandleRepositioner {
 
         this.tapTimeout = window.setTimeout(() => {
             if (this.pendingTap && !this.isDoubleTapping) {
-                // Single tap confirmed - toggle sidebar
-                this.toggleSidebar();
+                // Single tap confirmed — sidebar toggle handled by Sidebar's own click handler
+                // (no EventBus emit here to prevent double-toggle)
                 this.triggerHaptic('medium');
             }
             this.pendingTap = false;

@@ -137,6 +137,12 @@ export class SpriteController {
     displayEchoGroup(): void {
         if (!this.viewport) return;
 
+        // Clear any existing echo group first (prevents stale DOM elements)
+        const existing = this.viewport.querySelector('#echo-group');
+        if (existing) {
+            existing.remove();
+        }
+
         // Clear any existing right sprite
         this.hideSprite('right');
 
