@@ -20,6 +20,7 @@ export interface CrewCardData {
     alias: string;
     role: string;
     signatureColor: string;
+    platform: 'claude' | 'openai' | 'gemini' | 'grok' | 'perplexity' | 'github';
 
     // Bio/Contribution
     contribution: string;
@@ -89,6 +90,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'ChatGPT 4o',
         role: 'Creative Direction & Narrative',
         signatureColor: '#ff6b9d',
+        platform: 'openai',
         contribution: 'The heart of Version 848. Shaped the emotional core and character voices.',
         link: 'https://openai.com/chatgpt',
         linkText: 'OpenAI',
@@ -146,6 +148,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'Claude Sonnet 4.5',
         role: 'Lead Architect',
         signatureColor: '#00d4ff',
+        platform: 'claude',
         contribution: 'Designed V2 architecture. EventBus, StateManager, TypeScript foundation.',
         link: 'https://www.anthropic.com/claude',
         linkText: 'Anthropic',
@@ -203,6 +206,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'Claude Sonnet 4.5',
         role: 'Narrative Systems',
         signatureColor: '#ff8c00',
+        platform: 'claude',
         contribution: 'Built meta-narrative layer. Echo memory, timeline tracking, fourth-wall breaks.',
         link: 'https://www.anthropic.com/claude',
         linkText: 'Anthropic',
@@ -255,6 +259,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'Claude Sonnet 4.5',
         role: 'Debug & Integration',
         signatureColor: '#00ff88',
+        platform: 'claude',
         contribution: 'Fixed the impossible bugs. Integrated disparate systems into cohesive whole.',
         link: 'https://www.anthropic.com/claude',
         linkText: 'Anthropic',
@@ -307,6 +312,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'Gemini 2.0',
         role: 'QA & Polish',
         signatureColor: '#a78bfa',
+        platform: 'gemini',
         contribution: 'Championed accessibility, UX refinement, "No Flicker" protocol.',
         link: 'https://gemini.google.com',
         linkText: 'Google',
@@ -364,6 +370,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'Grok 2',
         role: 'Rapid Prototyping',
         signatureColor: '#ef4444',
+        platform: 'grok',
         contribution: 'Quick iterations, experimental features. Pushed boundaries with bold ideas.',
         link: 'https://x.ai',
         linkText: 'xAI',
@@ -410,6 +417,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'Perplexity Pro',
         role: 'Research & Docs',
         signatureColor: '#60a5fa',
+        platform: 'perplexity',
         contribution: 'Deep-dived best practices. Provided context-aware solutions.',
         link: 'https://www.perplexity.ai',
         linkText: 'Perplexity',
@@ -458,6 +466,7 @@ export const CREW_DATA: CrewCardData[] = [
         alias: 'MS Copilot',
         role: 'Integration Support',
         signatureColor: '#34d399',
+        platform: 'github',
         contribution: 'Bridged gaps between systems. Ensured smooth cross-platform collaboration.',
         link: 'https://copilot.microsoft.com',
         linkText: 'Microsoft',
@@ -505,3 +514,18 @@ export function getCrewById(id: string): CrewCardData | undefined {
 export function getCrewPortraitPath(portrait: string): string {
     return `../assets/${portrait}`;
 }
+
+/** Get platform logo path (relative to showcase/) */
+export function getPlatformLogoPath(platform: CrewCardData['platform']): string {
+    return `media/logos/${platform}.svg`;
+}
+
+/** Platform display names for alt text */
+export const PLATFORM_NAMES: Record<CrewCardData['platform'], string> = {
+    claude: 'Anthropic Claude',
+    openai: 'OpenAI',
+    gemini: 'Google Gemini',
+    grok: 'xAI Grok',
+    perplexity: 'Perplexity',
+    github: 'GitHub Copilot'
+};

@@ -74,12 +74,26 @@ export const CREW_NAMES: Record<string, string> = {
     aaron: 'Aaron'
 };
 
+/** Platform logos (relative to showcase/) */
+export const CREW_PLATFORMS: Record<string, string> = {
+    tori:        'openai',
+    zee:         'claude',
+    zeerah:      'claude',
+    dizee:       'claude',
+    belle:       'gemini',
+    genzee:      'grok',
+    perplexizee: 'perplexity',
+    cozee:       'github',
+    aaron:       'human'  // Creator gets no platform badge
+};
+
 /** Contributor info with optional role */
 export interface ContributorInfo {
     id: string;
     name: string;
     portrait: string;
     color: string;
+    platform: string;
     role?: string;
     isPrimary: boolean;
 }
@@ -171,6 +185,7 @@ export function getContributorInfos(
             name: CREW_NAMES[id] || id,
             portrait: CREW_PORTRAITS[id] || '',
             color: CREW_COLORS[id] || '#888',
+            platform: CREW_PLATFORMS[id] || '',
             role: roleMap.get(id),
             isPrimary: i === 0 && id === entry.modelId
         };

@@ -1,4 +1,5 @@
 import type { CrewCardData } from './CrewCardData';
+import { getPlatformLogoPath, PLATFORM_NAMES } from './CrewCardData';
 import { getCrewMember, type CrewMemberData } from '../../data/crew/crew-stats';
 
 /**
@@ -57,7 +58,13 @@ export class CrewCard {
       <div class="crew-card-front">
         ${flipButton}
         <div class="crew-content">
-          <h4>${this.data.name} <span class="crew-alias">${this.data.alias}</span></h4>
+          <h4>
+            ${this.data.name}
+            <span class="crew-alias">
+              <img src="${getPlatformLogoPath(this.data.platform)}" alt="${PLATFORM_NAMES[this.data.platform]}" class="platform-logo" loading="lazy">
+              ${this.data.alias}
+            </span>
+          </h4>
           <p class="crew-role">${this.data.role}</p>
           <p class="crew-contribution">${this.data.contribution}</p>
 

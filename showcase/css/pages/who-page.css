@@ -277,6 +277,25 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
     opacity: 0.8;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Platform logo badge next to alias */
+.platform-logo {
+    width: 18px;
+    height: 18px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.1));
+    vertical-align: middle;
+}
+
+.platform-logo:hover {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.4));
 }
 
 .crew-role {

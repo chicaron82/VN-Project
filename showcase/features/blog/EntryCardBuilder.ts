@@ -39,6 +39,11 @@ function renderContributorStrip(contributors: ContributorInfo[], overflow: strin
         const primaryClass = c.isPrimary ? 'is-primary' : '';
         const animDelay = i * 50; // Staggered entrance
 
+        // Platform badge (skip for human/aaron)
+        const platformBadge = c.platform && c.platform !== 'human'
+            ? `<img src="media/logos/${c.platform}.svg" alt="${c.platform}" class="contributor-platform-badge" loading="lazy" />`
+            : '';
+
         return `
             <button
                 class="contributor-portrait ${primaryClass}"
@@ -48,6 +53,7 @@ function renderContributorStrip(contributors: ContributorInfo[], overflow: strin
                 style="--chef-color: ${c.color}; --anim-delay: ${animDelay}ms;"
             >
                 <img src="${c.portrait}" alt="${c.name}" loading="lazy" />
+                ${platformBadge}
             </button>
         `;
     }).join('');
@@ -137,6 +143,24 @@ const CONTRIBUTOR_STYLES = `
     opacity: 1;
     border-color: var(--chef-color);
     box-shadow: 0 0 6px var(--chef-color);
+}
+
+/* Platform badge overlay on contributor portraits */
+.contributor-platform-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+    background: rgba(10, 10, 15, 0.9);
+    border-radius: 50%;
+    padding: 2px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+.contributor-portrait {
+    position: relative;
 }
 `;
 
