@@ -254,6 +254,36 @@ export class ExperimentSection {
                     </div>
                 </div>
 
+                <!-- FIELD NOTES -->
+                <div class="experiment-meta">
+                    <h2>👻 Field Note: The Phantom Crew Incident</h2>
+
+                    <div class="meta-insights">
+                        <p>
+                            <strong>Feb 14, 2026</strong> — During a routine showcase audit, we discovered four AI crew members
+                            that <em>never existed</em>: Michelin, Mochi, Soma, and Kai.
+                        </p>
+
+                        <p>
+                            A prior AI session pattern-matched project context (Michelin star quality references,
+                            Yukihira Soma cooking metaphors) and invented plausible-sounding names. It wrote them to
+                            <code>_CREW_STATUS.md</code> — a file loaded every session. Every subsequent AI session
+                            read them as canonical truth and propagated them without question.
+                        </p>
+
+                        <blockquote>
+                            <strong>"The names felt real because the AI believed them. That's the whole problem."</strong>
+                        </blockquote>
+
+                        <p>
+                            This is exactly the kind of compounding error the V3 experiment is designed to surface.
+                            When AI works unsupervised, hallucinations don't just happen once — they self-reinforce
+                            through persistent storage. The human caught what no AI session questioned.
+                            <a href="#journal" style="color: var(--accent-primary);">Full write-up in the journal →</a>
+                        </p>
+                    </div>
+                </div>
+
                 <!-- CURRENT STATUS -->
                 <div class="experiment-status">
                     <h2>📍 Current Status</h2>

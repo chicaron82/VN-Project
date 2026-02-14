@@ -102,6 +102,7 @@ import { entry as entry97 } from './entries/2025/11/post-launch-polish';
 import { entry as entry98 } from './entries/2025/10/demon-lord-naming';
 import { entry as entry99 } from './entries/2025/10/applebees-tether-system';
 import { entry as entry100 } from './entries/2025/10/custom-engine-realization';
+import { entry as entry101 } from './entries/2026/02/phantom-crew-hallucination-loop';
 
 export * from './types';
 import type { BlogEntry } from './types';
@@ -207,7 +208,8 @@ export const timelineData: BlogEntry[] = [
     entry97,
     entry98,
     entry99,
-    entry100
+    entry100,
+    entry101
 ];
 
 export const TIMELINE_DATA = {
