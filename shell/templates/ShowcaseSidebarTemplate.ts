@@ -9,7 +9,6 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { navigateWithTransition } from '../utils/NavigationHelper.js';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -134,12 +133,10 @@ export function initShowcaseSidebarListeners(): void {
             const action = btn.getAttribute('data-action');
 
             if (action === 'launch-v1') {
-                // Use location-aware path that works from both showcase/ and root
-                const basePath = window.location.pathname.includes('/showcase/') ? '..' : '.';
-                navigateWithTransition(`${basePath}/v1/index.html`);
+                // Route within shell - serve from the restaurant, not takeout
+                window.location.hash = '#/v1';
             } else if (action === 'launch-v2') {
-                const basePath = window.location.pathname.includes('/showcase/') ? '..' : '.';
-                navigateWithTransition(`${basePath}/v2/index.html`);
+                window.location.hash = '#/v2';
             } else if (action === 'go-home') {
                 const tabController = (window as unknown as { tabController?: { setActiveTab: (tab: string) => void } }).tabController;
                 if (tabController) {
