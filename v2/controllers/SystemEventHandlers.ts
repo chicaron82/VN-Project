@@ -162,13 +162,76 @@ export class SystemEventHandlers {
             Logger.scene(`Scene loaded: ${sceneId}${isInternal ? ' (internal)' : ''}`);
         });
 
-        // Scene complete - handle end of route
+        // Scene complete - handle end of route/ending
         this.eventBus.on('scene:complete', ({ sceneId }) => {
             Logger.scene(`Route ended at: ${sceneId}`);
-            // For now, return to main menu after a delay
-            setTimeout(() => {
-                this.showMainMenu();
-            }, 2000);
+
+            // Show a "route complete" overlay before returning to main menu
+            const gameLayout = this.getGameLayout();
+            if (gameLayout) {
+                const overlay = document.createElement('div');
+                overlay.id = 'route-complete-overlay';
+                overlay.style.cssText = `
+                    position: absolute; inset: 0; z-index: 100;
+                    background: rgba(0, 0, 0, 0.85);
+                    display: flex; flex-direction: column;
+                    align-items: center; justify-content: center;
+                    opacity: 0; transition: opacity 1.5s ease-in;
+                    color: #d4d4d4; font-family: 'Segoe UI', sans-serif;
+                    text-align: center; cursor: pointer;
+                `;
+
+                // Determine ending flavor text based on scene ID
+                const isTrue = sceneId.includes('trueRoute') || sceneId.includes('always');
+                const isBad = sceneId.includes('badRoute') || sceneId.includes('retry');
+                const isEpilogue = sceneId.includes('epilogue');
+
+                let heading = 'Route Complete';
+                let flavor = '';
+                if (isTrue) {
+                    heading = '💚 True Ending';
+                    flavor = 'Always. Always. Always.';
+                } else if (isBad) {
+                    heading = 'Ending Reached';
+                    flavor = 'Maybe next loop...';
+                } else if (isEpilogue) {
+                    heading = 'Fin';
+                    flavor = '848 is sacred.';
+                }
+
+                overlay.innerHTML = `
+                    <div style="font-size: 1.8rem; margin-bottom: 0.5rem; letter-spacing: 0.1em;">${heading}</div>
+                    ${flavor ? `<div style="font-size: 1rem; opacity: 0.7; font-style: italic; margin-bottom: 2rem;">${flavor}</div>` : ''}
+                    <div style="font-size: 0.85rem; opacity: 0.5;">Click or press any key to return to menu</div>
+                `;
+
+                gameLayout.viewport.appendChild(overlay);
+
+                // Fade in
+                requestAnimationFrame(() => {
+                    overlay.style.opacity = '1';
+                });
+
+                // Return to main menu on click or keypress
+                const returnToMenu = (): void => {
+                    overlay.removeEventListener('click', returnToMenu);
+                    document.removeEventListener('keydown', returnToMenu);
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.remove();
+                        this.showMainMenu();
+                    }, 800);
+                };
+
+                // Delay listener attachment so it doesn't fire immediately
+                setTimeout(() => {
+                    overlay.addEventListener('click', returnToMenu);
+                    document.addEventListener('keydown', returnToMenu, { once: true });
+                }, 1500);
+            } else {
+                // Fallback if no game layout
+                setTimeout(() => this.showMainMenu(), 2000);
+            }
         });
     }
 

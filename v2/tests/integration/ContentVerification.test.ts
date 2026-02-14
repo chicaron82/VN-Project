@@ -388,13 +388,16 @@ describe('Content Verification', () => {
 
             while (current && current.nextSceneId) {
                 visited.push(current.id);
-                current = scenes.get(current.nextSceneId);
+                const nextInAct = scenes.get(current.nextSceneId);
+                if (!nextInAct) break; // Cross-act chain (exits to act3)
+                current = nextInAct;
                 if (visited.length > 100) break; // Safety break
             }
 
             expect(current).toBeDefined();
             expect(current!.id).toBe('act2End');
-            expect(current!.nextSceneId).toBeNull();
+            // act2End chains to act3Beat2 (cross-act transition)
+            expect(current!.nextSceneId).toBe('act3Beat2');
             expect(visited.length).toBeGreaterThan(10);
         });
 

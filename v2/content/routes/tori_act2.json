@@ -902,7 +902,7 @@
             "type": "dialog",
             "character": "Echoes",
             "text": "Despair: \"Good. Good. Now you understand.\"\\nEcho 1: (fading) \"No...\"\\nEcho 2: (barely there) \"Please...\"",
-            "nextSceneId": null,
+            "nextSceneId": "tori_act3_beat2",
             "internal": "[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]",
             "background": "assets/digitalSpace.png",
             "sprites": {

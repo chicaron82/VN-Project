@@ -34,6 +34,9 @@ import ronnieAct3Data from '@content/routes/ronnie_act3.json';
 import toriAct1Data from '@content/routes/tori_act1.json';
 import toriAct2Data from '@content/routes/tori_act2.json';
 import toriAct3Data from '@content/routes/tori_act3.json';
+import toriEndingsData from '@content/routes/tori_endings.json';
+import ronnieEndingsData from '@content/routes/ronnie_endings.json';
+import epilogueData from '@content/routes/epilogue.json';
 
 
 
@@ -183,6 +186,9 @@ async function init(): Promise<void> {
     contentLoader.parseAndRegister(toriAct1Data as unknown);
     contentLoader.parseAndRegister(toriAct2Data as unknown);
     contentLoader.parseAndRegister(toriAct3Data as unknown);
+    contentLoader.parseAndRegister(toriEndingsData as unknown);
+    contentLoader.parseAndRegister(ronnieEndingsData as unknown);
+    contentLoader.parseAndRegister(epilogueData as unknown);
     Logger.system('[UV7 V2] Route content loaded');
 
     // Set up event handlers (extracted to controllers)

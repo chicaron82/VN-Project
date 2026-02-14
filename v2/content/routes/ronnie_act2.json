@@ -536,7 +536,7 @@
             "type": "dialog",
             "character": "Ronnie (narration)",
             "text": "\"And then... everything broke.\"",
-            "nextSceneId": null,
+            "nextSceneId": "act3Beat2",
             "internal": "[Visual overload: alarms, static, screen fades white.]\\n[→ Act 3: The final push begins]",
             "background": "assets/genericBack.png"
         }
