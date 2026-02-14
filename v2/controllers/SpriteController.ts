@@ -85,22 +85,11 @@ export class SpriteController {
             existingSprite.style.backgroundImage = `url('${spritePath}')`;
             existingSprite.style.opacity = '1';
         } else {
-            // Create new sprite element
+            // Create new sprite element — CSS handles all positioning
             const sprite = document.createElement('div');
             sprite.className = `character-sprite sprite-${position}`;
-            sprite.style.cssText = `
-                position: absolute;
-                bottom: 0;
-                ${position === 'left' ? 'left: 5%;' : 'right: 5%;'}
-                width: 35%;
-                height: 85%;
-                background-image: url('${spritePath}');
-                background-size: contain;
-                background-position: bottom center;
-                background-repeat: no-repeat;
-                opacity: 0;
-                transition: opacity 0.3s ease-in-out;
-            `;
+            sprite.style.backgroundImage = `url('${spritePath}')`;
+            sprite.style.opacity = '0';
             this.viewport.appendChild(sprite);
 
             // Fade in
@@ -151,23 +140,11 @@ export class SpriteController {
         // Clear any existing right sprite
         this.hideSprite('right');
 
-        // Create echo group container
+        // Create echo group container — CSS handles all positioning
         const echoGroup = document.createElement('div');
         echoGroup.id = 'echo-group';
         echoGroup.className = 'echo-group';
-        echoGroup.style.cssText = `
-            position: absolute;
-            bottom: 0;
-            right: 5%;
-            width: 40%;
-            height: 85%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 0;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        `;
+        echoGroup.style.opacity = '0';
 
         // Create three echo sprites
         const echo1 = this.createEchoSprite('echo-1-sprite', this.ECHO_SPRITES.echo1);
@@ -197,18 +174,11 @@ export class SpriteController {
      * Create an individual echo sprite element
      */
     private createEchoSprite(id: string, spritePath: string): HTMLElement {
+        // CSS handles sizing/positioning via .echo-sprite + #id selectors
         const sprite = document.createElement('div');
         sprite.id = id;
         sprite.className = 'echo-sprite';
-        sprite.style.cssText = `
-            width: 33%;
-            height: 100%;
-            background-image: url('${spritePath}');
-            background-size: contain;
-            background-position: bottom center;
-            background-repeat: no-repeat;
-            transition: all 0.5s ease-in-out;
-        `;
+        sprite.style.backgroundImage = `url('${spritePath}')`;
         return sprite;
     }
 
@@ -232,39 +202,10 @@ export class SpriteController {
         // Remove existing stage classes
         echoGroup.classList.remove('echo-growth-act1', 'echo-growth-act2', 'echo-growth-act3');
 
-        // Add appropriate class
+        // CSS classes handle all height modifications
         echoGroup.classList.add(`echo-growth-${stage}`);
 
-        // Apply height modifications to individual echoes
-        const echo1 = echoGroup.querySelector('#echo-1-sprite') as HTMLElement;
-        const echo2 = echoGroup.querySelector('#echo-2-sprite') as HTMLElement;
-        const despair = echoGroup.querySelector('#despair-sprite') as HTMLElement;
-
-        if (echo1 && echo2 && despair) {
-            switch (stage) {
-                case 'act1':
-                    // Despair dominates - 100%, others are smaller
-                    echo1.style.height = '65%';
-                    echo2.style.height = '70%';
-                    despair.style.height = '100%';
-                    Logger.ui('[SpriteController] Echo growth: Act 1 (Despair dominates)');
-                    break;
-                case 'act2':
-                    // Hope rising - more balanced
-                    echo1.style.height = '80%';
-                    echo2.style.height = '85%';
-                    despair.style.height = '95%';
-                    Logger.ui('[SpriteController] Echo growth: Act 2 (Hope rising)');
-                    break;
-                case 'act3':
-                    // Balance achieved - all equal
-                    echo1.style.height = '100%';
-                    echo2.style.height = '100%';
-                    despair.style.height = '100%';
-                    Logger.ui('[SpriteController] Echo growth: Act 3 (Balance achieved)');
-                    break;
-            }
-        }
+        Logger.ui(`[SpriteController] Echo growth: ${stage}`);
     }
 
     /**
@@ -333,22 +274,11 @@ export class SpriteController {
             echoGroup.remove();
             this.state.echoGroupActive = false;
 
-            // Create and show Tori sprite
+            // Create and show Tori sprite — CSS handles positioning
             const tori = document.createElement('div');
             tori.className = 'character-sprite sprite-right tori-merged';
-            tori.style.cssText = `
-                position: absolute;
-                bottom: 0;
-                right: 5%;
-                width: 35%;
-                height: 85%;
-                background-image: url('${this.ECHO_SPRITES.tori}');
-                background-size: contain;
-                background-position: bottom center;
-                background-repeat: no-repeat;
-                opacity: 0;
-                transition: opacity 0.5s ease-in;
-            `;
+            tori.style.backgroundImage = `url('${this.ECHO_SPRITES.tori}')`;
+            tori.style.opacity = '0';
             this.viewport!.appendChild(tori);
 
             // Phase 4: Fade in Tori (0.5s)
