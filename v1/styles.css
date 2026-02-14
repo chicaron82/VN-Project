@@ -16,8 +16,7 @@
 /* UV7 splash, loading screen */
 @import 'css/menu.css';
 /* Main menu, buttons, tips */
-@import 'css/route-select.css';
-/* Route selection screen */
+/* Route selection moved to route-select-unified.css (imported below) */
 @import 'css/pause-menu.css';
 /* Pause menu overlay */
 @import 'css/save-load.css';

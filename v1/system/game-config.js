@@ -220,7 +220,7 @@ const GameConfig = {
             ronnie: '../assets/ronnie-sprite.png',
             tori: '../assets/tori-sprite.png',
             oldRonnie: '../assets/old-ronnie-sprite.png',
-            threeEchoes: '../assets/threeechoessprite.png',
+            threeEchoes: '../assets/three-echoes-sprite.png',
             routeSelectRonnie: '../assets/route-select-ronnie.webp',
             routeSelectTori: '../assets/route-select-tori.webp'
         },

@@ -26,14 +26,14 @@ class CreditsPhotoController {
             trueEnding: {
                 opening: [
                     '../assets/credits-pizza-date.webp',
-                    '../assets/credits-bga-hoodie.webp',
+                    '../assets/credits-bga-hoodie.png',
                     '../assets/credits-rodeo-date.webp'
                 ],
                 middle: [
                     '../assets/credits-fancy-dinner.webp',
                     '../assets/credits-sunset-proposal.webp',
                     '../assets/credits-rodeo-date.webp',
-                    '../assets/credits-bga-hoodie.webp'
+                    '../assets/credits-bga-hoodie.png'
                 ],
                 finale: '../assets/credits-gym-selfie.webp' // Always shown - "Always." anchor
             },

@@ -94,7 +94,7 @@ import './directors-cut-controller.js';
 import './crew-controller.js';
 import './fullscreen-controller.js';
 import './screenshot-controller.js';
-import './gateway.js';
+// gateway.js moved to labs/tori-gateway/ during spring cleaning
 
 // Core engine (must load after controllers)
 import { GameEngine } from './game-engine.js';
