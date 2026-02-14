@@ -1,14 +1,25 @@
 import type { EventBus, GameEvents } from '../../core/EventBus';
 import { Logger } from '@utils/Logger';
-import type {
-    NotificationPriority,
-    NotificationCategory as CoreNotificationCategory,
-    NotificationConfig as CoreNotificationConfig,
-} from '@core/NotificationSystem/NotificationCore';
 import {
     PRIORITY_COLORS,
     DEFAULT_DURATIONS
 } from '@core/NotificationSystem/NotificationCore';
+
+import type { NotificationConfig, NotificationCategory, SwipeState } from './NotificationRailTypes';
+import { CATEGORY_ICONS } from './NotificationRailTypes';
+import { injectNotificationRailStyles } from './NotificationRailStyles';
+import {
+    createNotificationCard,
+    setupNotificationCardHandlers,
+    setupSwipeHandlers,
+    updateNotificationCard,
+    formatRelativeTime,
+    escapeNotificationHtml,
+} from './NotificationRailDOM';
+
+// Re-export types for backward compatibility
+export type { NotificationConfig, NotificationCategory };
+export type { NotificationPriority } from './NotificationRailTypes';
 
 /**
  * NotificationRail - Premium Inline Notification System
@@ -25,51 +36,11 @@ import {
  *
  * REFACTORED: Now uses shared NotificationCore foundation
  * Extended with app-specific categories (torigatchi, autosave, etc.)
+ *
+ * DECOMPOSED: Types → NotificationRailTypes.ts
+ *             CSS   → NotificationRailStyles.ts
+ *             DOM   → NotificationRailDOM.ts
  */
-
-// ========================================
-// NOTIFICATION TYPES & PRIORITIES
-// ========================================
-
-// Extend core category with app-specific ones
-export type NotificationCategory = CoreNotificationCategory | 'torigatchi' | 'autosave' | 'tether' | 'note' | 'app';
-
-// Extend core config with Rail-specific fields
-// Make fields required that Rail needs
-export interface NotificationConfig extends Omit<CoreNotificationConfig, 'id' | 'title' | 'icon' | 'category'> {
-    id: string;                  // Required: UUID for tracking
-    title: string;               // Required: Primary display text
-    icon: string;                // Required: Visual identifier
-    category: NotificationCategory; // Required: For categorization
-    timestamp: number;           // When notification was created
-    appId?: string;              // Associated app for badge counting
-    dismissible?: boolean;       // Can be swiped away (default: true)
-    sound?: boolean;             // Play notification sound (default: false per Tori's rule)
-}
-
-// Re-export NotificationPriority for backward compatibility
-export type { NotificationPriority };
-
-// Category icons (fallback if not specified)
-const CATEGORY_ICONS: Record<NotificationCategory, string> = {
-    // Core categories (from NotificationCore)
-    system: '⚙️',
-    info: 'ℹ️',
-    error: '❌',
-    success: '✅',
-    warning: '⚠️',
-    // App-specific categories
-    torigatchi: '🐱',
-    achievement: '🏆',
-    autosave: '💾',
-    tether: '⚡',
-    note: '📬',
-    app: '📱',
-};
-
-// ========================================
-// NOTIFICATION RAIL CLASS
-// ========================================
 
 export class NotificationRail {
     private container!: HTMLElement;
@@ -81,16 +52,15 @@ export class NotificationRail {
     private badgeCounts: Map<string, number> = new Map();
     private unsubscribers: (() => void)[] = [];
 
-    // Swipe tracking
-    private swipeState = {
+    // Swipe gesture tracking (shared mutable state for touch handlers)
+    private swipeState: SwipeState = {
         startX: 0,
         startY: 0,
         currentX: 0,
         isDragging: false,
-        targetId: null as string | null,
+        targetId: null,
     };
 
-    // Configuration
     private readonly SWIPE_THRESHOLD = 80;   // px to trigger dismiss
     private readonly ANIMATION_DURATION = 300;
 
@@ -98,9 +68,7 @@ export class NotificationRail {
         this.eventBus = eventBus;
         this.createDOM();
         this.setupEventListeners();
-        this.injectStyles();
-
-        Logger.ui('🔔 NotificationRail initialized (Phase 26d)');
+        injectNotificationRailStyles();
     }
 
     // ========================================
@@ -144,233 +112,6 @@ export class NotificationRail {
 
         this.container.appendChild(this.railElement);
         document.body.appendChild(this.container);
-    }
-
-    // ========================================
-    // STYLE INJECTION
-    // ========================================
-
-    private injectStyles(): void {
-        if (document.getElementById('notification-rail-styles')) return;
-
-        const styles = document.createElement('style');
-        styles.id = 'notification-rail-styles';
-        styles.textContent = `
-            /* Notification card base */
-            .notification-card {
-                position: relative;
-                width: 280px;
-                padding: 12px 16px;
-                border-radius: 12px;
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                font-family: 'Courier New', monospace;
-                cursor: pointer;
-                transform-origin: right center;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                opacity: 0;
-                transform: translateX(100%) scale(0.9);
-                touch-action: pan-y;
-            }
-
-            .notification-card.visible {
-                opacity: 1;
-                transform: translateX(0) scale(1);
-            }
-
-            .notification-card.dismissing {
-                opacity: 0;
-                transform: translateX(120%) scale(0.8);
-            }
-
-            .notification-card.stacked {
-                position: absolute;
-                right: 0;
-            }
-
-            /* Hover effect */
-            .notification-card:hover {
-                transform: translateX(-4px) scale(1.02);
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            }
-
-            .notification-card.swiping {
-                transition: none !important;
-            }
-
-            /* Priority pulse animation for urgent */
-            .notification-card.priority-urgent {
-                animation: urgentPulse 2s ease-in-out infinite;
-            }
-
-            @keyframes urgentPulse {
-                0%, 100% { box-shadow: 0 4px 20px rgba(255, 68, 68, 0.3); }
-                50% { box-shadow: 0 4px 30px rgba(255, 68, 68, 0.6); }
-            }
-
-            /* Notification content layout */
-            .notification-header {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-bottom: 6px;
-            }
-
-            .notification-icon {
-                font-size: 16px;
-                flex-shrink: 0;
-            }
-
-            .notification-title {
-                font-size: 12px;
-                font-weight: bold;
-                color: rgba(255, 255, 255, 0.95);
-                flex: 1;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .notification-time {
-                font-size: 10px;
-                color: rgba(255, 255, 255, 0.5);
-                flex-shrink: 0;
-            }
-
-            .notification-message {
-                font-size: 11px;
-                color: rgba(255, 255, 255, 0.8);
-                line-height: 1.4;
-                max-height: 2.8em;
-                overflow: hidden;
-            }
-
-            .notification-actions {
-                display: flex;
-                gap: 8px;
-                margin-top: 8px;
-            }
-
-            .notification-action-btn {
-                flex: 1;
-                padding: 6px 12px;
-                border: 1px solid rgba(0, 255, 255, 0.4);
-                border-radius: 6px;
-                background: rgba(0, 255, 255, 0.1);
-                color: #00ffff;
-                font-size: 10px;
-                font-family: inherit;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            }
-
-            .notification-action-btn:hover {
-                background: rgba(0, 255, 255, 0.2);
-                border-color: rgba(0, 255, 255, 0.6);
-            }
-
-            .notification-dismiss-btn {
-                background: rgba(255, 255, 255, 0.1);
-                border-color: rgba(255, 255, 255, 0.2);
-                color: rgba(255, 255, 255, 0.7);
-            }
-
-            .notification-dismiss-btn:hover {
-                background: rgba(255, 100, 100, 0.2);
-                border-color: rgba(255, 100, 100, 0.4);
-                color: rgba(255, 150, 150, 0.9);
-            }
-
-            /* Swipe indicator */
-            .notification-swipe-indicator {
-                position: absolute;
-                right: -30px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 14px;
-                opacity: 0;
-                transition: opacity 0.2s ease;
-            }
-
-            .notification-card.swiping .notification-swipe-indicator {
-                opacity: 1;
-            }
-
-            /* Stack counter badge */
-            .notification-stack-badge {
-                position: absolute;
-                top: -6px;
-                right: -6px;
-                background: linear-gradient(135deg, #ff6b9d, #ff4444);
-                color: white;
-                font-size: 10px;
-                font-weight: bold;
-                padding: 2px 6px;
-                border-radius: 10px;
-                min-width: 16px;
-                text-align: center;
-                box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
-            }
-
-            /* Clear all button */
-            .notification-clear-all {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-                padding: 8px 16px;
-                margin-top: 8px;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 8px;
-                color: rgba(255, 255, 255, 0.6);
-                font-size: 11px;
-                font-family: 'Courier New', monospace;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            }
-
-            .notification-clear-all:hover {
-                background: rgba(255, 100, 100, 0.1);
-                border-color: rgba(255, 100, 100, 0.3);
-                color: rgba(255, 150, 150, 0.9);
-            }
-
-            /* Category-specific styles */
-            .notification-card.category-torigatchi .notification-icon {
-                animation: bounce 1s ease infinite;
-            }
-
-            .notification-card.category-achievement {
-                background: linear-gradient(145deg, rgba(50, 40, 10, 0.95), rgba(30, 25, 5, 0.98)) !important;
-                border-color: rgba(255, 215, 0, 0.6) !important;
-            }
-
-            .notification-card.category-achievement .notification-icon {
-                animation: shine 2s ease-in-out infinite;
-            }
-
-            @keyframes bounce {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-3px); }
-            }
-
-            @keyframes shine {
-                0%, 100% { filter: brightness(1); }
-                50% { filter: brightness(1.3); }
-            }
-
-            /* Slide-in animation for rail itself */
-            #notification-rail-container.collapsed {
-                transform: translateX(calc(100% + 20px));
-            }
-
-            #notification-rail-container {
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-        `;
-
-        document.head.appendChild(styles);
     }
 
     // ========================================
@@ -579,10 +320,10 @@ export class NotificationRail {
         const updated = { ...existing, ...updates };
         this.notifications.set(id, updated);
 
-        // Update DOM element
+        // Update DOM element via extracted helper
         const element = this.notificationElements.get(id);
         if (element) {
-            this.updateNotificationElement(element, updated);
+            updateNotificationCard(element, updated);
         }
     }
 
@@ -686,43 +427,19 @@ export class NotificationRail {
     // ========================================
 
     /**
-     * Create notification DOM element
+     * Create notification DOM element and attach it to the rail
      */
     private createNotificationElement(config: NotificationConfig): void {
-        const colors = PRIORITY_COLORS[config.priority];
+        // Delegate card creation to extracted DOM helper
+        const card = createNotificationCard(config, escapeNotificationHtml, formatRelativeTime);
 
-        const card = document.createElement('div');
-        card.className = `notification-card priority-${config.priority} category-${config.category}`;
-        card.dataset.id = config.id;
-        card.style.cssText = `
-            background: ${colors.bg};
-            border: 1px solid ${colors.border};
-            box-shadow: 0 4px 20px ${colors.glow};
-        `;
+        // Set up event handlers via extracted helper
+        setupNotificationCardHandlers(card, config, (id) => this.dismiss(id));
 
-        // Build inner HTML
-        card.innerHTML = `
-            <div class="notification-header">
-                <span class="notification-icon">${config.icon}</span>
-                <span class="notification-title">${this.escapeHtml(config.title)}</span>
-                <span class="notification-time">${this.formatTime(config.timestamp)}</span>
-            </div>
-            <div class="notification-message">${this.escapeHtml(config.message)}</div>
-            ${config.actionLabel || config.dismissible !== false ? `
-            <div class="notification-actions">
-                ${config.actionLabel ? `
-                <button class="notification-action-btn">${this.escapeHtml(config.actionLabel)}</button>
-                ` : ''}
-                ${config.dismissible !== false ? `
-                <button class="notification-action-btn notification-dismiss-btn">Dismiss</button>
-                ` : ''}
-            </div>
-            ` : ''}
-            <span class="notification-swipe-indicator">→</span>
-        `;
-
-        // Set up event handlers
-        this.setupNotificationHandlers(card, config);
+        // Swipe-to-dismiss (touch)
+        if (config.dismissible !== false) {
+            setupSwipeHandlers(card, config.id, this.swipeState, this.SWIPE_THRESHOLD, (id) => this.dismiss(id));
+        }
 
         // Add to rail and store reference
         this.railElement.insertBefore(card, this.railElement.firstChild);
@@ -735,118 +452,6 @@ export class NotificationRail {
 
         // Update stack display if needed
         this.updateStackDisplay();
-    }
-
-    /**
-     * Set up event handlers for a notification card
-     */
-    private setupNotificationHandlers(card: HTMLElement, config: NotificationConfig): void {
-        // Action button
-        const actionBtn = card.querySelector('.notification-action-btn:not(.notification-dismiss-btn)');
-        if (actionBtn && config.actionCallback) {
-            actionBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                config.actionCallback!();
-                this.dismiss(config.id);
-            });
-        }
-
-        // Dismiss button
-        const dismissBtn = card.querySelector('.notification-dismiss-btn');
-        if (dismissBtn) {
-            dismissBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.dismiss(config.id);
-            });
-        }
-
-        // Card click (expand or default action)
-        card.addEventListener('click', () => {
-            if (config.actionCallback) {
-                config.actionCallback();
-                this.dismiss(config.id);
-            }
-        });
-
-        // Swipe-to-dismiss (touch)
-        if (config.dismissible !== false) {
-            this.setupSwipeHandlers(card, config.id);
-        }
-    }
-
-    /**
-     * Set up swipe-to-dismiss handlers
-     */
-    private setupSwipeHandlers(card: HTMLElement, id: string): void {
-        card.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            if (!touch) return;
-
-            this.swipeState.startX = touch.clientX;
-            this.swipeState.startY = touch.clientY;
-            this.swipeState.currentX = touch.clientX;
-            this.swipeState.isDragging = false;
-            this.swipeState.targetId = id;
-        }, { passive: true });
-
-        card.addEventListener('touchmove', (e) => {
-            if (this.swipeState.targetId !== id) return;
-
-            const touch = e.touches[0];
-            if (!touch) return;
-
-            const deltaX = touch.clientX - this.swipeState.startX;
-            const deltaY = Math.abs(touch.clientY - this.swipeState.startY);
-
-            // Only allow horizontal swipes to the right
-            if (deltaX > 10 && deltaY < 30) {
-                this.swipeState.isDragging = true;
-                this.swipeState.currentX = touch.clientX;
-
-                card.classList.add('swiping');
-                card.style.transform = `translateX(${Math.max(0, deltaX)}px)`;
-                card.style.opacity = String(1 - (deltaX / (this.SWIPE_THRESHOLD * 2)));
-            }
-        }, { passive: true });
-
-        card.addEventListener('touchend', () => {
-            if (this.swipeState.targetId !== id) return;
-
-            const deltaX = this.swipeState.currentX - this.swipeState.startX;
-
-            card.classList.remove('swiping');
-
-            if (this.swipeState.isDragging && deltaX > this.SWIPE_THRESHOLD) {
-                // Dismiss
-                this.dismiss(id);
-            } else {
-                // Reset position
-                card.style.transform = '';
-                card.style.opacity = '';
-            }
-
-            this.swipeState.isDragging = false;
-            this.swipeState.targetId = null;
-        });
-    }
-
-    /**
-     * Update notification element content
-     */
-    private updateNotificationElement(element: HTMLElement, config: NotificationConfig): void {
-        const titleEl = element.querySelector('.notification-title');
-        const messageEl = element.querySelector('.notification-message');
-        const timeEl = element.querySelector('.notification-time');
-
-        if (titleEl) titleEl.textContent = config.title;
-        if (messageEl) messageEl.textContent = config.message;
-        if (timeEl) timeEl.textContent = this.formatTime(config.timestamp);
-
-        // Update priority styling
-        const colors = PRIORITY_COLORS[config.priority];
-        element.style.background = colors.bg;
-        element.style.borderColor = colors.border;
-        element.style.boxShadow = `0 4px 20px ${colors.glow}`;
     }
 
     /**
@@ -883,29 +488,6 @@ export class NotificationRail {
         } else if (count <= 1 && clearAllBtn) {
             clearAllBtn.remove();
         }
-    }
-
-    /**
-     * Format timestamp to relative time
-     */
-    private formatTime(timestamp: number): string {
-        const diff = Date.now() - timestamp;
-        const seconds = Math.floor(diff / 1000);
-        const minutes = Math.floor(seconds / 60);
-
-        if (seconds < 5) return 'now';
-        if (seconds < 60) return `${seconds}s`;
-        if (minutes < 60) return `${minutes}m`;
-        return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-
-    /**
-     * Escape HTML to prevent XSS
-     */
-    private escapeHtml(text: string): string {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
     }
 }
 
