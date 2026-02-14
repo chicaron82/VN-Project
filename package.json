@@ -26,6 +26,7 @@
     "validate": "npm run typecheck && npm run lint && npm run lint:md && npm run test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@types/node": "^25.0.6",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",

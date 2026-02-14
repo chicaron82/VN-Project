@@ -175,6 +175,15 @@ export class SystemEventHandlers {
     /**
      * Dialog display and advancement handlers
      */
+    /**
+     * Process text for display: convert literal \n sequences to real newlines.
+     * JSON data contains \\n which JSON.parse turns into literal backslash-n characters.
+     * CSS white-space: pre-wrap on .dialog-text handles rendering real newlines.
+     */
+    private processDialogText(text: string): string {
+        return text.replace(/\\n/g, '\n');
+    }
+
     private setupDialogHandlers(): void {
         // Dialog display - use DialogController for typewriter OR bubble for internal
         this.eventBus.on('dialog:show', ({ entry }) => {
@@ -201,7 +210,7 @@ export class SystemEventHandlers {
                 }
 
                 this.dialogBubble.show({
-                    text: entry.text,
+                    text: this.processDialogText(entry.text),
                     position,
                     duration: 0, // Manual dismiss (advance with click/key)
                 });
@@ -212,7 +221,7 @@ export class SystemEventHandlers {
                 }, 100);
             } else {
                 // Standard dialogue box with typewriter
-                this.dialogController.show(entry.text);
+                this.dialogController.show(this.processDialogText(entry.text));
             }
         });
 

@@ -1,4 +1,5 @@
 import type { EventBus } from '@core/EventBus';
+import { GameConfig } from '@core/GameConfig';
 import '@ui/styles/main.css';
 
 export class RouteSelect {
@@ -19,10 +20,10 @@ export class RouteSelect {
 
                 <div id="route-portraits-container">
                     <div class="route-portrait ronnie-portrait active">
-                        <img src="/assets/route-select-ronnie.webp" alt="Ronnie">
+                        <img src="${GameConfig.ASSETS.sprites.routeSelectRonnie}" alt="Ronnie">
                     </div>
                     <div class="route-portrait tori-portrait">
-                        <img src="/assets/route-select-tori.webp" alt="Tori">
+                        <img src="${GameConfig.ASSETS.sprites.routeSelectTori}" alt="Tori">
                     </div>
                 </div>
 
