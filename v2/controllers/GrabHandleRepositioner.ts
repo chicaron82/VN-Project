@@ -105,6 +105,12 @@ export class GrabHandleRepositioner {
         // CLICK INTERCEPTION (Prevent clicks during drag)
         // ========================================
         this.handle.addEventListener('click', (e) => this.handleClick(e), { capture: true });
+
+        // ========================================
+        // SIDEBAR STATE - Sync handle position to sidebar visibility
+        // ========================================
+        this.eventBus.on('ui:sidebar:opened', () => this.onSidebarStateChange(true));
+        this.eventBus.on('ui:sidebar:closed', () => this.onSidebarStateChange(false));
     }
 
     // ========================================
@@ -416,6 +422,36 @@ export class GrabHandleRepositioner {
     // SIDEBAR INTEGRATION
     // ========================================
 
+    /**
+     * V1 Parity: Handle responds to sidebar open/close state changes.
+     * When sidebar expands, handle shifts to the edge of the sidebar panel.
+     * When sidebar closes, handle returns to its default edge position.
+     */
+    private onSidebarStateChange(isOpen: boolean): void {
+        if (!this.handle || !this.sidebar) return;
+
+        if (isOpen) {
+            // Shift handle to the edge of the expanded sidebar (V1: updateTogglePositionForExpandedSidebar)
+            const sidebarWidth = this.sidebar.offsetWidth;
+
+            if (this.position.side === 'right') {
+                this.handle.style.right = `${sidebarWidth}px`;
+            } else {
+                this.handle.style.left = `${sidebarWidth}px`;
+            }
+
+            this.handle.classList.add('sidebar-open');
+            Logger.ui('[GrabHandle] Sidebar opened - handle shifted');
+        } else {
+            // Return handle to screen edge
+            this.handle.style.left = this.position.side === 'left' ? '0' : 'auto';
+            this.handle.style.right = this.position.side === 'right' ? '0' : 'auto';
+
+            this.handle.classList.remove('sidebar-open');
+            Logger.ui('[GrabHandle] Sidebar closed - handle reset');
+        }
+    }
+
     private flipSide(): void {
         this.position.side = this.position.side === 'left' ? 'right' : 'left';
         this.applyPosition();
@@ -485,8 +521,7 @@ export class GrabHandleRepositioner {
 
     private triggerHaptic(type: 'light' | 'medium' | 'heavy'): void {
         // Emit haptic event for HapticSystem to handle
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- event not in typed GameEvents map
-        (this.eventBus as any).emit('haptic:trigger', { type });
+        this.eventBus.emit('haptic:trigger', { type });
 
         // Fallback vibration for browsers without HapticSystem
         if (navigator.vibrate) {

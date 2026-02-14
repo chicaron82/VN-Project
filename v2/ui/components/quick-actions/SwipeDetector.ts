@@ -140,6 +140,9 @@ export class SwipeDetector {
         }
 
         const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
+        // Allow slightly diagonal swipes to still count as vertical
+        // A swipe is "mostly vertical" if deltaY is at least 60% of total movement
+        const isMostlyVertical = Math.abs(deltaY) > Math.abs(deltaX) * 0.6;
 
         if (this.isDragging && isHorizontal) {
             const velocity = deltaX / Math.max(deltaTime, 1);
@@ -167,8 +170,8 @@ export class SwipeDetector {
             return;
         }
 
-        // Check for vertical swipe (expansion)
-        if (!isHorizontal && Math.abs(deltaY) > this.swipeThreshold && deltaTime < this.swipeTimeLimit) {
+        // Check for vertical swipe (expansion) - use relaxed angle tolerance
+        if (isMostlyVertical && Math.abs(deltaY) > this.swipeThreshold && deltaTime < this.swipeTimeLimit) {
             if (deltaY > 0) {
                 this.handleVerticalSwipe(deltaY, deltaTime);
             }

@@ -120,8 +120,9 @@ export class MobileUXController {
             Logger.input('[MobileUX] Action: Open Sidebar (landscape)');
             this.eventBus.emit('ui:sidebar:toggle', {});
         } else {
-            // Portrait: Let NotificationShade handle it (V1 behavior)
-            Logger.input('[MobileUX] Action: NotificationShade (portrait) - passing through');
+            // Portrait: Open notification shade (V1 behavior)
+            Logger.input('[MobileUX] Action: NotificationShade (portrait)');
+            this.eventBus.emit('ui:shade:toggle', {});
         }
     }
 
@@ -132,6 +133,13 @@ export class MobileUXController {
     private handleTouchEnd(e: TouchEvent): void {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - this.lastTapTime;
+
+        // Exclude grab handle / sidebar toggle from fullscreen double-tap
+        const target = e.target as HTMLElement;
+        if (target?.closest('#sidebar-toggle')) {
+            this.lastTapTime = currentTime;
+            return;
+        }
 
         if (tapLength < this.DOUBLE_TAP_DELAY && tapLength > 0) {
             e.preventDefault();

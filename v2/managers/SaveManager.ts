@@ -114,8 +114,7 @@ export class SaveManager {
                 this.showSaveIndicator(isAutoSave ? 'Auto-saved' : `Saved to Slot ${slotNumber}${labelText}`);
 
                 // Emit save event
-                // @ts-expect-error - save:completed event will be added to GameEvents in future phase
-                this.eventBus.emit('save:completed', { slot: slotNumber, isAutoSave });
+                this.eventBus.emit('save:completed', { slot: slotNumber ?? 0, isAutoSave });
 
                 return true;
             } catch (error) {

@@ -82,7 +82,6 @@ export class PauseManager {
             this._notifyListeners();
 
             // Emit EventBus event for V2 coordination
-            // @ts-expect-error - pause:requested event will be added to GameEvents in future phase
             this.eventBus.emit('pause:requested', { reason });
         } else if (wasPaused) {
             Logger.system(`⏸️ Additional pause reason: ${reason} (total: ${this.reasons.size})`);
@@ -112,7 +111,6 @@ export class PauseManager {
             this._notifyListeners();
 
             // Emit EventBus event for V2 coordination
-            // @ts-expect-error - pause:released event will be added to GameEvents in future phase
             this.eventBus.emit('pause:released', { reason });
         } else if (this.isPaused) {
             Logger.system(`⏸️ Released: ${reason} (still paused, remaining: ${[...this.reasons].join(', ')})`);
@@ -133,7 +131,6 @@ export class PauseManager {
             this._notifyListeners();
 
             // Emit EventBus event for V2 coordination
-            // @ts-expect-error - pause:force_released event will be added to GameEvents in future phase
             this.eventBus.emit('pause:force_released', { reasons });
         }
     }

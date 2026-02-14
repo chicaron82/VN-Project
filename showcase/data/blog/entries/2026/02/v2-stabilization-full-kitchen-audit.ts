@@ -169,7 +169,7 @@ vi.stubGlobal('localStorage', {
 
     crew: [
         {
-            name: 'DiZee (Claude Opus 4)',
+            name: 'DiZee (Claude Opus 4.6)',
             icon: '🔪',
             contribution: 'Full autonomous five-phase stabilization sweep. Content audit, achievement implementation, 7 test file complete rewrites. 1,815 lines added across 16 files.'
         },

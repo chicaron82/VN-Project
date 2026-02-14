@@ -148,6 +148,20 @@ export type GameEvents = {
 
   'save:quick': {};
   'load:quick': {};
+  'save:completed': { slot: number; isAutoSave: boolean }; // Save completed with metadata
+
+  // Scene/Route lifecycle events
+  'scene:loaded': {};   // Scene fully loaded and displayed
+  'route:changed': {};  // Player's route changed
+  'note:added': {};     // Note added to collection
+
+  // Pause system events
+  'pause:requested': { reason: string };
+  'pause:released': { reason: string };
+  'pause:force_released': { reasons: string[] };
+
+  // Haptic feedback events
+  'haptic:trigger': { type: 'light' | 'medium' | 'heavy' };
 
   // ========================================
   // LOOP CONTROLLER EVENTS

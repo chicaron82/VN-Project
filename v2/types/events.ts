@@ -81,6 +81,14 @@ export type GameEvents = {
     'tether:boost': { amount: number };
     /** Tether depleted (death/restart) */
     'tether:death': {};
+    /** Tether frozen (dev command) */
+    'tether:freeze': {};
+    /** Tether resumed (dev command) */
+    'tether:resume': {};
+    /** Tether set to specific value (dev command) */
+    'tether:set': { value: number };
+    /** Tether warning threshold */
+    'tether:warning': { level: number };
 
     // ==========================================
     // SAVE/LOAD SYSTEM
@@ -90,6 +98,41 @@ export type GameEvents = {
     'save:complete': { slot: number };
     /** Load completed successfully */
     'load:complete': { slot: number };
+    /** Quick save */
+    'save:quick': {};
+    /** Quick load */
+    'load:quick': {};
+    /** Save completed with metadata */
+    'save:completed': { slot: number; isAutoSave: boolean };
+
+    // ==========================================
+    // SCENE/ROUTE LIFECYCLE
+    // ==========================================
+
+    /** Scene fully loaded and displayed */
+    'scene:loaded': {};
+    /** Player's route changed */
+    'route:changed': {};
+    /** Note added to collection */
+    'note:added': {};
+
+    // ==========================================
+    // PAUSE SYSTEM
+    // ==========================================
+
+    /** Pause requested */
+    'pause:requested': { reason: string };
+    /** Pause released */
+    'pause:released': { reason: string };
+    /** Force release all pauses */
+    'pause:force_released': { reasons: string[] };
+
+    // ==========================================
+    // HAPTIC FEEDBACK
+    // ==========================================
+
+    /** Trigger haptic feedback */
+    'haptic:trigger': { type: 'light' | 'medium' | 'heavy' };
 
     // ==========================================
     // AUTOSAVE SYSTEM
@@ -117,7 +160,7 @@ export type GameEvents = {
     'visual:cue': { type: string | null; channel: string; sceneId?: string };
 
     /** Code rain effect */
-    'effect:code_rain': { duration: number };
+    'effect:code_rain': { duration: number; color?: string };
     /** Glitch effect */
     'effect:glitch': { intensity: number };
     /** Screen shake effect */
@@ -207,6 +250,10 @@ export type GameEvents = {
 
     /** Backlog toggled */
     'ui:backlog:toggle': {};
+    /** Backlog opened */
+    'ui:backlog:open': {};
+    /** Backlog closed */
+    'ui:backlog:close': {};
 
     /** Shade opened */
     'ui:shade:open': {};
@@ -267,6 +314,18 @@ export type GameEvents = {
     'ui:notes': {};
     'ui:notes:open': {};
     'ui:notes_closed': {};
+    /** Notes closed */
+    'ui:notes:close': {};
+    /** Save/Load menu closed */
+    'ui:save_load:close': {};
+    /** Dev console closed */
+    'ui:console:close': {};
+    /** Ending screen closed */
+    'ui:ending:close': {};
+    /** Hide HUD */
+    'ui:hide_hud': {};
+    /** Achievements panel opened */
+    'ui:achievements:open': {};
 
     // ==========================================
     // INPUT GESTURES
@@ -313,8 +372,191 @@ export type GameEvents = {
     'secret_code:submit': { code: string };
     /** Secret code unlocked */
     'secret_code:unlocked': { code: string; name: string };
+    /** Secret code discovered */
+    'secret_code:discovered': { code: string; name: string };
     /** Code submission (UI) */
     'ui:code_submit': { code: string };
+
+    // ==========================================
+    // STATE MANAGEMENT
+    // ==========================================
+
+    /** State reset */
+    'state:reset': {};
+    /** State restored from save */
+    'state:restore': { sceneId: string; reason: string };
+
+    // ==========================================
+    // UI NOTIFICATIONS
+    // ==========================================
+
+    /** Generic UI notification */
+    'ui:notification': { type: 'info' | 'success' | 'warning' | 'error'; message: string };
+    /** Toast notification */
+    'ui:toast': { message: string; duration?: number };
+
+    // ==========================================
+    // BACK BUTTON / MENU MANAGER
+    // ==========================================
+
+    /** Menu opened */
+    'ui:menu:open': {};
+    /** Menu closed */
+    'ui:menu:close': {};
+    /** Request to close shade (back button) */
+    'ui:shade:close_request': {};
+    /** Request to close sidebar (back button) */
+    'ui:sidebar:close_request': {};
+    /** Request to close backlog (back button) */
+    'ui:backlog:close_request': {};
+    /** Request to close menu (back button) */
+    'ui:menu:close_request': {};
+
+    // ==========================================
+    // SHELL INTEGRATION
+    // ==========================================
+
+    /** Request to exit back to shell (iframe embedded) */
+    'shell:exit': {};
+
+    // ==========================================
+    // LOOP CONTROLLER
+    // Zee's meta-narrative tracking system 🖤
+    // ==========================================
+
+    /** Loop version incremented */
+    'loop:incremented': { version: number; status: string };
+    /** Loop state updated */
+    'loop:updated': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };
+    /** Loop broken — TRUE ENDING */
+    'loop:broken': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };
+    /** Loop accepted — DIGITAL FOREVER */
+    'loop:accepted': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };
+    /** Loop reset (dev) */
+    'loop:reset': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };
+    /** Player chose to retry after bad ending */
+    'loop:retry': {};
+    /** Loop title display updated */
+    'loop:titleUpdated': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };
+    /** Ronnie notes unlocked */
+    'notes:ronnie_unlocked': {};
+
+    // ==========================================
+    // ENDING TRIGGERS
+    // ==========================================
+
+    /** TRUE ENDING achieved */
+    'ending:true': {};
+    /** DIGITAL FOREVER chosen */
+    'ending:digitalForever': {};
+    /** Bad ending — increment version */
+    'ending:bad': {};
+    /** Retry from ending */
+    'ending:retry': { endingType: string | null };
+    /** Accept ending */
+    'ending:accept': { endingType: string | null };
+    /** Exit from ending */
+    'ending:exit': { endingType: string | null };
+
+    // ==========================================
+    // ECHO MEMORY SYSTEM
+    // Belle's meta-awareness tracking 🖤
+    // ==========================================
+
+    /** Echo comment triggered */
+    'echo:comment': {
+        echo: 'hope' | 'gentle' | 'despair';
+        message: string;
+        icon: string;
+        awareness: 0 | 1 | 2 | 3 | 4;
+        context: 'general' | 'despairHijack' | 'noteHunting' | 'saveScum' | 'repeatedDeath' | 'longPause';
+    };
+    /** Echo loop recorded */
+    'echo:loop_recorded': {
+        totalLoops: number;
+        awareness: { hope: number; gentle: number; despair: number };
+    };
+    /** Echo memory reset (dev) */
+    'echo:reset': {};
+
+    // ==========================================
+    // INSANE VISUALS CONTROLLER
+    // DiZee's visual corruption system 💀
+    // ==========================================
+
+    /** Activate INSANE mode visuals */
+    'insane:activate': {};
+    /** Deactivate INSANE mode visuals */
+    'insane:deactivate': {};
+    /** Confirmation: visuals now active */
+    'insane:activated': {};
+    /** Confirmation: visuals now inactive */
+    'insane:deactivated': {};
+    /** Trigger corruption effects */
+    'insane:corrupt': {};
+    /** Corruption effect triggered */
+    'insane:corruption_triggered': { intensity: 'light' | 'medium' | 'heavy' | 'maximum' };
+    /** Show cage overlay */
+    'insane:cage': { callback?: () => void };
+    /** Cage overlay sequence finished */
+    'insane:cage_complete': {};
+
+    // ==========================================
+    // SECRET CODES & EASTER EGGS
+    // DiZee's discovery system 🔓
+    // ==========================================
+
+    'easter_egg:konami_controller': {};
+    'easter_egg:torigatchi': {};
+    'easter_egg:ronniegatchi': {};
+    'easter_egg:always': {};
+    'easter_egg:uv7crew': {};
+    'easter_egg:echo': {};
+    'easter_egg:848': { attempt: number };
+    'easter_egg:dizee': {};
+
+    // ==========================================
+    // NOTIFICATION RAIL (Phase 26d)
+    // Premium notification system 🔔
+    // ==========================================
+
+    /** Show notification */
+    'notification:show': {
+        id?: string;
+        title: string;
+        message: string;
+        icon?: string;
+        category?: 'system' | 'torigatchi' | 'achievement' | 'autosave' | 'tether' | 'note' | 'app';
+        priority?: 'urgent' | 'high' | 'normal' | 'low';
+        duration?: number;
+        actionLabel?: string;
+        actionCallback?: () => void;
+        appId?: string;
+        dismissible?: boolean;
+    };
+    /** Dismiss notification */
+    'notification:dismiss': { id: string };
+    /** Clear all notifications */
+    'notification:clear_all': {};
+    /** Notification shown confirmation */
+    'notification:shown': { id: string; category: string };
+    /** Notification dismissed confirmation */
+    'notification:dismissed': { id: string };
+    /** Badge count update */
+    'notification:badge_update': { appId: string; count: number };
+
+    // ==========================================
+    // TORIGATCHI & APP SYSTEM
+    // ==========================================
+
+    /** Torigatchi hunger warning */
+    'torigatchi:hunger_warning': { message?: string; urgent?: boolean };
+    /** Game autosave trigger */
+    'game:autosave': { scene?: string };
+    /** Note received (app notification) */
+    'note:received': { id?: string; sender?: string; preview?: string; title?: string };
+    /** Launch app */
+    'app:launch': { appId: string };
 };
 
 /**

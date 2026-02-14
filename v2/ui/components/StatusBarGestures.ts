@@ -173,15 +173,21 @@ export class StatusBarGestures {
 
     /**
      * Handle swipe down on status bar - show quick actions
+     * Routes to shade (portrait) or sidebar (landscape)
      */
     private handleSwipeDown(): void {
-        Logger.ui('👇 Swipe down detected - showing quick actions');
+        const isLandscape = window.innerWidth > window.innerHeight;
 
         // Haptic feedback
         if (navigator.vibrate) navigator.vibrate(15);
 
-        // Show quick actions menu (or emit event for NotificationShade to handle)
-        this.eventBus.emit('ui:shade:toggle', {});
+        if (isLandscape) {
+            Logger.ui('👇 Swipe down detected - opening sidebar (landscape)');
+            this.eventBus.emit('ui:sidebar:toggle', {});
+        } else {
+            Logger.ui('👇 Swipe down detected - showing quick actions (portrait)');
+            this.eventBus.emit('ui:shade:toggle', {});
+        }
     }
 
     /**

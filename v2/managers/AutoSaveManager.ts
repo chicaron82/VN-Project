@@ -132,8 +132,6 @@ export class AutoSaveManager {
      */
     private setupEventListeners(): void {
         // Mark dirty on important game events
-        // Note: These events will be added to GameEvents type as systems are ported
-        // @ts-expect-error - scene:loaded event will be added in future phase
         this.eventBus.on('scene:loaded', () => {
             this.isDirty = true;
         });
@@ -143,13 +141,11 @@ export class AutoSaveManager {
             this.triggerAutoSave('choice');
         });
 
-        // @ts-expect-error - route:changed event will be added in future phase
         this.eventBus.on('route:changed', () => {
             this.isDirty = true;
             this.triggerAutoSave('route');
         });
 
-        // @ts-expect-error - note:added event will be added in future phase
         this.eventBus.on('note:added', () => {
             this.isDirty = true;
             this.triggerAutoSave('note');
