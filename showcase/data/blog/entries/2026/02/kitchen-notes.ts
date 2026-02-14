@@ -164,12 +164,12 @@ private updateTime(): void {
                 icon: '🤖'
             },
             {
-                name: 'Human',
+                name: 'Aaron "Chicharon"',
                 contribution: 'Vision, requirements, catching shortcuts, patience',
                 icon: '👨‍🍳'
             }
         ],
-        quote: '"Let\'s do things properly. No sense doing things half baked, this just perpetuates laziness." - The human, setting the tone for the entire session'
+        quote: '"Let\'s do things properly. No sense doing things half baked, this just perpetuates laziness." - Aaron, setting the tone for the entire session'
     },
 
     footer: {

@@ -206,12 +206,12 @@ html += \`<button onclick="uv7AppSwitcher.adjustRoutePoint('bad', -1)">−</butt
                 icon: '🤖'
             },
             {
-                name: 'Human',
+                name: 'Aaron "Chicharon"',
                 contribution: 'Vision ("zero files over 1,000 lines"), momentum ("we\'re on a roll"), trust',
                 icon: '👑'
             }
         ],
-        quote: '"we\'re on a roll right now, so might as well keep the momentum going" — the human, approving Phase 2 before Phase 1 was cold'
+        quote: '"we\'re on a roll right now, so might as well keep the momentum going" — Aaron, approving Phase 2 before Phase 1 was cold'
     },
 
     footer: {

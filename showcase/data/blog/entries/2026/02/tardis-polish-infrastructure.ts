@@ -191,7 +191,7 @@ Total: ~2,000 lines of dead weight removed.
                 icon: '🤖'
             },
             {
-                name: 'Human',
+                name: 'Aaron "Chicharon"',
                 contribution: 'The TARDIS vision — "give it a food truck TARDIS experience... if a human dev walked in, they\'d have an oh-shit moment"',
                 icon: '👑'
             }
