@@ -46,6 +46,7 @@ import { GentleNudges } from '../controllers/GentleNudges';
 import { BougieTracker } from '../controllers/BougieTracker';
 import { HomeInteractionController } from '../controllers/HomeInteractionController';
 import { SystemBannerController } from '../controllers/SystemBannerController';
+import { SpotlightModalController } from '../controllers/SpotlightModalController';
 
 // Import showcase UI components
 // Sidebar and NotificationShade removed - now using UV7System
@@ -177,6 +178,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     new ExperimentSection();
     new WhoSection();
     Logger.system('✅ Section renderers initialized');
+
+    // Initialize Spotlight Modal (cards → deep-dive modal)
+    new SpotlightModalController();
+    Logger.system('✅ Spotlight modal wired');
 
     // Initialize Home Section interactions (demon lord link, landing cards, crew reactions)
     new HomeInteractionController(tabController);

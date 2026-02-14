@@ -258,18 +258,18 @@ export class ExperimentSection {
                 <div class="experiment-status">
                     <h2>📍 Current Status</h2>
                     <div class="status-badge status-preparing">
-                        🛠️ Phase 0: Groundwork Complete
+                        🧪 Phase 1: Deep V1 Analysis Complete
                     </div>
                     <p>
-                        Infrastructure ready. Tab created. Tomorrow when usage resets, Phase 1 begins:
-                        Deep V1 Analysis across all 69 system files.
+                        V1's 69 system files have been analyzed. Recipe generation is underway.
+                        The 10-way comparison framework is ready — when the models cook, we'll know exactly how to measure soul.
                     </p>
                     <p class="experiment-launch-note">
-                        <strong>Expected Launch:</strong> Tomorrow (after usage reset)
+                        <strong>Status:</strong> Recipes in development
                         <br>
-                        <strong>Timeline Integration:</strong> All phases will auto-document to the Michelin timeline
+                        <strong>Timeline Integration:</strong> All phases will auto-document to the journal
                         <br>
-                        <strong>Estimated Duration:</strong> 4-7 days for complete 10-way comparison
+                        <strong>Comparison Framework:</strong> V1 + V2 + 8 V3 variants
                     </p>
                 </div>
 
