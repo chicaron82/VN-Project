@@ -337,8 +337,8 @@ export class EvolutionSection {
                                     <li><strong>Architecture:</strong> Monolithic → Modular with SOLID principles</li>
                                     <li><strong>Communication:</strong> Direct calls → Event-driven pub/sub</li>
                                     <li><strong>Types:</strong> None → Strict TypeScript with 0 errors</li>
-                                    <li><strong>Testing:</strong> Manual only → 1137 automated tests passing</li>
-                                    <li><strong>File Size:</strong> 4000-line god object → 392-line orchestrator</li>
+                                    <li><strong>Testing:</strong> Manual only → <span id="evolution-test-count">1306</span> automated tests passing</li>
+                                    <li><strong>File Size:</strong> ~3,900-line god object → ~420-line orchestrator</li>
                                     <li><strong>Load Time:</strong> 2.4s → 0.7s (3x faster)</li>
                                     <li><strong>Bundle:</strong> 5MB → 2MB (60% smaller)</li>
                                 </ul>
@@ -356,6 +356,8 @@ export class EvolutionSection {
                                     <li><strong>The Easter Eggs:</strong> All secret codes and dev commentary</li>
                                     <li><strong>The Characters:</strong> Ronnie, Tori, their journey, their pain</li>
                                     <li><strong>The 848:</strong> The loop iteration. The narrative core.</li>
+                                    <li><strong>The Crew:</strong> 457 DIZEE/ZEE/BELLE annotations — graffiti in the walls</li>
+                                    <li><strong>The Voice:</strong> Emoji console.logs 🥚👁️🛠️ — code with personality</li>
                                     <li><strong>The Magic:</strong> What made V1 special in the first place</li>
                                 </ul>
                             </div>

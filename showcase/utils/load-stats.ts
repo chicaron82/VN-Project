@@ -57,7 +57,7 @@ async function loadRealStats(): Promise<void> {
             }
 
             // Update all dynamic test count spans across the showcase
-            const testCountSpans = document.querySelectorAll('#test-file-count, #test-coverage-count');
+            const testCountSpans = document.querySelectorAll('#test-file-count, #test-coverage-count, #evolution-test-count');
             testCountSpans.forEach(span => {
                 if (stats.testsTotal !== undefined) {
                     span.textContent = stats.testsTotal.toString();
