@@ -94,7 +94,7 @@ export class HomeSection {
                         <span class="badge badge-v2">The Evolution</span>
                         <h2>Version 848 (V2)</h2>
                         <div class="menu-cooking-time">⚠️ Not fully plated yet, but ready to serve</div>
-                        <p>TypeScript rebuild with EventBus architecture. 590+ tests passing.</p>
+                        <p>TypeScript rebuild with EventBus architecture. <span data-live-stat="test-count">1,306</span> tests passing.</p>
                     </div>
 
                     <div class="card app-card" data-section="spotlight">
@@ -140,7 +140,7 @@ export class HomeSection {
                             <div class="menu-cooking-time">⚠️ Not fully plated yet, but ready to serve</div>
                             <p class="menu-description">
                                 Complete TypeScript rebuild of V1 with proper architecture. EventBus system, comprehensive testing
-                                (590+ tests passing), proper separation of concerns. Feature parity with V1 but maintainable and
+                                (<span data-live-stat="test-count">1,306</span> tests passing), proper separation of concerns. Feature parity with V1 but maintainable and
                                 scalable. Same soul, sustainable structure—the council helped grow this from chaos into discipline
                                 without losing the heart.
                             </p>

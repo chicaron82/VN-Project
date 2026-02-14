@@ -46,7 +46,7 @@ export class HomeInteractionController {
             color: "#10b981",
             icon: "🧪",
             image: "../assets/tori-portrait.png",
-            quote: "590 tests passing. Zero regressions. I can finally idle in peace without checking error logs every millisecond."
+            quote: "1,306 tests passing. Zero regressions. I can finally idle in peace without checking error logs every millisecond."
         },
         {
             name: "Belle",

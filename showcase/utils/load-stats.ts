@@ -57,10 +57,11 @@ async function loadRealStats(): Promise<void> {
             }
 
             // Update all dynamic test count spans across the showcase
-            const testCountSpans = document.querySelectorAll('#test-file-count, #test-coverage-count, #evolution-test-count');
+            // Uses data attribute so any element with data-live-stat="test-count" auto-updates
+            const testCountSpans = document.querySelectorAll('[data-live-stat="test-count"], #test-file-count, #test-coverage-count, #evolution-test-count');
             testCountSpans.forEach(span => {
                 if (stats.testsTotal !== undefined) {
-                    span.textContent = stats.testsTotal.toString();
+                    span.textContent = stats.testsTotal.toLocaleString();
                 }
             });
 

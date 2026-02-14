@@ -35,7 +35,7 @@ export class JournalSection {
                                 <li>✅ Relationship simulator (ToriGatchi) — 12 days</li>
                                 <li>✅ Complete visual novel with meta-narrative mechanics — 50 days</li>
                                 <li>✅ Cross-game communication systems (VN ↔ ToriGatchi)</li>
-                                <li>✅ V2 rebuild: TypeScript, EventBus, 1,306 tests — <span id="timeline-phase-count">78</span> phases</li>
+                                <li>✅ V2 rebuild: TypeScript, EventBus, <span data-live-stat="test-count">1,306</span> tests — <span id="timeline-phase-count">78</span> phases</li>
                                 <li>✅ UV7 OS showcase interface — documentation that became self-aware</li>
                                 <li>✅ Council of 8 distinct AI collaborators with specialized roles</li>
                             </ul>

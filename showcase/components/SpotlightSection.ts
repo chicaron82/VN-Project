@@ -214,7 +214,7 @@ export class SpotlightSection {
 
                         <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
                             <div class="metric-card" style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; text-align: center;">
-                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.5rem;">1,306</div>
+                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.5rem;" data-live-stat="test-count">1,306</div>
                                 <div class="metric-label" style="font-size: 0.95rem; opacity: 0.8;">Automated Tests Passing</div>
                                 <div class="metric-sublabel" style="font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem;">V2 Rebuild</div>
                             </div>
