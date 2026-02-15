@@ -13,6 +13,7 @@ import { SystemEventHandlers } from '@controllers/SystemEventHandlers';
 import { NavigationController } from '@controllers/NavigationController';
 import { GameplayController } from '@controllers/GameplayController';
 import '@core/ErrorBoundary'; // Auto-initializes global error handler
+import { DevSuite } from '@systems/DevSuite';
 import { Logger } from '@utils/Logger';
 
 import '@ui/styles/main.css';
@@ -25,6 +26,7 @@ import '@ui/styles/save-load-modal.css'; // V2: Save/Load UI styles
 import '@ui/styles/backlog-ui.css'; // V2: Backlog UI styles
 import '@ui/styles/sidebar-v1-core.css'; // V1 Sidebar Parity
 import '@ui/styles/uv7-app-switcher.css'; // App Switcher Parity
+import '../v1/css/dev-suite.css'; // Dev Suite overlay (V1 source of truth)
 
 // Import route JSON files (Vite handles these as static imports)
 import prologueData from '@content/routes/prologue.json';
@@ -166,6 +168,23 @@ function setupGameplayHandlers(): void {
         startGameplay('prologue');
     });
 }
+
+// Dev Suite - Lazy initialization (only created when openconsole code is entered)
+let devSuite: DevSuite | null = null;
+eventBus.on('ui:console:open', () => {
+    // Close settings modal first so DevSuite isn't hidden behind it
+    eventBus.emit('settings:close', {});
+    if (!devSuite) {
+        devSuite = new DevSuite({
+            currentScene: stateManager.get('game.currentScene') as string | undefined,
+            gameState: { currentScene: stateManager.get('game.currentScene') as string | undefined },
+        });
+    }
+    devSuite.open();
+});
+eventBus.on('ui:console:close', () => {
+    if (devSuite) devSuite.close();
+});
 
 // ============================================
 // Initialize

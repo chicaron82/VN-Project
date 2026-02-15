@@ -133,7 +133,8 @@ export type GameEvents = {
   'ui:backlog:close': {};
   'ui:notes:close': {}; // ui:notes:open is usually just ui:notes
   'ui:save_load:close': {};
-  'ui:console:close': {}; // Dev console
+  'ui:console:open': {}; // Dev console open
+  'ui:console:close': {}; // Dev console close
   'ui:ending:close': {};
   'ui:hide_hud': {};
   // Back Button Manager Events

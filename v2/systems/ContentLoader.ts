@@ -92,6 +92,20 @@ export class ContentLoader {
                 effects = [sceneData.effect];
             }
 
+            // Normalize asset paths inside effects (sprite1, sprite2, etc.)
+            if (effects) {
+                effects = effects.map((effect: Record<string, unknown>) => {
+                    const normalized = { ...effect };
+                    if (typeof normalized.sprite1 === 'string') {
+                        normalized.sprite1 = this.normalizeAssetPath(normalized.sprite1);
+                    }
+                    if (typeof normalized.sprite2 === 'string') {
+                        normalized.sprite2 = this.normalizeAssetPath(normalized.sprite2);
+                    }
+                    return normalized;
+                });
+            }
+
             // Validate match with Scene interface
             const scene: Scene = {
                 id: sceneData.id,

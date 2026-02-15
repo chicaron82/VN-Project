@@ -305,6 +305,17 @@ export class CarouselMomentum {
     private handleKeyboard(e: KeyboardEvent): void {
         if (!this.container || this.container.style.display === 'none') return;
 
+        // Guard: Ignore if typing in an input field (e.g., secret codes input in settings)
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
+            return;
+        }
+
+        // Guard: Ignore if any overlay is open (settings, backlog, notes, etc.)
+        if (this.isAnyOverlayOpen()) {
+            return;
+        }
+
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
             this.moveToCard(this.currentIndex - 1);
@@ -326,6 +337,24 @@ export class CarouselMomentum {
                 centeredCard.click();
             }
         }
+    }
+
+    private isAnyOverlayOpen(): boolean {
+        const isVisible = (id: string, className?: string): boolean => {
+            const el = document.getElementById(id);
+            if (!el) return false;
+            if (className) return el.classList.contains(className);
+            return el.style.display !== 'none' && el.style.display !== '';
+        };
+
+        return !!(
+            isVisible('notes-overlay') ||
+            isVisible('backlog-overlay') ||
+            isVisible('settings-menu') ||
+            isVisible('save-load-overlay') ||
+            isVisible('sidebar', 'visible') ||
+            isVisible('dev-console')
+        );
     }
 
     private getCurrentCenteredCard(): HTMLElement | null {

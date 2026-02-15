@@ -3,7 +3,7 @@ import { BougieTracker } from './BougieTracker';
 describe('BougieTracker', () => {
     beforeEach(() => {
         vi.useFakeTimers();
-        document.body.innerHTML = '<span id="bougie-timer"></span>';
+        document.body.innerHTML = '<span class="tracker-time" id="bougie-timer"></span>';
     });
 
     afterEach(() => {

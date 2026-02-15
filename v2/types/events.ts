@@ -318,6 +318,8 @@ export type GameEvents = {
     'ui:notes:close': {};
     /** Save/Load menu closed */
     'ui:save_load:close': {};
+    /** Dev console opened */
+    'ui:console:open': {};
     /** Dev console closed */
     'ui:console:close': {};
     /** Ending screen closed */

@@ -243,7 +243,7 @@ export class SettingsModal {
     }
 
     private submitSecretCode(code: string): void {
-        this.eventBus.emit('secret_code:submit', { code });
+        this.eventBus.emit('ui:code_submit', { code });
         const indicator = this.container.querySelector('#code-success-indicator') as HTMLElement;
         if (indicator) {
             indicator.style.display = 'block';

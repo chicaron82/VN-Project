@@ -117,6 +117,17 @@ export class InputController {
      */
     private setupDialogAdvance(): void {
         document.addEventListener('keydown', (e) => {
+            // Guard: Ignore if typing in an input field (e.g., secret codes input)
+            const target = e.target as HTMLElement;
+            if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT') {
+                return;
+            }
+
+            // Guard: Ignore if any overlay is open (settings, backlog, notes, etc.)
+            if (this.isAnyOverlayOpen()) {
+                return;
+            }
+
             // Space/Enter to advance dialog OR hide bubble
             if ((e.key === ' ' || e.key === 'Enter') && !this.isPausedGetter()) {
                 Logger.input('[KEYPRESS] Space/Enter pressed', {
@@ -135,6 +146,28 @@ export class InputController {
                 }
             }
         });
+    }
+
+    /**
+     * Check if any overlay is open (settings, backlog, notes, save/load, etc.)
+     * Mirrors KeyboardController.isAnyOverlayOpen() for consistency
+     */
+    private isAnyOverlayOpen(): boolean {
+        const isVisible = (id: string, className?: string): boolean => {
+            const el = document.getElementById(id);
+            if (!el) return false;
+            if (className) return el.classList.contains(className);
+            return el.style.display !== 'none' && el.style.display !== '';
+        };
+
+        return !!(
+            isVisible('notes-overlay') ||
+            isVisible('backlog-overlay') ||
+            isVisible('settings-menu') ||
+            isVisible('save-load-overlay') ||
+            isVisible('sidebar', 'visible') ||
+            isVisible('dev-console')
+        );
     }
 
     /**

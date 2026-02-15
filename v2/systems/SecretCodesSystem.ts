@@ -355,6 +355,24 @@ export class SecretCodesSystem {
                     Logger.system('💚 DEV: All codes revealed!');
                 }
             },
+            'openconsole': {
+                name: 'Open Dev Console',
+                description: 'Dev Command: Open Dev Suite',
+                isDev: true,
+                reward: () => {
+                    this.eventBus.emit('ui:console:open', {});
+                    Logger.system('🛠️ DEV: Opening Dev Suite...');
+                }
+            },
+            'hideconsole': {
+                name: 'Hide Dev Console',
+                description: 'Dev Command: Close Dev Suite',
+                isDev: true,
+                reward: () => {
+                    this.eventBus.emit('ui:console:close', {});
+                    Logger.system('🛠️ DEV: Closing Dev Suite...');
+                }
+            },
             'devhelp': {
                 name: 'Dev Help',
                 description: 'Dev Command: Show all dev commands',
@@ -362,6 +380,8 @@ export class SecretCodesSystem {
                 reward: () => {
                     const helpText = `
 --- DEV COMMANDS ---
+openconsole - Open dev suite
+hideconsole - Close dev suite
 reset848 - Reset to VERSION 848
 reset849 - Set to VERSION 849
 nuke / clearall - Clear all save data

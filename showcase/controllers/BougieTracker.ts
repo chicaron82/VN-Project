@@ -8,7 +8,7 @@
  */
 
 export class BougieTracker {
-    private timerElement: HTMLElement | null = null;
+    private timerElements: HTMLElement[] = [];
     private updateInterval: number | null = null;
 
     // Last bougie enhancement: Platform logos celebrating AI collaboration (Feb 13, 2026)
@@ -21,8 +21,9 @@ export class BougieTracker {
     private init(): void {
         // Retry until footer element exists (footers are cloned from template)
         const findAndStart = (attempts = 0): void => {
-            this.timerElement = document.getElementById('bougie-timer');
-            if (this.timerElement) {
+            // Use class selector — template cloning creates multiple footers with same id
+            this.timerElements = Array.from(document.querySelectorAll('.tracker-time'));
+            if (this.timerElements.length > 0) {
                 this.startTimer();
             } else if (attempts < 20) {
                 // Retry up to 20 times (2 seconds total)
@@ -43,7 +44,7 @@ export class BougieTracker {
     }
 
     private updateTime(): void {
-        if (!this.timerElement) return;
+        if (this.timerElements.length === 0) return;
 
         const now = new Date();
         const elapsed = now.getTime() - this.LAST_ENHANCEMENT.getTime();
@@ -70,7 +71,10 @@ export class BougieTracker {
             timeString = `${seconds}s (fresh out the kitchen! 🔥)`;
         }
 
-        this.timerElement.textContent = timeString;
+        // Update ALL footer instances (template cloning creates one per tab)
+        this.timerElements.forEach(el => {
+            el.textContent = timeString;
+        });
     }
 
     /**

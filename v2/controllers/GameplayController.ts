@@ -221,7 +221,7 @@ export class GameplayController {
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            z-index: 100;
+            z-index: 300;
         `;
 
         // Define cleanup function
