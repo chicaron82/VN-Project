@@ -140,18 +140,16 @@ export class BootSequenceController {
 
             await boot.start();
 
-            // V1 Parity: If skipped, fuck it - bail immediately with code rain
+            // V1 Parity: If skipped, bail immediately - let init() handle the transition
             if (wasSkipped) {
-                Logger.ui('🌧️ Boot skipped - triggering immediate code rain transition');
+                Logger.ui('🌧️ Boot skipped - handing off to main init for code rain');
 
                 // Instant removal, no fade
                 splashContainer.remove();
 
-                // Trigger code rain BEFORE showing menu (V1 behavior)
-                this.eventBus.emit('effect:code_rain', { duration: 1500 });
-
-                // Resolve after code rain would complete
-                setTimeout(() => resolve(), 1500);
+                // Resolve immediately - init() creates VisualEffectsLayer and fires
+                // code_rain right after this. No point emitting here (no listener yet).
+                resolve();
                 return;
             }
 

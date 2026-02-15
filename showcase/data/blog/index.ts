@@ -3,6 +3,7 @@
 
 import { entry as entryGestureCleanup } from './entries/2026/02/gesture-input-architecture-cleanup';
 import { entry as entryStabilization } from './entries/2026/02/v2-stabilization-full-kitchen-audit';
+import { entry as entryBugSquash } from './entries/2026/02/v2-bug-squash-valentine-session';
 import { entry as entry0 } from './entries/2026/02/phantom-crew-hallucination-loop';
 import { entry as entry1 } from './entries/2026/02/v2-runtime-polish-session';
 import { entry as entry2 } from './entries/2026/02/v2-god-file-purge';
@@ -111,6 +112,7 @@ export * from './types';
 import type { BlogEntry } from './types';
 
 export const timelineData: BlogEntry[] = [
+    entryBugSquash,
     entryGestureCleanup,
     entryStabilization,
     entry0,

@@ -1,8 +1,10 @@
 /* ========================================
    MEET THE CREW SCREEN - V1 PARITY
    Ported from css/endings.css
+   Class names aligned to CrewScreen.ts (crew- prefix)
    ======================================== */
 
+/* ---- Container ---- */
 #crew-screen {
     display: none;
     position: fixed;
@@ -21,7 +23,8 @@
     justify-content: center;
 }
 
-.credit-screen {
+/* ---- Slide (individual screen) ---- */
+.crew-slide {
     display: none;
     width: 100%;
     height: 100%;
@@ -38,16 +41,41 @@
     overflow-x: hidden;
 }
 
-.credit-screen.active {
+.crew-slide.active {
     display: flex;
     opacity: 1;
 }
 
-.credit-screen.fade-out {
+.crew-slide.fade-out {
     opacity: 0;
 }
 
-#btn-next-crew {
+/* ---- Navigation Buttons ---- */
+.crew-close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    z-index: 9600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.crew-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.crew-next-btn {
     position: fixed;
     bottom: 40px;
     right: 40px;
@@ -64,29 +92,14 @@
     letter-spacing: 0.1em;
 }
 
-#btn-next-crew:hover {
+.crew-next-btn:hover {
     background: rgba(0, 255, 255, 0.4);
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
-.credits-logo {
-    width: 350px;
-    max-width: 70%;
-    filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
-    margin-bottom: 40px;
-}
-
-.credits-powered-by {
-    font-size: 2rem;
-    color: #a8a08c;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin-bottom: 40px;
-    opacity: 0.8;
-}
-
-.credits-group-photo {
+/* ---- Slide 1: Group Photo ---- */
+.crew-group-photo {
     width: 600px;
     max-width: 80%;
     max-height: 400px;
@@ -97,7 +110,7 @@
     margin-bottom: 40px;
 }
 
-.credits-group-title {
+.crew-group-title {
     font-size: 3.5rem;
     color: #00ffff;
     text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
@@ -106,13 +119,14 @@
     margin-bottom: 30px;
 }
 
-.credits-group-subtitle {
+.crew-group-subtitle {
     font-size: 1.8rem;
     color: #a8a08c;
     letter-spacing: 0.2em;
 }
 
-.portrait-display {
+/* ---- Slides 2-9: Individual Portraits ---- */
+.crew-portrait-display {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -120,7 +134,7 @@
     max-width: 1400px;
 }
 
-.portrait-display-image {
+.crew-portrait-image {
     width: 400px;
     height: auto;
     border-radius: 15px;
@@ -129,12 +143,12 @@
     flex-shrink: 0;
 }
 
-.portrait-display-content {
+.crew-portrait-content {
     flex: 1;
     max-width: 700px;
 }
 
-.portrait-display-name {
+.crew-portrait-name {
     font-size: 3.5rem;
     color: #00ffff;
     font-weight: 700;
@@ -142,21 +156,21 @@
     text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
-.portrait-display-title {
+.crew-portrait-title {
     font-size: 2rem;
     color: #a8a08c;
     margin-bottom: 30px;
     font-style: italic;
 }
 
-.portrait-display-story {
+.crew-portrait-story {
     font-size: 1.4rem;
     color: #ddd;
     line-height: 1.8;
     font-style: italic;
 }
 
-.portrait-display-platform {
+.crew-portrait-platform {
     font-size: 1.1rem;
     color: #666;
     margin-top: 25px;
@@ -164,95 +178,80 @@
 
 /* DIZEE: Landscape mode - flip layout (text left, image right) 🖤 */
 @media (orientation: landscape) and (min-width: 768px) {
-    .portrait-display {
+    .crew-portrait-display {
         flex-direction: row-reverse !important;
         /* Image on right, content on left */
     }
 }
 
-.credits-text-screen {
+/* ---- Slide 10: The Reveal ---- */
+.crew-reveal-screen {
     max-width: 1000px;
     text-align: center;
     margin: auto 0;
 }
 
-.credits-big-title {
-    font-size: 4rem;
-    color: #00ffff;
-    font-weight: 700;
-    text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-    margin-bottom: 40px;
-    letter-spacing: 0.15em;
-}
-
-.credits-big-text {
+.crew-reveal-text {
     font-size: 1.8rem;
     color: #ddd;
     line-height: 2;
     margin-bottom: 20px;
 }
 
-.credits-big-text strong {
+.crew-reveal-text strong {
     color: #00ffff;
 }
 
-.credits-final-message {
-    font-size: 4.5rem;
-    color: #00ffff;
-    font-weight: 700;
-    text-shadow: 0 0 40px rgba(0, 255, 255, 0.7);
-    letter-spacing: 0.1em;
-    line-height: 1.5;
-}
-
+/* ---- Responsive: Tablet ---- */
 @media (max-width: 1200px) {
-    .portrait-display {
+    .crew-portrait-display {
         flex-direction: column;
         gap: 40px;
     }
 
-    .portrait-display-image {
+    .crew-portrait-image {
         width: 350px;
     }
 }
 
+/* ---- Responsive: Short landscape screens ---- */
 @media (min-width: 769px) and (max-height: 900px) {
-    .credit-screen {
+    .crew-slide {
         padding: 40px 60px 120px 60px;
     }
 
-    .credits-big-text {
+    .crew-reveal-text {
         font-size: 1.5rem;
         line-height: 1.6;
     }
 }
 
+/* ---- Responsive: Mobile ---- */
 @media (max-width: 768px) {
-    .credits-big-title {
-        font-size: 2.5rem;
-    }
-
-    .credits-big-text {
+    .crew-reveal-text {
         font-size: 1.3rem;
     }
 
-    .portrait-display-name {
+    .crew-portrait-name {
         font-size: 2.5rem;
     }
 
-    .portrait-display-title {
+    .crew-portrait-title {
         font-size: 1.5rem;
     }
 
-    .portrait-display-story {
+    .crew-portrait-story {
         font-size: 1.2rem;
     }
 
-    .portrait-display-image {
+    .crew-portrait-image {
         width: 280px;
     }
 
-    .credits-final-message {
-        font-size: 3rem;
+    .crew-next-btn {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 30px;
+        font-size: 1rem;
     }
 }
