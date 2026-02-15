@@ -17,6 +17,11 @@ export class SwipeHandler {
     private touchStartX: number = 0;
     private touchStartY: number = 0;
     private touchStartTime: number = 0;
+    private touchStartValid: boolean = false;
+
+    // Double-tap detection
+    private lastTapTime: number = 0;
+    private readonly DOUBLE_TAP_DELAY = 300; // ms
 
     constructor(element: HTMLElement, eventBus: EventBus, settingsSystem: SettingsSystem) {
         this.element = element;
@@ -46,6 +51,7 @@ export class SwipeHandler {
             target.closest('code') ||
             target.closest('.scroll-container')) {
             Logger.input('[SwipeHandler] Swipe ignored - interactive target');
+            this.touchStartValid = false;
             return;
         }
 
@@ -53,6 +59,7 @@ export class SwipeHandler {
         // Only allow swipe down if starting from top edge (simulating status bar pull)
         // We'll store the Y and check direction later, but we can flag intent here
 
+        this.touchStartValid = true;
         this.touchStartX = touch.clientX; // Use clientX/Y
         this.touchStartY = touch.clientY;
         this.touchStartTime = new Date().getTime();
@@ -61,6 +68,12 @@ export class SwipeHandler {
     private handleTouchEnd(e: TouchEvent): void {
         const touch = e.changedTouches[0];
         if (!touch) return;
+
+        // Skip if touchstart was on interactive element
+        if (!this.touchStartValid) {
+            this.lastTapTime = 0; // Reset double-tap chain
+            return;
+        }
 
         // Get Settings
         const settings = this.settingsSystem.get('swipeSettings');
@@ -72,38 +85,46 @@ export class SwipeHandler {
         const distY = touch.clientY - this.touchStartY;
         const elapsedTime = new Date().getTime() - this.touchStartTime;
 
+        let swipeDetected = false;
+
         if (elapsedTime <= maxTime) {
             // Check for horizontal swipe
             if (Math.abs(distX) >= minDistance && Math.abs(distY) <= restraint) {
+                swipeDetected = true;
                 if (distX < 0) {
-                    // Left Swipe
                     Logger.input('[SwipeHandler] Swipe Left detected');
                     this.eventBus.emit('input:swipe_left', {});
                 } else {
-                    // Right Swipe
                     Logger.input('[SwipeHandler] Swipe Right detected');
                     this.eventBus.emit('input:swipe_right', {});
                 }
             }
             // Check for vertical swipe
             else if (Math.abs(distY) >= minDistance && Math.abs(distX) <= restraint) {
+                swipeDetected = true;
                 if (distY < 0) {
-                    // Up Swipe
                     Logger.input('[SwipeHandler] Swipe Up detected');
                     this.eventBus.emit('input:swipe_up', {});
                 } else {
-                    // Down Swipe
-                    // TORI'S FIX: Only trigger if started near top edge OR shade is already open
-                    // When shade is open, swipe down from anywhere should work (for expansion/interaction)
-                    const shadeOpen = document.getElementById('notification-shade')?.classList.contains('visible') ?? false;
-                    if (this.touchStartY < 80 || shadeOpen) {
-                        Logger.input('[SwipeHandler] Swipe Down detected (from top edge)');
-                        this.eventBus.emit('input:swipe_down', {});
-                    } else {
-                        Logger.input('[SwipeHandler] Swipe Down ignored (not from top)');
-                    }
+                    // Down Swipe — always emit with startY for routing layer to decide
+                    Logger.input('[SwipeHandler] Swipe Down detected');
+                    this.eventBus.emit('input:swipe_down', { startY: this.touchStartY });
                 }
             }
+        }
+
+        // Double-tap detection (only when no swipe was detected)
+        if (!swipeDetected) {
+            const currentTime = Date.now();
+            const tapGap = currentTime - this.lastTapTime;
+            if (tapGap < this.DOUBLE_TAP_DELAY && tapGap > 0) {
+                Logger.input('[SwipeHandler] Double-tap detected');
+                this.eventBus.emit('input:double_tap', { target: e.target });
+            }
+            this.lastTapTime = currentTime;
+        } else {
+            // Swipe breaks double-tap chain
+            this.lastTapTime = 0;
         }
     }
 

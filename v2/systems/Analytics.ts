@@ -91,24 +91,10 @@ export class Analytics {
     }
 
     private setupEventListeners(): void {
-        // Track important game events
-        document.addEventListener('scene-displayed', ((e: CustomEvent) => {
-            this.track('scene_view', { sceneId: e.detail?.sceneId });
-        }) as EventListener);
-
-        document.addEventListener('choice-made', ((e: CustomEvent) => {
-            this.track('choice_made', {
-                choiceText: e.detail?.choiceText,
-                sceneId: e.detail?.sceneId
-            });
-        }) as EventListener);
-
-        document.addEventListener('route-point-change', ((e: CustomEvent) => {
-            this.track('route_point', {
-                type: e.detail?.type,
-                value: e.detail?.value
-            });
-        }) as EventListener);
+        // NOTE: V1 CustomEvent listeners (scene-displayed, choice-made, route-point-change)
+        // removed — nothing in V2 dispatches these DOM CustomEvents.
+        // When scene/choice tracking is needed, wire via EventBus events:
+        // 'scene:load', 'choice:selected', 'ui:route_changed'
 
         // Track session end
         window.addEventListener('beforeunload', () => {

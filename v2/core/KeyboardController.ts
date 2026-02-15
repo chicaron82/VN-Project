@@ -1,5 +1,6 @@
 import type { EventBus, EventName } from './EventBus';
 import type { GameEvents } from './EventBus';
+import { isLandscape } from '@utils/layout';
 // import { GameConfig } from './GameConfig';
 
 export class KeyboardController {
@@ -28,17 +29,25 @@ export class KeyboardController {
 
         // Ctrl Shortcuts
         if (e.ctrlKey || e.metaKey) {
-            if (key === 's' || key === 'S') {
-                e.preventDefault();
-                this.eventBus.emit('save:quick', {}); // Handled by SaveSystem listener? Need to check.
-                // Or emit ui:save_menu if Quick Save isn't direct
-                // main.ts handles F5. 
-                // Let's stick to emitting a command event.
+            switch (key.toLowerCase()) {
+                case 's':
+                    e.preventDefault();
+                    this.eventBus.emit('save:quick', {});
+                    break;
+                case 'l':
+                    e.preventDefault();
+                    this.eventBus.emit('load:quick', {});
+                    break;
+                case 'f':
+                    e.preventDefault();
+                    this.toggleFullscreen();
+                    break;
+                case 'm':
+                    e.preventDefault();
+                    this.eventBus.emit('ui:main_menu', {});
+                    break;
             }
-            if (key === 'l' || key === 'L') {
-                e.preventDefault();
-                this.eventBus.emit('load:quick', {});
-            }
+            return;
         }
 
         // Single Key Shortcuts
@@ -89,22 +98,26 @@ export class KeyboardController {
 
         // 8. Sidebar
         if (this.isVisible('sidebar', 'visible')) {
-            // Sidebar usually has a class, maybe handle differently
-            // Sidebar has 'visible' class on #sidebar
-            this.eventBus.emit('ui:sidebar:close', {}); // Sidebar might not listen to this specific event
-            // Sidebar listens to toggle, or backdrop click. 
-            // Let's fallback to toggle if open.
+            this.eventBus.emit('ui:sidebar:close', {});
             document.querySelector('#sidebar')?.classList.remove('visible');
             document.querySelector('#shade-backdrop')?.classList.remove('visible');
             return;
         }
 
-        // 9. Pause Menu (Replalced by Sidebar/Shade)
-        // If nothing else is open, toggle Sidebar (Landscape) or Shade (Portrait)
-        // But only if we are IN GAME (not main menu)
+        // 9. Notification Shade (expanded → collapse, open → close)
+        const shade = document.getElementById('notification-shade');
+        if (shade?.classList.contains('visible')) {
+            if (shade.classList.contains('expanded')) {
+                this.eventBus.emit('ui:shade:collapse', {});
+            } else {
+                this.eventBus.emit('ui:shade:close_request', {});
+            }
+            return;
+        }
+
+        // 10. Nothing open + in-game → Open Sidebar (Landscape) or Shade (Portrait)
         if (document.getElementById('game-layout')) {
-            const isLandscape = window.innerWidth > window.innerHeight;
-            if (isLandscape) {
+            if (isLandscape()) {
                 this.eventBus.emit('ui:sidebar:toggle', {});
             } else {
                 this.eventBus.emit('ui:shade:toggle', {});
@@ -142,5 +155,13 @@ export class KeyboardController {
         if (!el) return false;
         if (className) return el.classList.contains(className);
         return el.style.display !== 'none' && el.style.display !== '';
+    }
+
+    private toggleFullscreen(): void {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => { /* ignore */ });
+        } else if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
     }
 }

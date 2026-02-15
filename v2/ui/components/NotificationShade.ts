@@ -35,7 +35,6 @@ export class NotificationShade {
     // V1 Parity: Persistent state (lines 1048-1075)
     private screenshotMode: boolean = false;
     private idleDelay: number = 3000;
-    private openedAt: number = 0; // Timestamp when shade opened (prevents same-swipe expansion)
 
     constructor(eventBus: EventBus, isInShell: boolean = false) {
         this.eventBus = eventBus;
@@ -143,9 +142,6 @@ export class NotificationShade {
         this.eventBus.on('ui:shade:toggle', () => this.toggle());
         this.eventBus.on('ui:shade:close_request', () => this.close()); // Handle Back Button
 
-        // V1 Parity: Keyboard shortcuts (lines 861-915)
-        document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
-
         // Quick action button click delegation
         // TODO: Refactor - extract quick action handling to dedicated module
         this.container.addEventListener('click', (e: Event) => {
@@ -174,13 +170,17 @@ export class NotificationShade {
             }
         });
 
-        // Swipe Down within open shade to expand (V1 parity: pull-to-expand)
-        // Guard: Require 400ms after shade opens to prevent instant expansion.
-        // The same input:swipe_down event that triggers shade open (via MobileUXController)
-        // also reaches this listener in the same EventBus dispatch cycle.
-        this.eventBus.on('input:swipe_down', () => {
-            if (this.isOpen && !this.isExpanded && (Date.now() - this.openedAt > 400)) {
+        // Expand shade on semantic UI event (routed by MobileUXController)
+        this.eventBus.on('ui:shade:expand', () => {
+            if (this.isOpen && !this.isExpanded) {
                 this.expand();
+            }
+        });
+
+        // Collapse shade on semantic UI event (routed by KeyboardController)
+        this.eventBus.on('ui:shade:collapse', () => {
+            if (this.isExpanded) {
+                this.collapse();
             }
         });
 
@@ -202,7 +202,6 @@ export class NotificationShade {
 
         this.isOpen = true;
         this.isExpanded = false; // Always start with carousel
-        this.openedAt = Date.now(); // Track when shade opened (prevents same-swipe expansion)
         this.container.classList.add('visible');
         this.eventBus.emit('ui:shade:opened', {});
         this.eventBus.emit('ui:shade:open', {}); // Notify BackButtonManager
@@ -324,85 +323,6 @@ export class NotificationShade {
      */
     public getCurrentNoteId(): string | null {
         return this.currentNotePreview?.id || null;
-    }
-
-    // ========================================
-    // KEYBOARD SHORTCUTS
-    // V1 Parity: notification-shade-controller.js lines 866-915
-    // ========================================
-
-    /**
-     * Handle keyboard shortcuts
-     * V1 Parity: Esc, Ctrl+S/L/F/M
-     */
-    private handleKeyboardShortcut(e: KeyboardEvent): void {
-        // Don't trigger if typing in input
-        const target = e.target as HTMLElement;
-        if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
-            return;
-        }
-
-        switch (e.key.toLowerCase()) {
-            case 'escape':
-                // Toggle shade (mobile) or sidebar (desktop)
-                if (this.isOpen) {
-                    this.close();
-                } else if (this.isExpanded) {
-                    this.collapse();
-                } else {
-                    const isDesktop = window.innerWidth >= 769;
-                    if (isDesktop) {
-                        this.eventBus.emit('ui:sidebar:toggle', {});
-                    } else {
-                        this.open();
-                    }
-                }
-                break;
-
-            case 's':
-                if (e.ctrlKey || e.metaKey) {
-                    e.preventDefault();
-                    // Quick save
-                    this.eventBus.emit('ui:save_menu', {});
-                    this.close();
-                    Logger.ui('💾 Quick save (Ctrl+S)');
-                }
-                break;
-
-            case 'l':
-                if (e.ctrlKey || e.metaKey) {
-                    e.preventDefault();
-                    // Quick load
-                    this.eventBus.emit('ui:load_menu', {});
-                    this.close();
-                    Logger.ui('📂 Load menu (Ctrl+L)');
-                }
-                break;
-
-            case 'f':
-                if (e.ctrlKey || e.metaKey) {
-                    e.preventDefault();
-                    // Toggle fullscreen
-                    if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch(err => Logger.warn(err));
-                        Logger.ui('⛶ Fullscreen enabled (Ctrl+F)');
-                    } else {
-                        document.exitFullscreen();
-                        Logger.ui('⛶ Fullscreen disabled (Ctrl+F)');
-                    }
-                }
-                break;
-
-            case 'm':
-                if (e.ctrlKey || e.metaKey) {
-                    e.preventDefault();
-                    // Return to menu
-                    this.eventBus.emit('ui:main_menu', {});
-                    this.close();
-                    Logger.ui('🚪 Return to menu (Ctrl+M)');
-                }
-                break;
-        }
     }
 
     // ========================================

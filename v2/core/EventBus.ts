@@ -75,6 +75,8 @@ export type GameEvents = {
   'ui:shade:open': {};
   'ui:shade:close': {};
   'ui:shade:toggle': {};
+  'ui:shade:expand': {};
+  'ui:shade:collapse': {};
   'ui:shade:opened': {};
   'ui:shade:closed': {};
   'ui:sidebar:open': {};
@@ -86,8 +88,8 @@ export type GameEvents = {
   'input:swipe_left': {};
   'input:swipe_right': {};
   'input:swipe_up': {};
-  'input:swipe_down': {};
-  'input:double_tap': {};
+  'input:swipe_down': { startY?: number };
+  'input:double_tap': { target?: EventTarget | null };
   // Settings & HUD events
   'settings:open': {};
   'settings:close': {};

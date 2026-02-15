@@ -1,6 +1,7 @@
 
 import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
+import { isLandscape } from '@utils/layout';
 
 
 /**
@@ -13,11 +14,7 @@ import { Logger } from '@utils/Logger';
  */
 export class MobileUXController {
     private eventBus: EventBus;
-    private lastTapTime: number = 0;
     private mutationObserver: MutationObserver | null = null;
-
-    // Configuration
-    private readonly DOUBLE_TAP_DELAY = 300; // ms
 
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;
@@ -32,10 +29,10 @@ export class MobileUXController {
         this.eventBus.on('input:swipe_left', () => this.handleSwipeLeft());
         this.eventBus.on('input:swipe_right', () => this.handleSwipeRight());
         this.eventBus.on('input:swipe_up', () => this.handleSwipeUp());
-        this.eventBus.on('input:swipe_down', () => this.handleSwipeDown());
+        this.eventBus.on('input:swipe_down', (data) => this.handleSwipeDown(data));
 
-        // Double-tap listener (global on document)
-        document.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+        // Double-tap → fullscreen (via SwipeHandler)
+        this.eventBus.on('input:double_tap', (data) => this.handleDoubleTap(data));
     }
 
     // ===========================================
@@ -96,31 +93,28 @@ export class MobileUXController {
         document.querySelector('.dialog-box')?.classList.toggle('hidden');
     }
 
-    private handleSwipeDown(): void {
-        if (this.isShadeVisible()) return;
+    private handleSwipeDown(data?: { startY?: number }): void {
         if (this.isSidebarVisible()) return;
 
-        // Swipe Down routing logic:
-        // - Portrait mode (or width < height): Open NotificationShade (V1 behavior)
-        // - Landscape mode (width > height): Open Sidebar (V2 behavior)
-        // NOTE: These should work even in menus if the UI supports it, 
-        // but user request implies restricting "gestures" during menu interaction.
-        // However, sidebar/shade usually ARE accessible globally.
-        // The user request "gesture to open the backlog" specifically targeted backlog.
-        // I will act conservatively and only restrict Backlog/Advance, 
-        // but keep Sidebar/Shade accessible if desired, or restrict them too if they conflict.
-        // Re-reading: "shouldn't pop up when the sidebar/shade is opened or when in the main menu swiping the carousel"
-        // Swiping carousel is horizontal. So Left/Right guards are most critical.
-        // Down swipe is usually safe in menu (unless it conflicts with scrolling).
+        // If shade is already open, expand it (regardless of swipe origin)
+        if (this.isShadeVisible()) {
+            Logger.input('[MobileUX] Action: Expand Shade');
+            this.eventBus.emit('ui:shade:expand', {});
+            return;
+        }
 
-        const isLandscape = window.innerWidth > window.innerHeight;
+        // Top-edge guard: Only open shade/sidebar from swipes starting near top (< 80px)
+        const startY = data?.startY ?? 0;
+        if (startY >= 80) {
+            Logger.input('[MobileUX] Swipe Down ignored (not from top edge)');
+            return;
+        }
 
-        if (isLandscape) {
-            // Landscape: Open sidebar (V2 behavior)
+        // Swipe Down routing: Portrait → Shade, Landscape → Sidebar
+        if (isLandscape()) {
             Logger.input('[MobileUX] Action: Open Sidebar (landscape)');
             this.eventBus.emit('ui:sidebar:toggle', {});
         } else {
-            // Portrait: Open notification shade (V1 behavior)
             Logger.input('[MobileUX] Action: NotificationShade (portrait)');
             this.eventBus.emit('ui:shade:toggle', {});
         }
@@ -130,24 +124,12 @@ export class MobileUXController {
     // Fullscreen Logic
     // ===========================================
 
-    private handleTouchEnd(e: TouchEvent): void {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - this.lastTapTime;
-
+    private handleDoubleTap(data: { target?: EventTarget | null }): void {
         // Exclude grab handle / sidebar toggle from fullscreen double-tap
-        const target = e.target as HTMLElement;
-        if (target?.closest('#sidebar-toggle')) {
-            this.lastTapTime = currentTime;
-            return;
-        }
+        const target = data.target as HTMLElement | null;
+        if (target?.closest('#sidebar-toggle')) return;
 
-        if (tapLength < this.DOUBLE_TAP_DELAY && tapLength > 0) {
-            e.preventDefault();
-            this.toggleFullscreen();
-            this.eventBus.emit('input:double_tap', {});
-        }
-
-        this.lastTapTime = currentTime;
+        this.toggleFullscreen();
     }
 
     private toggleFullscreen(): void {

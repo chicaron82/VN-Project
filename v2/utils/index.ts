@@ -4,3 +4,4 @@
 export { DebugLogger } from './DebugLogger';
 export { Logger } from './Logger';
 export { AccessibilityManager } from './accessibility';
+export { isLandscape } from './layout';
