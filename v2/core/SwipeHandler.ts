@@ -93,8 +93,10 @@ export class SwipeHandler {
                     this.eventBus.emit('input:swipe_up', {});
                 } else {
                     // Down Swipe
-                    // TORI'S FIX: Only trigger if started near top
-                    if (this.touchStartY < 80) {
+                    // TORI'S FIX: Only trigger if started near top edge OR shade is already open
+                    // When shade is open, swipe down from anywhere should work (for expansion/interaction)
+                    const shadeOpen = document.getElementById('notification-shade')?.classList.contains('visible') ?? false;
+                    if (this.touchStartY < 80 || shadeOpen) {
                         Logger.input('[SwipeHandler] Swipe Down detected (from top edge)');
                         this.eventBus.emit('input:swipe_down', {});
                     } else {

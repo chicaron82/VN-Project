@@ -40,9 +40,9 @@ export class StatusBarGestures {
     };
 
     // Gesture thresholds
-    private readonly SWIPE_THRESHOLD = 50;      // px to register as swipe
     private readonly LONG_PRESS_DELAY = 500;    // ms for long-press
     private readonly DOUBLE_TAP_DELAY = 300;    // ms between taps
+    private readonly MOVE_CANCEL_THRESHOLD = 10; // px to cancel long-press
 
     constructor(
         container: HTMLElement,
@@ -117,8 +117,8 @@ export class StatusBarGestures {
         const deltaX = Math.abs(touch.clientX - this.gestureState.touchStartX);
         const deltaY = Math.abs(touch.clientY - this.gestureState.touchStartY);
 
-        // Cancel long-press if moved more than 10px
-        if (deltaX > 10 || deltaY > 10) {
+        // Cancel long-press if moved more than threshold
+        if (deltaX > this.MOVE_CANCEL_THRESHOLD || deltaY > this.MOVE_CANCEL_THRESHOLD) {
             if (this.gestureState.longPressTimer) {
                 clearTimeout(this.gestureState.longPressTimer);
                 this.gestureState.longPressTimer = null;
@@ -127,7 +127,12 @@ export class StatusBarGestures {
     }
 
     /**
-     * Handle touch end - detect swipes and double-taps
+     * Handle touch end - detect double-taps
+     * 
+     * NOTE: Swipe-down detection removed (Feb 2026).
+     * SwipeHandler.ts is the single source of truth for swipe gestures.
+     * It emits input:swipe_down → MobileUXController routes to shade/sidebar.
+     * StatusBarGestures no longer duplicates that detection.
      */
     private handleTouchEnd(e: TouchEvent): void {
         // Clear long-press timer
@@ -136,23 +141,9 @@ export class StatusBarGestures {
             this.gestureState.longPressTimer = null;
         }
 
-        // If it was a long-press, don't process as tap/swipe
+        // If it was a long-press, don't process as tap
         if (this.gestureState.isLongPress) {
             this.gestureState.isLongPress = false;
-            return;
-        }
-
-        const touch = e.changedTouches[0];
-        if (!touch) return;
-
-        const deltaX = touch.clientX - this.gestureState.touchStartX;
-        const deltaY = touch.clientY - this.gestureState.touchStartY;
-        const elapsed = Date.now() - this.gestureState.touchStartTime;
-
-        // Check for swipe down (on status bar = quick actions)
-        if (deltaY > this.SWIPE_THRESHOLD && Math.abs(deltaX) < this.SWIPE_THRESHOLD && elapsed < 500) {
-            e.preventDefault();
-            this.handleSwipeDown();
             return;
         }
 
@@ -163,31 +154,12 @@ export class StatusBarGestures {
             const target = e.target as HTMLElement;
             // Only trigger on empty status bar space (not on buttons/indicators)
             if (target === this.container || target.classList.contains('status-section')) {
-                e.preventDefault();
+                if (e.cancelable) e.preventDefault();
                 this.callbacks.toggleScreenshotMode();
                 if (navigator.vibrate) navigator.vibrate(20);
             }
         }
         this.gestureState.lastTapTime = now;
-    }
-
-    /**
-     * Handle swipe down on status bar - show quick actions
-     * Routes to shade (portrait) or sidebar (landscape)
-     */
-    private handleSwipeDown(): void {
-        const isLandscape = window.innerWidth > window.innerHeight;
-
-        // Haptic feedback
-        if (navigator.vibrate) navigator.vibrate(15);
-
-        if (isLandscape) {
-            Logger.ui('👇 Swipe down detected - opening sidebar (landscape)');
-            this.eventBus.emit('ui:sidebar:toggle', {});
-        } else {
-            Logger.ui('👇 Swipe down detected - showing quick actions (portrait)');
-            this.eventBus.emit('ui:shade:toggle', {});
-        }
     }
 
     /**

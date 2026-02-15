@@ -35,6 +35,7 @@ export class NotificationShade {
     // V1 Parity: Persistent state (lines 1048-1075)
     private screenshotMode: boolean = false;
     private idleDelay: number = 3000;
+    private openedAt: number = 0; // Timestamp when shade opened (prevents same-swipe expansion)
 
     constructor(eventBus: EventBus, isInShell: boolean = false) {
         this.eventBus = eventBus;
@@ -173,6 +174,16 @@ export class NotificationShade {
             }
         });
 
+        // Swipe Down within open shade to expand (V1 parity: pull-to-expand)
+        // Guard: Require 400ms after shade opens to prevent instant expansion.
+        // The same input:swipe_down event that triggers shade open (via MobileUXController)
+        // also reaches this listener in the same EventBus dispatch cycle.
+        this.eventBus.on('input:swipe_down', () => {
+            if (this.isOpen && !this.isExpanded && (Date.now() - this.openedAt > 400)) {
+                this.expand();
+            }
+        });
+
         // ...
     }
 
@@ -191,6 +202,7 @@ export class NotificationShade {
 
         this.isOpen = true;
         this.isExpanded = false; // Always start with carousel
+        this.openedAt = Date.now(); // Track when shade opened (prevents same-swipe expansion)
         this.container.classList.add('visible');
         this.eventBus.emit('ui:shade:opened', {});
         this.eventBus.emit('ui:shade:open', {}); // Notify BackButtonManager
