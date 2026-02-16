@@ -1,6 +1,8 @@
 // Auto-generated index file for timeline entries
 // DO NOT EDIT MANUALLY - regenerate using npm run generate:timeline
 
+import { entry as entryExtractionSprint } from './entries/2026/02/roadtrip-planner-extraction-sprint';
+import { entry as entryBetterPlanner } from './entries/2026/02/building-a-better-planner';
 import { entry as entryGestureCleanup } from './entries/2026/02/gesture-input-architecture-cleanup';
 import { entry as entryStabilization } from './entries/2026/02/v2-stabilization-full-kitchen-audit';
 import { entry as entryBugSquash } from './entries/2026/02/v2-bug-squash-valentine-session';
@@ -112,6 +114,8 @@ export * from './types';
 import type { BlogEntry } from './types';
 
 export const timelineData: BlogEntry[] = [
+    entryExtractionSprint,
+    entryBetterPlanner,
     entryBugSquash,
     entryGestureCleanup,
     entryStabilization,

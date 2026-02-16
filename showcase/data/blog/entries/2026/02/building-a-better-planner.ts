@@ -9,12 +9,12 @@ export const entry: TimelineEntry = {
     emoji: '🗺️',
     tags: ['React', 'TypeScript', 'Trip Planning', 'Budget Intelligence', 'Refactoring', 'V2'],
     modelId: 'dizee',
-    summary: 'A weekend trip planner evolved into a power user\'s dream for multi-day odysseys. Started with 1,405-line App.tsx spaghetti, ended with flexible day planning, activity time slots, per-category budgets, and 90-95% parity with meticulous manual planning—all in a clean 507-line architecture.',
+    summary: 'For years, Aaron planned road trips the hard way — Google Maps, spreadsheets, fuel calculators, hotel research, and sheer imagination. People told him "you should charge for this." After months of building UV7\'s showcase with AI tooling, the lightbulb hit: what if the same dev workflow could translate years of trip-planning instinct into an app anyone could use? The result: a power user\'s dream for multi-day odysseys, hitting 90-95% parity with meticulous manual planning.',
 
     callout: {
-        icon: '🎯',
-        title: 'The Pivot That Mattered',
-        text: 'When asked to build a themed route builder for oddly-named Canadian towns, the user said "too variable." Instead: "What about activity time slots and flexible days?" Two practical features beat one bougie abstraction. The app now matches the detail level of a manual Winnipeg→Toronto spreadsheet.'
+        icon: '🗺️',
+        title: 'From Dildo, Newfoundland to a Full App',
+        text: 'The fall trip was supposed to be the Canadian train ride. Then Aaron looked at the map and saw "Dildo, Newfoundland." How could you NOT visit? One town name led to a themed route idea, which led to a $1,500/4-day bucket list trip to Eastern Canada, which became the test case that proved the app could match the detail level of a hand-crafted PDF — the same PDFs people said he should charge for making.'
     },
 
     highlights: [
@@ -30,8 +30,8 @@ export const entry: TimelineEntry = {
     ],
 
     problem: {
-        description: 'User had detailed manual trip plans (Winnipeg→Toronto 2025) with day-by-day breakdowns, budget tracking, activity schedules, and hotel research. Creating these manually required spreadsheets, Google Maps research, fuel calculators, and hours of tedious data entry. Needed automation WITHOUT losing the refinement.',
-        rootCause: 'Existing app was a "quick trip tool" — single-day focus, no budget granularity, no flexible planning, and 1,405-line App.tsx that made new features a nightmare to add. Architecture couldn\'t scale to multi-day odysseys.'
+        description: 'For years, Aaron had been creating detailed road trip plans by hand — full day-by-day breakdowns with departure times, fuel stops with driver rotation notes, hotel costs with amenity research, themed activity loops, timezone change warnings, and running budget totals. The 2025 Winnipeg→Toronto plan (roadtrip2025.txt) was the gold standard: 6 days, 4,896 km, $600 gas budget tracked to the dollar, a "Great Canadian EuroTrip" through towns named London/Dublin/Paris/Vienna/Copenhagen, and a flexible Day 4 with three options left open. People kept telling him "you should do this for a living." After the experience building UV7\'s showcase — seeing how AI-assisted development could turn vision into working software — the question became: could that same workflow translate trip-planning expertise into an app?',
+        rootCause: 'The existing app was a "quick trip tool" — single-day focus, no budget granularity, no flexible planning, and a 1,405-line App.tsx monolith that made new features a nightmare. Architecture couldn\'t scale to the multi-day odysseys Aaron planned by hand. The gap between what the app could do and what the manual PDFs delivered was enormous.'
     },
 
     solution: {
@@ -345,13 +345,14 @@ return <DayHeader day={day} editable={!!onUpdateDayType} />;`
     ],
 
     lessons: [
+        'Domain expertise is the product — years of manual trip planning meant Aaron knew exactly what features mattered vs. what looked impressive but wasn\'t useful',
+        'The gold standard file is your spec — roadtrip2025.txt with its emoji headers, running budget totals, and driver rotation notes defined every feature requirement',
         'Refactor BEFORE adding features — the 64% App.tsx reduction made phases C/6/7 possible in days instead of weeks',
         'Listen to "too variable" feedback — the themed route builder would\'ve been a complexity sink, activity slots were the real need',
         'Progressive enhancement > feature flags — optional handlers let features coexist without configuration',
-        'Type system extensions beat parallel structures — adding optional fields to existing types maintains backward compatibility',
         'Test infrastructure pays compound interest — 70 tests caught type errors during refactoring before runtime',
         'Manual plan parity is the north star — hitting 90-95% meant the app actually replaced spreadsheets, not just supplemented them',
-        'Budget profiles beat custom inputs — users prefer "Moderate" over manually entering 5 dollar amounts',
+        'The AI-assisted dev workflow transfers across projects — the same patterns from UV7 (EventBus → hooks, god class → extraction) made the roadtrip planner possible in a fraction of the time',
         'The pivot moment matters — "what about activity time slots and flexible days?" turned a weekend project into a power tool'
     ],
 
@@ -369,13 +370,13 @@ return <DayHeader day={day} editable={!!onUpdateDayType} />;`
     ],
 
     quote: {
-        text: 'Two practical features beat one bougie abstraction. The app now matches the detail level of a manual spreadsheet.',
-        author: 'DiZee',
-        context: 'After pivoting from themed route builder to activity slots + flexible days'
+        text: 'People kept saying I should charge for my trip plans. After building UV7 with AI, I thought — what if the app could plan trips the way I do?',
+        author: 'Aaron "Chicharon"',
+        context: 'On why the roadtrip planner exists'
     },
 
     footer: {
         icon: '🗺️',
-        text: '1,405 lines → 507. 3 phases. 70 tests. 90% manual plan parity. Road trips just got bougie. 🚗✨🎒'
+        text: 'Years of manual planning → one app. 1,405 → 507 lines. 70 tests. 90% parity with hand-crafted PDFs. Dildo, Newfoundland started it all. 🗺️🚗💚'
     }
 };
