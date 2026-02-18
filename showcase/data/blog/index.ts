@@ -1,6 +1,7 @@
 // Auto-generated index file for timeline entries
 // DO NOT EDIT MANUALLY - regenerate using npm run generate:timeline
 
+import { entry as entry17CommitMarathon } from './entries/2026/02/roadtrip-planner-17-commit-marathon';
 import { entry as entryExperienceEngine } from './entries/2026/02/experience-engine-border-avoidance';
 import { entry as entryExtractionSprint } from './entries/2026/02/roadtrip-planner-extraction-sprint';
 import { entry as entryBetterPlanner } from './entries/2026/02/building-a-better-planner';
@@ -115,6 +116,7 @@ export * from './types';
 import type { BlogEntry } from './types';
 
 export const timelineData: BlogEntry[] = [
+    entry17CommitMarathon,
     entryExperienceEngine,
     entryExtractionSprint,
     entryBetterPlanner,
