@@ -1,0 +1,45 @@
+okay still not populating as intended. what if we pivoted and change how things are discovered and how things are added to the itinerary.
+
+let's reframe "plan mode" into "build mode"
+
+So already able to filter
+Gas, food, hotel, and sights along the route and they show up on the map
+
+What if each thing is clickable to know what they are. With an option to add to the plan
+
+Add a fuel stop:
+Calculates arrival time based on departure + distance traveled
+Estimates fuel consumed (km driven × MPG)
+Calculates fuel needed (tank capacity - remaining)
+Updates budget: Gas spent $52, remaining $148 (using rough estimates)
+
+Add a hotel:
+Sets it as overnight stop
+Splits trip into Day 1 / Day 2
+Recalculates all subsequent arrival times
+Updates budget: Hotel $120, remaining $880 (using rough estimates and based on type Budget/Moderate/Premium)
+editable, if user knows the rate
+example Best Western Dryden
+   Estimated: $135
+   Your rate: $89 ✓
+   Savings: $46
+
+Add a restaurant:
+Inserts 45min meal stop
+Pushes all later arrival times back 45min
+Updates budget: Food -$50
+
+Keep Building
+User keeps clicking dots, adding what they want.
+Each addition:
+
+Appears in itinerary timeline
+Updates all subsequent arrival times
+Updates relevant budget category
+Shows on map as "added"
+
+Remove something?
+Click the X on the timeline item
+Everything recalculates
+Budget refunds
+Map dot goes back to unselected
