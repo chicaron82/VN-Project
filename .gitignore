@@ -157,3 +157,4 @@ tsc_error.log
 # Local console-audit artifacts
 .console-count.json
 .console-audit.json
+.claude/settings.local.json
