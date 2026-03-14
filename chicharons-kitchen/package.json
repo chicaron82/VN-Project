@@ -1,0 +1,19 @@
+{
+    "name": "chicharons-kitchen",
+    "version": "1.0.0",
+    "description": "chicharon's kitchen — a dev journal where every commit tells a story",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc --noEmit && vite build",
+        "preview": "vite preview",
+        "generate:timeline": "tsx scripts/generate-blog.ts",
+        "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@types/node": "^22.0.0",
+        "tsx": "^4.19.2",
+        "typescript": "^5.7.0",
+        "vite": "^6.1.0"
+    }
+}
