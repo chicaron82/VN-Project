@@ -1,6 +1,4 @@
-// Types re-exported from @uv7/journal-core (source of truth)
-// To change a type, edit: packages/journal-core/src/types.ts
-
+// @uv7/journal-core — barrel export
 export type {
     BlogEntry,
     TimelineEntry,
@@ -18,4 +16,4 @@ export type {
     V3Judgement,
     V3Scorecard,
     V3Stats,
-} from '../../../packages/journal-core/src/types';
+} from './types';

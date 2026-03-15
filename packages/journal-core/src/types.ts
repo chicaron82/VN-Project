@@ -1,0 +1,239 @@
+// @uv7/journal-core — types
+// Source of truth for BlogEntry schema across UV7 ecosystem.
+
+/**
+ * Media carousel item (image or video)
+ */
+export interface MediaCarouselItem {
+    type: 'image' | 'video';
+    url: string;
+    caption: string;
+}
+
+/**
+ * Media attachments for timeline entries
+ */
+export interface TimelineMedia {
+    carousel: MediaCarouselItem[];
+}
+
+/**
+ * Code snippet for comparison views
+ */
+export interface CodeSnippet {
+    title: string;
+    badge: string;
+    lang: string;
+    code: string;
+}
+
+/**
+ * Before/after code comparison
+ */
+export interface CodeComparison {
+    title?: string;
+    before: string | CodeSnippet;
+    after: string | CodeSnippet;
+}
+
+/**
+ * Crew member attribution
+ */
+export interface CrewMember {
+    name: string;
+    contribution: string;
+    icon: string;
+}
+
+/**
+ * Lesson or insight with icon and title
+ */
+export interface Lesson {
+    icon?: string;
+    title: string;
+    lesson: string;
+}
+
+/**
+ * Single metric stat
+ */
+export interface MetricStat {
+    label: string;
+    value: string | number;
+}
+
+/**
+ * Group of metrics with a title
+ */
+export interface MetricGroup {
+    title: string;
+    stats: MetricStat[];
+}
+
+/**
+ * Detailed quote with context
+ */
+export interface QuoteDetail {
+    text: string;
+    author: string;
+    context?: string;
+}
+
+/**
+ * Crew attribution block with quote
+ */
+export interface CrewAttribution {
+    systems: CrewMember[];
+    quote?: string;
+}
+
+export interface V3Judgement {
+    verdict: 'understood' | 'rogue' | 'failed';
+    notes: string;
+}
+
+export interface V3Scorecard {
+    velocity: 'Fast' | 'Average' | 'Slow';
+    adherence: 'Strict' | 'Loose' | 'Rogue';
+    creativity: number;
+    funFactor: number;
+    sensitivity: number;
+    aggression: number;
+}
+
+export interface V3Stats {
+    commits: number;
+    corrections: number;
+    notesDetected: number;
+    archInsights: number;
+}
+
+export interface BlogEntry {
+    id: string;
+    date?: string;
+    emoji?: string;
+    title: string;
+    type?: string;
+    tags?: string[];
+    sortDate?: string;
+    summary?: string;
+    description?: string;
+    linesOfCode?: number;
+    highlights?: string[];
+    features?: string[];
+    theTimeline?: string[];
+    investigation?: string[];
+    problem?: string | {
+        description: string;
+        rootCause: string;
+    };
+    solution?: string | {
+        approach: string;
+        features?: string[];
+        steps?: string[];
+        code?: string;
+    };
+    media?: TimelineMedia;
+    codeComparison?: CodeComparison;
+    subEntries?: BlogEntry[];
+    subPhases?: BlogEntry[];
+    lessons?: (string | Lesson)[];
+    crew?: CrewMember[];
+    crewAttribution?: CrewAttribution;
+    metrics?: Record<string, string | number> | MetricGroup;
+    callout?: {
+        icon?: string;
+        title: string;
+        text?: string;
+        type?: string;
+        content?: string;
+    };
+    footer?: {
+        icon: string;
+        text: string;
+    };
+    quote?: string | QuoteDetail;
+    legacyPhase?: string;
+
+    // V3 Lab Specific
+    isV3Entry?: boolean;
+    modelId?: 'belle' | 'dizee' | 'tori' | 'genzee' | 'zee' | 'zeerah' | 'cozee' | 'perplexizee' | 'aaron';
+    scorecard?: V3Scorecard;
+    stats?: V3Stats;
+    judgement?: V3Judgement;
+
+    // V3 Session Detailed Reporting
+    timestamp?: Date;
+    agent?: string;
+    agentAlias?: string;
+    sessionType?: string;
+    primaryFocus?: string;
+    approach?: {
+        title: string;
+        description: string;
+        keyInsights: string[];
+    };
+    implementation?: {
+        directory: string;
+        strategy: string;
+        files: string[];
+        whatPreserved: string[];
+        futureEnhancements: string[];
+    };
+    outcomeCode?: {
+        linesChanged: number;
+        linesAdded: string | number;
+        systemsIntegrated: string[];
+    };
+    machineReflection?: {
+        whatWentRight: string[];
+        challenges: string[];
+        nextSteps: string[];
+    };
+    effort?: {
+        duration: string;
+        complexity: string;
+        iterations: number;
+    };
+
+    // Additional properties for detailed technical entries
+    technicalDetails?: {
+        title: string;
+        sections: Array<{
+            heading: string;
+            content: string;
+        }>;
+    };
+    commits?: Array<{
+        hash: string;
+        message: string;
+        files: string[];
+    }>;
+    nextSteps?: string[];
+    lessonsLearned?: (string | Lesson)[];
+    relatedEntries?: string[];
+    futureWork?: string[];
+    status?: 'completed' | 'in-progress' | 'blocked' | 'planned';
+    blockedReason?: string;
+
+    // Detailed blog entry sections
+    details?: Array<{
+        title: string;
+        points: string[];
+    }>;
+    achievements?: Array<{
+        icon: string;
+        title: string;
+        description: string;
+    }>;
+    codeSnippets?: CodeSnippet[];
+    collaborators?: string[];
+    flavor?: string;
+}
+
+// Alias for backward compatibility
+export type TimelineEntry = BlogEntry;
+
+export interface TimelineData {
+    entries: BlogEntry[];
+}

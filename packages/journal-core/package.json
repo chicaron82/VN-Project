@@ -1,0 +1,10 @@
+{
+  "name": "@uv7/journal-core",
+  "version": "0.1.0",
+  "description": "Shared BlogEntry types for the UV7 ecosystem",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "main": "./src/index.ts"
+}
