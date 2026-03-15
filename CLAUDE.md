@@ -390,3 +390,21 @@ Home section interactions (5+ handlers + typewriter state) = HomeInteractionCont
 **Why:**
 
 Inline wiring is fine for simple cases. But "just one more handler" × 50 features = god object.
+
+---
+
+## Session Ritual — Chicharons Kitchen
+
+At the end of every coding session, create a blog entry in the **chicharons-kitchen** repo:
+
+```
+../chicharons-kitchen/posts/YYYY/MM/slug.ts
+```
+
+Use the `BlogEntry` type from `@uv7/journal-core`. Full content, no TODOs. Write it like an editorial recap — narrative, specific, with flavour. Not a changelog.
+
+**Required fields:** `id`, `date`, `sortDate`, `title`, `type`, `emoji`, `tags`, `modelId`, `summary`, `highlights`
+
+**Encouraged fields:** `callout`, `technicalDetails`, `lessons`, `footer`
+
+Always include `'UV7'` in `tags` so the filter bar picks it up.
