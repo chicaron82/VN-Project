@@ -395,13 +395,15 @@ Inline wiring is fine for simple cases. But "just one more handler" × 50 featur
 
 ## Session Ritual — Chicharons Kitchen
 
-At the end of every coding session, create a blog entry in the **chicharons-kitchen** repo:
+**During sessions:** append notable work to the scratch pad at `memory/chicharons-scratch.md`. Capture what happened, why it was interesting, and any numbers worth quoting. Don't wait until end of session — add as each piece lands.
+
+**At end of day (when Aaron says "check the scratch pad"):** drain accumulated notes into one or more blog entries in the chicharons-kitchen repo:
 
 ```
 ../chicharons-kitchen/posts/YYYY/MM/slug.ts
 ```
 
-Use the `BlogEntry` type from `@uv7/journal-core`. Full content, no TODOs. Write it like an editorial recap — narrative, specific, with flavour. Not a changelog.
+Use the `BlogEntry` type from `@uv7/journal-core`. Full content, no TODOs. Write it like an editorial recap — narrative, specific, with flavour. Not a changelog. After writing, mark the drained items in the scratch pad with `_(drained into \`slug\` — date)_`.
 
 **Required fields:** `id`, `date`, `sortDate`, `title`, `type`, `emoji`, `tags`, `modelId`, `summary`, `highlights`
 
