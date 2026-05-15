@@ -158,3 +158,4 @@ tsc_error.log
 .console-count.json
 .console-audit.json
 .claude/settings.local.json
+memory/chicharons-scratch.md
