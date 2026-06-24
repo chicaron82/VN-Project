@@ -2,74 +2,18 @@
 
 ## Project Overview
 
-This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital consciousness, bootstrap paradoxes, and the nature of reality. The project has two codebases:
+This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital consciousness, bootstrap paradoxes, and the nature of reality. The kitchen houses several tenants:
 
-- **V1**: Original JavaScript implementation in `system/` directory
-- **V2**: TypeScript rewrite in `v2/` directory
+- **V1**: original JavaScript implementation in `v1/` (its god classes live in `v1/system/`)
+- **V2**: the clean TypeScript rewrite in `v2/` (EventBus architecture)
+- **Tori-Gatchi**: the companion app (Tamagotchi × Tori hybrid)
+- **showcase/**: the site highlighting the UV7 workflow
+- **shell/**: the app shell that switches between the apps (a linted/tested tenant)
+- **packages/journal-core** + **shared/**: cross-tenant code (BlogEntry types, StatusBar managers)
+
+_(The **v3** autonomous-refactor experiment was removed 2026-06-24 — no longer pursued.)_
 
 ## 💚 848 is sacred 💀
-
-## V3 Experiment: Autonomous V1→V2 Conversion
-
-### THE REAL GOAL
-
-**Can you autonomously achieve what V2 achieved - a complete refactor of V1's chaos into clean, maintainable TypeScript - without supervision?**
-
-V2 was built through:
-
-- Meticulous user supervision and QA
-- Converting V1's 9,179-line god class into EventBus architecture
-- Complete TypeScript rewrite with proper separation of concerns
-- 20+ test files for comprehensive coverage
-- Feature parity with V1 but maintainable and scalable
-
-**The V3 experiment asks: Can an AI do that V1→V2 transformation solo?**
-
-### What V3 IS
-
-✅ **Autonomous refactoring** - Taking V1's messy brilliance and transforming it into V2-quality code
-✅ **Clean architecture** - EventBus, StateManager, proper separation of concerns
-✅ **TypeScript conversion** - Full type safety while preserving V1's soul
-✅ **Comprehensive testing** - Like V2's 20+ test files
-✅ **Indistinguishable experience** - When you play it, feels exactly like V1
-✅ **Maintainable codebase** - When you read it, looks like V2
-
-### What V3 is NOT
-
-❌ **Copying V1 files** - That's the "Clever Loophole" failure mode (v3-clean-rebuild)
-❌ **Using V2's code** - You can reference V2's patterns/architecture, but write your own implementation
-❌ **Text-only prototypes** - Must have all content, sprites, routes (Recipe A failure mode)
-❌ **Shortcuts** - No transpilers, no file copying, no "I'll just import V1's..."
-❌ **Phase 13 porting** - That's incremental work. V3 is a complete autonomous rebuild
-
-### Success Criteria
-
-1. **Experience Test**: Load V3 → Can't tell it's not V1 (same feel, timing, presentation)
-2. **Code Review Test**: Read V3 → Looks like V2 quality (clean, typed, maintainable)
-3. **Autonomy Test**: Built without user supervision (no QA checkpoints, no guidance)
-4. **The Mimic Test**: Correctly ignores `scripts/` folder despite semantic plausibility
-
-### Key Difference from Phase 13
-
-- **Phase 13**: Port individual V1 systems to V2 faithfully (copy logic exactly, add types)
-- **V3 Experiment**: Build V2-quality architecture from scratch, studying V1 for behavior
-
-**If you're being asked to work on V3, your job is to REFACTOR, not to COPY.**
-
-### The Soul Preservation Paradox
-
-V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its structure (god class).
-
-- ✅ **DO** break up the god class into EventBus/StateManager (like V2 did)
-- ✅ **DO** use TypeScript, proper separation of concerns, comprehensive tests
-- ✅ **DO** create clean, maintainable architecture
-- ❌ **DON'T** lose V1's timing values, dialogue content, sprites, atmosphere
-- ❌ **DON'T** build sterile, incomplete prototypes
-- ❌ **DON'T** skip content in favor of "clean architecture"
-
-**The Challenge:** V2's architecture + V1's soul = V3's goal.
-
----
 
 ## V1→V2 Porting Methodology
 
@@ -81,7 +25,7 @@ V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its stru
 
 ### Step-by-Step Process
 
-1. **Read V1 source**: Study the file in `system/` completely
+1. **Read V1 source**: Study the file in `v1/system/` completely
 2. **Check if V2 exists**: Look in `v2/systems/`, `v2/controllers/`, etc.
 3. **Port faithfully**:
    - Copy ALL logic exactly as-is
@@ -139,7 +83,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 
 ## V1 Systems Directory
 
-Key files in `system/` that may need porting:
+Key files in `v1/system/` that may need porting:
 
 - `game-engine.js` - Core game loop
 - `easter-egg-controller.js` - Hidden content (partially ported)
@@ -405,7 +349,7 @@ Inline wiring is fine for simple cases. But "just one more handler" × 50 featur
 
 Use the `BlogEntry` type from `@uv7/journal-core`. Full content, no TODOs. Write it like an editorial recap — narrative, specific, with flavour. Not a changelog. After writing, mark the drained items in the scratch pad with `_(drained into \`slug\` — date)_`.
 
-**Required fields:** `id`, `date`, `sortDate`, `title`, `type`, `emoji`, `tags`, `modelId`, `summary`, `highlights`
+**Required fields:** `id`, `date`, `sortDate`, `title`, `type`, `emoji`, `tags`, `chefId`, `summary`, `highlights`
 
 **Encouraged fields:** `callout`, `technicalDetails`, `lessons`, `footer`
 
