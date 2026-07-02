@@ -274,6 +274,13 @@ User's detailed spec tells you WHAT to build. You must decide WHERE to build it.
 - We discuss: "Should this be split?"
 - **Default Answer:** Yes.
 - **Exception:** Legacy V1 ports (kept for historical accuracy).
+- **Exception: the `shell/` tenant** (granted by Aaron, 2026-07-01). `UV7AppSwitcher.ts`
+  (~1144), `UV7System.ts` (~992), and `UV7Shell.ts` (~778) are grandfathered as-is:
+  the shell is finished, stable plumbing that changes rarely, and a retroactive split
+  of working code carries more risk than the size does. The exemption is **status quo
+  only** — it covers these three files at roughly their current size. New shell features
+  get their own modules (the wiring decision tree still applies), and if one of these
+  files needs *major* surgery anyway, that's the moment to split it, not before.
 
 ### 3. No Silent Shoehorning 👟
 
