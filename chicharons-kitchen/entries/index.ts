@@ -1,0 +1,249 @@
+// Auto-generated index file for timeline entries
+// DO NOT EDIT MANUALLY - regenerate using npm run generate:timeline
+
+import { entry as entry0 } from './2026/02/roadtrip-timing-cascade-fix';
+import { entry as entry1 } from './2026/02/roadtrip-human-planning';
+import { entry as entry2 } from './2026/02/roadtrip-cinematic-overhaul';
+import { entry as entry3 } from './2026/02/roadtrip-hub-cache-marathon';
+import { entry as entry4 } from './2026/02/roadtrip-five-courses';
+import { entry as entry5 } from './2026/02/roadtrip-mee-domain';
+import { entry as entry6 } from './2026/02/roadtrip-simulation-hardening';
+import { entry as entry7 } from './2026/02/roadtrip-build-mode-pivot';
+import { entry as entry8 } from './2026/02/roadtrip-planner-17-commit-marathon';
+import { entry as entry9 } from './2026/02/experience-engine-border-avoidance';
+import { entry as entry10 } from './2026/02/roadtrip-planner-extraction-sprint';
+import { entry as entry11 } from './2026/02/building-a-better-planner';
+import { entry as entry12 } from './2026/02/v2-bug-squash-valentine-session';
+import { entry as entry13 } from './2026/02/gesture-input-architecture-cleanup';
+import { entry as entry14 } from './2026/02/phantom-crew-hallucination-loop';
+import { entry as entry15 } from './2026/02/v2-stabilization-full-kitchen-audit';
+import { entry as entry16 } from './2026/02/v2-runtime-polish-session';
+import { entry as entry17 } from './2026/02/v2-god-file-purge';
+import { entry as entry18 } from './2026/02/multi-chef-portrait-system';
+import { entry as entry19 } from './2026/02/journal-section-replating';
+import { entry as entry20 } from './2026/02/css-legacy-deletion-theme-debug';
+import { entry as entry21 } from './2026/02/design-polish-elevation-system';
+import { entry as entry22 } from './2026/02/choose-your-chef-carousel';
+import { entry as entry23 } from './2026/02/tale-of-two-cozees';
+import { entry as entry24 } from './2026/02/tcg-crew-cards-bougie-upgrade';
+import { entry as entry25 } from './2026/02/ten-out-of-ten';
+import { entry as entry26 } from './2026/02/the-perfectionists-gambit';
+import { entry as entry27 } from './2026/02/pursuit-of-excellence-7-to-9-5';
+import { entry as entry28 } from './2026/02/case-of-missing-blog-entries';
+import { entry as entry29 } from './2026/02/hello-cozee';
+import { entry as entry30 } from './2026/02/validate-noise-console-to-logger';
+import { entry as entry31 } from './2026/02/tardis-polish-infrastructure';
+import { entry as entry32 } from './2026/02/zero-files-over-1000-lines';
+import { entry as entry33 } from './2026/02/v2-custom-chrome-solution';
+import { entry as entry34 } from './2026/02/kitchen-notes';
+import { entry as entry35 } from './2026/02/custom-chrome-iframe-challenge';
+import { entry as entry36 } from './2026/02/hybrid-chrome-architecture';
+import { entry as entry37 } from './2026/02/restaurant-menu-redesign';
+import { entry as entry38 } from './2026/02/showcase-transformation';
+import { entry as entry39 } from './2026/02/vertical-scrubber-incident';
+import { entry as entry40 } from './2026/02/three-phase-hygiene-protocol';
+import { entry as entry41 } from './2026/01/spring-cleaning-and-gateway';
+import { entry as entry42 } from './2026/01/timeline-architecture-refactoring';
+import { entry as entry43 } from './2026/01/making-of-integration-v1-origin-stories';
+import { entry as entry44 } from './2026/01/final-polish-accessibility';
+import { entry as entry45 } from './2026/01/category-based-page-theming';
+import { entry as entry46 } from './2026/01/crew-attribution-signatures';
+import { entry as entry47 } from './2026/01/blog-layout-css-visual-flavors';
+import { entry as entry48 } from './2026/01/blog-layout-foundation';
+import { entry as entry49 } from './2026/01/maximum-michelin-timeline';
+import { entry as entry50 } from './2026/01/uv7-system-architecture';
+import { entry as entry51 } from './2026/01/shade-template-refactor';
+import { entry as entry52 } from './2026/01/context-aware-sidebar-system';
+import { entry as entry53 } from './2026/01/non-coders-optimization';
+import { entry as entry54 } from './2026/01/great-swipe-saga-scroll-snap';
+import { entry as entry55 } from './2026/01/single-source-of-truth';
+import { entry as entry56 } from './2026/01/uv7-os-unification-one-navigation';
+import { entry as entry57 } from './2026/01/full-vite-integration-module-conversion';
+import { entry as entry58 } from './2026/01/home-tab-full-michelin-landing';
+import { entry as entry59 } from './2026/01/scroll-spy-all-sections-visible';
+import { entry as entry60 } from './2026/01/birthday-break-chicharon-levels-up';
+import { entry as entry61 } from './2026/01/scroll-snap-native-beats-custom';
+import { entry as entry62 } from './2026/01/ghost-refactor-mystery';
+import { entry as entry63 } from './2026/01/phantom-deployment-rollback';
+import { entry as entry64 } from './2026/01/tab-swipe-facebook-style';
+import { entry as entry65 } from './2026/01/app-switcher-ios-live-previews';
+import { entry as entry66 } from './2026/01/order-from-chaos-showcase-refactor';
+import { entry as entry67 } from './2026/01/ghost-button-timeline-split';
+import { entry as entry68 } from './2026/01/great-test-recovery-0-to-601';
+import { entry as entry69 } from './2026/01/case-of-1000-missing-tests';
+import { entry as entry70 } from './2026/01/current-state-work-in-progress';
+import { entry as entry71 } from './2026/01/parity-audit-great-rename-confusion';
+import { entry as entry72 } from './2026/01/zombie-code-pause-menu';
+import { entry as entry73 } from './2026/01/ghost-component-above-1024px';
+import { entry as entry74 } from './2026/01/mobile-slider-orientation-fix';
+import { entry as entry75 } from './2026/01/v2-polish-torigatchi-lore';
+import { entry as entry76 } from './2026/01/v1-parity-devsuite-port';
+import { entry as entry77 } from './2026/01/torigatchi-glow-up';
+import { entry as entry78 } from './2026/01/invisible-rain-saga-debugging-odyssey';
+import { entry as entry79 } from './2026/01/phase-86-michelin-landing';
+import { entry as entry80 } from './2026/01/living-ecosystem';
+import { entry as entry81 } from './2026/01/bridge-core-unification';
+import { entry as entry82 } from './2026/01/michelin-polish-treatment';
+import { entry as entry83 } from './2026/01/data-migration-the-bridge';
+import { entry as entry84 } from './2026/01/statusbar-parity-unified-system';
+import { entry as entry85 } from './2026/01/parity-audit-no-more-guesswork';
+import { entry as entry86 } from './2026/01/statusbar-unification-bougie';
+import { entry as entry87 } from './2026/01/app-switcher-bougie-edition';
+import { entry as entry88 } from './2026/01/final-controllers-documentation';
+import { entry as entry89 } from './2026/01/system-enhancements';
+import { entry as entry90 } from './2026/01/accessibility-and-polish';
+import { entry as entry91 } from './2026/01/developer-analytics-tools';
+import { entry as entry92 } from './2026/01/system-management-coordination';
+import { entry as entry93 } from './2026/01/scene-rendering-cutscenes';
+import { entry as entry94 } from './2026/01/savemanager-the-living-version';
+import { entry as entry95 } from './2026/01/medium-priority-ports-controllers';
+import { entry as entry96 } from './2026/01/notification-system-v1-v2-parity';
+import { entry as entry97 } from './2026/01/core-systems-ports-sensory-timeline';
+import { entry as entry98 } from './2026/01/status-notification-controller-toast';
+import { entry as entry99 } from './2026/01/faithful-v1-v2-ports';
+import { entry as entry100 } from './2026/01/uv7-os-integration-ecosystem';
+import { entry as entry101 } from './2026/01/restoring-the-soul-narrative-flavor';
+import { entry as entry102 } from './2026/01/michelin-meta-polish';
+import { entry as entry103 } from './2026/01/great-consolidation-system-integration';
+import { entry as entry104 } from './2026/01/parallel-blitz-velocity';
+import { entry as entry105 } from './2026/01/lost-bubble-narrative-restoration';
+import { entry as entry106 } from './2026/01/michelin-polish-quality-of-life';
+import { entry as entry107 } from './2026/01/v1-parity-notification-shade-sidebar';
+import { entry as entry108 } from './2026/01/final-polish-launch-ready';
+import { entry as entry109 } from './2026/01/identity-crisis-wheres-the-flavour';
+import { entry as entry110 } from './2026/01/integration-structure';
+import { entry as entry111 } from './2026/01/rebuild-foundation';
+import { entry as entry112 } from './2025/12/solid-sprint-refactor-spike';
+import { entry as entry113 } from './2025/12/origin-chaos-and-refactor';
+import { entry as entry114 } from './2025/11/post-launch-polish';
+import { entry as entry115 } from './2025/10/demon-lord-naming';
+import { entry as entry116 } from './2025/10/applebees-tether-system';
+import { entry as entry117 } from './2025/10/custom-engine-realization';
+
+export * from './types';
+import type { BlogEntry } from './types';
+
+export const timelineData: BlogEntry[] = [
+    entry0,
+    entry1,
+    entry2,
+    entry3,
+    entry4,
+    entry5,
+    entry6,
+    entry7,
+    entry8,
+    entry9,
+    entry10,
+    entry11,
+    entry12,
+    entry13,
+    entry14,
+    entry15,
+    entry16,
+    entry17,
+    entry18,
+    entry19,
+    entry20,
+    entry21,
+    entry22,
+    entry23,
+    entry24,
+    entry25,
+    entry26,
+    entry27,
+    entry28,
+    entry29,
+    entry30,
+    entry31,
+    entry32,
+    entry33,
+    entry34,
+    entry35,
+    entry36,
+    entry37,
+    entry38,
+    entry39,
+    entry40,
+    entry41,
+    entry42,
+    entry43,
+    entry44,
+    entry45,
+    entry46,
+    entry47,
+    entry48,
+    entry49,
+    entry50,
+    entry51,
+    entry52,
+    entry53,
+    entry54,
+    entry55,
+    entry56,
+    entry57,
+    entry58,
+    entry59,
+    entry60,
+    entry61,
+    entry62,
+    entry63,
+    entry64,
+    entry65,
+    entry66,
+    entry67,
+    entry68,
+    entry69,
+    entry70,
+    entry71,
+    entry72,
+    entry73,
+    entry74,
+    entry75,
+    entry76,
+    entry77,
+    entry78,
+    entry79,
+    entry80,
+    entry81,
+    entry82,
+    entry83,
+    entry84,
+    entry85,
+    entry86,
+    entry87,
+    entry88,
+    entry89,
+    entry90,
+    entry91,
+    entry92,
+    entry93,
+    entry94,
+    entry95,
+    entry96,
+    entry97,
+    entry98,
+    entry99,
+    entry100,
+    entry101,
+    entry102,
+    entry103,
+    entry104,
+    entry105,
+    entry106,
+    entry107,
+    entry108,
+    entry109,
+    entry110,
+    entry111,
+    entry112,
+    entry113,
+    entry114,
+    entry115,
+    entry116,
+    entry117
+];
+
+export const TIMELINE_DATA = {
+    entries: timelineData
+};
